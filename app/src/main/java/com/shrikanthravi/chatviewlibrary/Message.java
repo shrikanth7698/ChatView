@@ -45,6 +45,24 @@ public class Message {
         this.quickList = quickList;
     }
 
+    public Message(long id, String type, String body, String time, List<Uri> imageList) {
+        this.id = id;
+        this.type = type;
+        this.body = body;
+        this.time = time;
+        this.imageList = imageList;
+    }
+
+    public Message(long id, String type, String body, String time, String status, List<Uri> imageList, List<String> quickList) {
+        this.id = id;
+        this.type = type;
+        this.body = body;
+        this.time = time;
+        this.status = status;
+        this.imageList = imageList;
+        this.quickList = quickList;
+    }
+
     public long getId() {
         return id;
     }

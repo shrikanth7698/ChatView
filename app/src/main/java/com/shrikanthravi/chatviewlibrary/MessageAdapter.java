@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,11 +38,18 @@ import java.util.List;
 
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
+    private final int VIEW_ITEM = 1;
+    private final int VIEW_PROG = 0;
     private List<Message> messageList;
     private List<Message> filterList;
     Context context;
     MessageFilter filter;
     ImageLoader imageLoader;
+    // The minimum amount of items to have below your current scroll position before loading more.
+    private int visibleThreshold = 10;
+    private int lastVisibleItem, totalItemCount;
+    private boolean loading;
+    private OnLoadMoreListener onLoadMoreListener;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -85,13 +93,34 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         }
     }
 
-    public MessageAdapter(List<Message> verticalList, Context context) {
+    public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
 
         this.messageList = verticalList;
         this.context = context;
         this.filterList = verticalList;
         filter = new MessageFilter(verticalList,this);
         imageLoader = ImageLoader.getInstance();
+        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
+
+            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
+                    if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
+                        // End has been reached
+                        // Do something
+                        if (onLoadMoreListener != null) {
+                            onLoadMoreListener.onLoadMore();
+                        }
+                        loading = true;
+                    }
+                }
+            });
+        }
 
     }
 
@@ -105,6 +134,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
 
         Typeface regular = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
         Typeface bold = Typeface.createFromAsset(context.getAssets(), "fonts/product_sans_bold.ttf");
@@ -354,6 +384,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
 
     }
+    public void setLoaded() {
+        loading = false;
+    }
+
+
     @Override
     public int getItemCount() {
         return filterList.size();
@@ -374,6 +409,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         SimpleDateFormat mdformat = new SimpleDateFormat("dd MMM yyyy HH:mm");
         String time = mdformat.format(calendar.getTime());
         return time;
+    }
+
+    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
+        this.onLoadMoreListener = onLoadMoreListener;
+    }
+
+    public interface OnLoadMoreListener {
+        void onLoadMore();
     }
 
 

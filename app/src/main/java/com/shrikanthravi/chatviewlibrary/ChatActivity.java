@@ -20,7 +20,9 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.github.zagum.expandicon.ExpandIconView;
@@ -54,6 +56,10 @@ public class ChatActivity extends AppCompatActivity {
     List<Uri> mSelected;
     TextView usernameTV;
     TextView userStatusTV;
+    DBHandler dbHandler;
+    ProgressBar loadMoreProgressBar;
+    int start=0;
+    int end=25;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +78,17 @@ public class ChatActivity extends AppCompatActivity {
         expandIconView = findViewById(R.id.expandIconView);
         chatRV = findViewById(R.id.chatRV);
         messageList = new ArrayList<>();
-        messageAdapter = new MessageAdapter(messageList,ChatActivity.this);
+        messageAdapter = new MessageAdapter(messageList,ChatActivity.this,chatRV);
         messageET = findViewById(R.id.messageET);
         sendMRL = findViewById(R.id.sendMRL);
         profilePicCV = findViewById(R.id.profilePicCV);
         galleryMRL = findViewById(R.id.galleryMRL);
         usernameTV = findViewById(R.id.usernameTV);
         userStatusTV = findViewById(R.id.userStatusTV);
+        dbHandler = new DBHandler(getApplicationContext());
+        loadMoreProgressBar = findViewById(R.id.loadMoreProgressBar);
         //Initialization end
+        loadMoreProgressBar.setVisibility(View.GONE);
 
         expandIconView.setState(1,false);
         expandIconView.setOnClickListener(new View.OnClickListener() {
@@ -98,34 +107,35 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext(),LinearLayoutManager.VERTICAL,true);
         layoutManager.setStackFromEnd(true);
         chatRV.setLayoutManager(layoutManager);
         chatRV.setItemAnimator(new ScaleInBottomAnimator(new OvershootInterpolator(1f)));
         chatRV.setAdapter(messageAdapter);
 
+        System.out.println("Testing "+dbHandler.numberOfRows());
+        loadMore();
 
         sendMRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(messageET.getText().toString().trim().length()!=0){
-                    if(messageList.size()!=0) {
-                        if (messageList.get(messageList.size() - 1).getType().equals("quick")) {
-                            messageList.remove(messageList.size()-1);
-                            messageAdapter.notifyItemRemoved(messageList.size());
-                        }
-                    }
-                    messageList.add(new Message("RIGHT",messageET.getText().toString().trim(),getTime()));
-                    messageAdapter.notifyItemInserted(messageList.size());
-                    chatRV.smoothScrollToPosition(messageList.size()-1);
+
+
+                    messageList.add(0,new Message("RIGHT",messageET.getText().toString().trim(),getTime()));
+                    messageAdapter.notifyItemInserted(0);
+                    chatRV.smoothScrollToPosition(0);
+                    dbHandler.insertMessage(new Message("RIGHT",messageET.getText().toString().trim(),getTime()));
                     messageET.setText("");
+
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            messageList.add(new Message("LEFT",getRandomText(),getTime()));
-                            messageAdapter.notifyItemInserted(messageList.size()-1);
-                            chatRV.smoothScrollToPosition(messageList.size()-1);
+                            messageList.add(0,new Message("LEFT",getRandomText(),getTime()));
+                            messageAdapter.notifyItemInserted(0);
+                            chatRV.smoothScrollToPosition(0);
+                            dbHandler.insertMessage(new Message("LEFT",getRandomText(),getTime()));
 
                         }
                     },1000);
@@ -213,7 +223,23 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
+        messageAdapter.setOnLoadMoreListener(new MessageAdapter.OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                loadMoreProgressBar.setVisibility(View.VISIBLE);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                    loadMore();
+                    }
+                },2000);
+            }
+        });
+
+
     }
+
 
 
 
@@ -224,14 +250,17 @@ public class ChatActivity extends AppCompatActivity {
             mSelected = Matisse.obtainResult(data);
 
             if(mSelected.size()==1) {
-                messageList.add(new Message("RightImage", "", getTime(), mSelected));
-                messageAdapter.notifyItemInserted(messageList.size());
-                chatRV.smoothScrollToPosition(messageList.size() - 1);
+                messageList.add(0,new Message("RightImage", "", getTime(), mSelected));
+                messageAdapter.notifyItemInserted(0);
+                chatRV.smoothScrollToPosition(0);
+
+                dbHandler.insertMessage(new Message("RightImage", "", getTime(), mSelected));
             }
             else{
-                messageList.add(new Message("RightImages", "", getTime(), mSelected));
-                messageAdapter.notifyItemInserted(messageList.size());
-                chatRV.smoothScrollToPosition(messageList.size() - 1);
+                messageList.add(0,new Message("RightImages", "", getTime(), mSelected));
+                messageAdapter.notifyItemInserted(0);
+                chatRV.smoothScrollToPosition(0);
+                dbHandler.insertMessage(new Message("RightImages", "", getTime(), mSelected));
             }
 
         }
@@ -266,5 +295,35 @@ public class ChatActivity extends AppCompatActivity {
         mi.setTitle(mNewTitle);
     }*/
 
+    public void loadMore(){
+        System.out.println("testing2 ");
+        if(start<(dbHandler.numberOfRows()-20)) {
+            ArrayList<Message> pagedList = new ArrayList<>();
+            pagedList.addAll(dbHandler.getAllMessages(start,20));
+            int temp = messageList.size();
+            for(int i=0;i<pagedList.size();i++){
+                messageList.add(pagedList.get(i));
+            }
+            //messageAdapter.notifyItemRangeInserted(temp,pagedList.size());
+            messageAdapter.notifyDataSetChanged();
+            start = start + 20;
+        }
+        else{
+            int temp = dbHandler.numberOfRows()-start;
+            if(temp<=0){
+                Toast.makeText(ChatActivity.this,"No Data",Toast.LENGTH_SHORT).show();
+            }
+            else{
+                ArrayList<Message> pagedList = new ArrayList<>();
+                pagedList.addAll(dbHandler.getAllMessages(start,dbHandler.numberOfRows()-start));
+                int temp1 = messageList.size();
+                for(int i=0;i<pagedList.size();i++){
+                    messageList.add(pagedList.get(i));
+                }
+                messageAdapter.notifyDataSetChanged();
+            }
+        }
+        loadMoreProgressBar.setVisibility(View.GONE);
+    }
 }
 
