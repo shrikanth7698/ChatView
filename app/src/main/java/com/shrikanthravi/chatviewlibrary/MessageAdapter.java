@@ -53,7 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         public ImageView leftIV,rightIV;
         public HorizontalScrollView quickContainerHSV;
         public LinearLayout quickListLL;
-        public CollageView rightCollageView;
+        public CollageView rightCollageView,leftCollageView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -71,6 +71,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             quickContainerHSV = view.findViewById(R.id.quickContainerHSV);
             quickListLL = view.findViewById(R.id.quickListLL);
             rightCollageView = view.findViewById(R.id.rightCollageView);
+            leftCollageView = view.findViewById(R.id.leftCollageView);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -285,6 +286,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 for(int i=0;i<message.getImageList().size();i++){
                     imageList.add(message.getImageList().get(i).toString());
                 }
+                holder.rightTimeTV.setText(message.getTime());
                 holder.rightCollageView
                         .photoMargin(8)
                         .photoPadding(0)
@@ -293,9 +295,57 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                         .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
                         .useCards(true)// adds cardview backgrounds to all photos
                         .loadPhotos(imageList);
+
+                holder.rightCollageView.setTransitionName("photoTransition");
+                holder.rightCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                    @Override
+                    public void onPhotoClick(int i) {
+
+                        Intent intent = new Intent(context,ImageFFActivity.class);
+                        intent.putExtra("photoURI",message.getImageList().get(i).toString());
+                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.rightCollageView,holder.rightCollageView.getTransitionName());
+                        context.startActivity(intent, optionsCompat.toBundle());
+                    }
+                });
                 break;
             }
 
+            case "LeftImages":{
+
+                holder.quickContainerHSV.setVisibility(View.GONE);
+                holder.rightTV.setVisibility(View.GONE);
+                holder.rightTV.setVisibility(View.GONE);
+                holder.rightIV.setVisibility(View.GONE);
+                holder.rightEL.setVisibility(View.GONE);
+                holder.leftEL.setVisibility(View.VISIBLE);
+                holder.leftCollageView.setVisibility(View.VISIBLE);
+                List<String> imageList = new ArrayList<>();
+                for(int i=0;i<message.getImageList().size();i++){
+                    imageList.add(message.getImageList().get(i).toString());
+                }
+                holder.leftTimeTV.setText(message.getTime());
+                holder.leftCollageView
+                        .photoMargin(8)
+                        .photoPadding(0)
+                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                        .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+                        .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
+                        .useCards(true)// adds cardview backgrounds to all photos
+                        .loadPhotos(imageList);
+
+                holder.leftCollageView.setTransitionName("photoTransition");
+                holder.leftCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                    @Override
+                    public void onPhotoClick(int i) {
+
+                        Intent intent = new Intent(context,ImageFFActivity.class);
+                        intent.putExtra("photoURI",message.getImageList().get(i).toString());
+                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.leftCollageView,holder.leftCollageView.getTransitionName());
+                        context.startActivity(intent, optionsCompat.toBundle());
+                    }
+                });
+                break;
+            }
 
 
 
