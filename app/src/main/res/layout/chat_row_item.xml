@@ -157,5 +157,20 @@
             android:layout_gravity="left"
             android:gravity="left|center"/>
     </com.silencedut.expandablelayout.ExpandableLayout>
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:id="@+id/quickContainerHSV"
+        android:scrollbars="none"
+        android:layout_height="wrap_content" >
+
+        <LinearLayout
+            android:id="@+id/quickListLL"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:orientation="horizontal"/>
+
+    </HorizontalScrollView>
 
 </RelativeLayout>

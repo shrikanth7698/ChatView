@@ -17,7 +17,7 @@ public class Message {
     String time;
     String status;
     List<Uri> imageList;
-
+    List<String>  quickList;
 
     public Message(String type, String body, String time) {
         this.type = type;
@@ -37,6 +37,12 @@ public class Message {
         this.body = body;
         this.time = time;
         this.imageList = imageList;
+    }
+
+    public Message( String type, String body, List<String> quickList) {
+        this.type = type;
+        this.body = body;
+        this.quickList = quickList;
     }
 
     public long getId() {
@@ -85,6 +91,14 @@ public class Message {
 
     public void setImageList(List<Uri> imageList) {
         this.imageList = imageList;
+    }
+
+    public List<String> getQuickList() {
+        return quickList;
+    }
+
+    public void setQuickList(List<String> quickList) {
+        this.quickList = quickList;
     }
 }
 

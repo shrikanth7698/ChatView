@@ -11,7 +11,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -22,6 +24,7 @@ import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -36,6 +39,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     MessageFilter filter;
     ImageLoader imageLoader;
 
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTV,rightTV,leftTimeTV,rightTimeTV;
@@ -43,6 +47,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         public ImageView rightMessageStatusIV;
         public CardView leftIVCV,rightIVCV;
         public ImageView leftIV,rightIV;
+        public HorizontalScrollView quickContainerHSV;
+        public LinearLayout quickListLL;
 
         public MyViewHolder(View view) {
             super(view);
@@ -57,6 +63,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             rightIV = view.findViewById(R.id.rightIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
+            quickContainerHSV = view.findViewById(R.id.quickContainerHSV);
+            quickListLL = view.findViewById(R.id.quickListLL);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -109,9 +117,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 holder.leftTV.setVisibility(View.VISIBLE);
                 holder.leftTV.setText(message.getBody());
                 holder.leftTimeTV.setText(message.getTime());
+                holder.quickContainerHSV.setVisibility(View.GONE);
                 break;
             }
             case "RIGHT":{
+                holder.quickContainerHSV.setVisibility(View.GONE);
                 holder.leftEL.setVisibility(View.GONE);
                 holder.rightIVCV.setVisibility(View.GONE);
                 holder.rightEL.setVisibility(View.VISIBLE);
@@ -121,6 +131,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 break;
             }
             case "LeftImage":{
+                holder.quickContainerHSV.setVisibility(View.GONE);
                 holder.rightEL.setVisibility(View.GONE);
                 holder.leftTV.setVisibility(View.GONE);
                 holder.leftEL.setVisibility(View.VISIBLE);
@@ -161,6 +172,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 break;
             }
             case "RightImage":{
+                holder.quickContainerHSV.setVisibility(View.GONE);
                 holder.leftEL.setVisibility(View.GONE);
                 holder.rightTV.setVisibility(View.GONE);
                 holder.rightEL.setVisibility(View.VISIBLE);
@@ -215,7 +227,43 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     }
                 });
                 break;
+
             }
+            case "quick": {
+
+                holder.quickContainerHSV.setVisibility(View.VISIBLE);
+                holder.rightEL.setVisibility(View.GONE);
+                holder.leftEL.setVisibility(View.GONE);
+                for (int i = 0; i < message.getQuickList().size(); i++) {
+
+                    View child1, space;
+                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                    child1 = inflater.inflate(R.layout.quick_reply_layout, null);
+                    TextView text1 = child1.findViewById(R.id.quickTV);
+                    text1.setTypeface(regular);
+                    text1.setText(message.getQuickList().get(i));
+                    child1.setTag(i);
+
+                    View.OnClickListener listener = new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            int i = (Integer) view.getTag();
+                            messageList.remove(position);
+                            notifyItemRemoved(position);
+                            messageList.add(new Message("RIGHT",message.getQuickList().get(i).trim().toString(),getTime()));
+                            notifyItemInserted(messageList.size()-1);
+
+                        }
+                    };
+                    child1.setOnClickListener(listener);
+
+                    holder.quickListLL.addView(child1);
+
+                }
+                break;
+            }
+
 
 
 
@@ -239,6 +287,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         filter.filter(text);
     }
 
+    public String getTime(){
+        java.util.Calendar calendar = java.util.Calendar.getInstance();
+        SimpleDateFormat mdformat = new SimpleDateFormat("dd MMM yyyy HH:mm");
+        String time = mdformat.format(calendar.getTime());
+        return time;
+    }
 
 
 }
