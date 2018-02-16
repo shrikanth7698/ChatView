@@ -24,6 +24,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
+import com.nostra13.universalimageloader.utils.L;
 import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
@@ -37,47 +38,240 @@ import java.util.List;
  */
 
 
-public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
-    private final int VIEW_ITEM = 1;
-    private final int VIEW_PROG = 0;
+public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+
     private List<Message> messageList;
     private List<Message> filterList;
     Context context;
     MessageFilter filter;
     ImageLoader imageLoader;
-    // The minimum amount of items to have below your current scroll position before loading more.
-    private int visibleThreshold = 10;
-    private int lastVisibleItem, totalItemCount;
-    private boolean loading;
-    private OnLoadMoreListener onLoadMoreListener;
+
+    @Override
+    public int getItemViewType(int position) {
+        if(messageList.get(position).getType().equals("LEFT")){
+            return 0;
+        }
+        else{
+            if(messageList.get(position).getType().equals("RIGHT")){
+                return 1;
+            }
+            else{
+                if(messageList.get(position).getType().equals("LeftImage")){
+                    return 2;
+                }
+                else{
+                    if(messageList.get(position).getType().equals("RightImage")){
+                        return 3;
+                    }
+                    else{
+                        if(messageList.get(position).getType().equals("LeftImages")){
+                            return 4;
+                        }
+                        else{
+                            return 5;
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        RecyclerView.ViewHolder viewHolder;
+        if(viewType==0){
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.left_text_layout, parent, false);
+            viewHolder = new LeftTextViewHolder(view);
+        }
+        else{
+            if(viewType==1){
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.right_text_layout, parent, false);
+                viewHolder = new RightTextViewHolder(view);
+            }
+            else{
+                if(viewType==2){
+                    View view = LayoutInflater.from(parent.getContext())
+                            .inflate(R.layout.left_image_layout, parent, false);
+                    viewHolder = new LeftImageViewHolder(view);
+                }
+                else{
+                    if(viewType==3){
+                        View view = LayoutInflater.from(parent.getContext())
+                                .inflate(R.layout.right_image_layout, parent, false);
+                        viewHolder = new RightImageViewHolder(view);
+                    }
+                    else{
+                        if(viewType==4){
+                            View view = LayoutInflater.from(parent.getContext())
+                                    .inflate(R.layout.left_images_layout, parent, false);
+                            viewHolder = new LeftImagesViewHolder(view);
+                        }
+                        else{
+                            View view = LayoutInflater.from(parent.getContext())
+                                    .inflate(R.layout.right_images_layout, parent, false);
+                            viewHolder = new RightImagesViewHolder(view);
+                        }
+                    }
+                }
+            }
 
-        public TextView leftTV,rightTV,leftTimeTV,rightTimeTV;
+        }
+
+
+        return viewHolder ;
+    }
+
+
+
+    public class LeftTextViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView leftTV,leftTimeTV;
         public ExpandableLayout leftEL,rightEL;
-        public ImageView rightMessageStatusIV;
-        public CardView leftIVCV,rightIVCV;
-        public ImageView leftIV,rightIV;
-        public HorizontalScrollView quickContainerHSV;
-        public LinearLayout quickListLL;
-        public CollageView rightCollageView,leftCollageView;
+        public ImageView lefttMessageStatusIV;
 
-        public MyViewHolder(View view) {
+        public LeftTextViewHolder(View view) {
             super(view);
 
             leftTV = view.findViewById(R.id.leftTV);
-            rightTV = view.findViewById(R.id.rightTV);
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
-            rightTimeTV = view.findViewById(R.id.rightTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             rightEL = view.findViewById(R.id.rightEL);
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+    public class RightTextViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView rightTV,rightTimeTV;
+        public ExpandableLayout leftEL;
+        public ImageView rightMessageStatusIV;
+
+        public RightTextViewHolder(View view) {
+            super(view);
+
+            rightTV = view.findViewById(R.id.rightTV);
+            rightTimeTV = view.findViewById(R.id.rightTimeTV);
+            leftEL = view.findViewById(R.id.leftEL);
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+
+    public class LeftImageViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView leftTV,leftTimeTV;
+        public ExpandableLayout leftEL;
+        public ImageView leftMessageStatusIV;
+        public CardView leftIVCV;
+        public ImageView leftIV;
+
+        public LeftImageViewHolder(View view) {
+            super(view);
+
+            leftTV = view.findViewById(R.id.leftTV);
+            leftTimeTV = view.findViewById(R.id.leftTimeTV);
+            leftEL = view.findViewById(R.id.leftEL);
             leftIV = view.findViewById(R.id.leftIV);
-            rightIV = view.findViewById(R.id.rightIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+
+    public class RightImageViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView rightTV,rightTimeTV;
+        public ExpandableLayout rightEL;
+        public ImageView rightMessageStatusIV;
+        public CardView rightIVCV;
+        public ImageView rightIV;
+
+        public RightImageViewHolder(View view) {
+            super(view);
+
+            rightTV = view.findViewById(R.id.rightTV);
+            rightTimeTV = view.findViewById(R.id.rightTimeTV);
+            rightEL = view.findViewById(R.id.rightEL);
+            rightIV = view.findViewById(R.id.rightIV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
-            quickContainerHSV = view.findViewById(R.id.quickContainerHSV);
-            quickListLL = view.findViewById(R.id.quickListLL);
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+
+    public class LeftImagesViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView leftTimeTV;
+        public ExpandableLayout rightEL;
+        public ImageView leftMessageStatusIV;
+        public CollageView leftCollageView;
+
+        public LeftImagesViewHolder(View view) {
+            super(view);
+
+            leftTimeTV = view.findViewById(R.id.leftTimeTV);
+            rightEL = view.findViewById(R.id.rightEL);
+            leftCollageView = view.findViewById(R.id.leftCollageView);
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+
+    public class RightImagesViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView rightTimeTV;
+        public ExpandableLayout rightEL;
+        public ImageView rightMessageStatusIV;
+        public CollageView rightCollageView,leftCollageView;
+
+        public RightImagesViewHolder(View view) {
+            super(view);
+
+            rightTimeTV = view.findViewById(R.id.rightTimeTV);
+            rightEL = view.findViewById(R.id.rightEL);
             rightCollageView = view.findViewById(R.id.rightCollageView);
             leftCollageView = view.findViewById(R.id.leftCollageView);
 
@@ -100,40 +294,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         this.filterList = verticalList;
         filter = new MessageFilter(verticalList,this);
         imageLoader = ImageLoader.getInstance();
-        if (recyclerView.getLayoutManager() instanceof LinearLayoutManager) {
 
-            final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
-            recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                @Override
-                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                    super.onScrolled(recyclerView, dx, dy);
-
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    lastVisibleItem = linearLayoutManager.findLastVisibleItemPosition();
-                    if (!loading && totalItemCount <= (lastVisibleItem + visibleThreshold)) {
-                        // End has been reached
-                        // Do something
-                        if (onLoadMoreListener != null) {
-                            onLoadMoreListener.onLoadMore();
-                        }
-                        loading = true;
-                    }
-                }
-            });
-        }
 
     }
 
-    @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.chat_row_item, parent, false);
 
-        return new MyViewHolder(itemView);
-    }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
 
         Typeface regular = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
@@ -141,252 +309,178 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         final Message message = messageList.get(position);
 
-        holder.leftTV.setTypeface(regular);
-        holder.rightTV.setTypeface(regular);
-        holder.leftTimeTV.setTypeface(regular);
-        holder.rightTimeTV.setTypeface(regular);
-
-        switch (filterList.get(position).getType()){
-            case "LEFT":{
-                holder.rightEL.setVisibility(View.GONE);
-                holder.leftIVCV.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.VISIBLE);
-                holder.leftTV.setVisibility(View.VISIBLE);
-                holder.leftTV.setText(message.getBody());
-                holder.leftTimeTV.setText(message.getTime());
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                break;
+        if(holder instanceof LeftTextViewHolder){
+            ((LeftTextViewHolder) holder).leftTV.setText(message.getBody());
+            ((LeftTextViewHolder) holder).leftTimeTV.setText(message.getTime());
+        }
+        else{
+            if(holder instanceof RightTextViewHolder){
+                ((RightTextViewHolder) holder).rightTV.setText(message.getBody());
+                ((RightTextViewHolder) holder).rightTimeTV.setText(message.getTime());
             }
-            case "RIGHT":{
-                holder.rightCollageView.setVisibility(View.GONE);
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.GONE);
-                holder.rightIVCV.setVisibility(View.GONE);
-                holder.rightEL.setVisibility(View.VISIBLE);
-                holder.rightTV.setVisibility(View.VISIBLE);
-                holder.rightTV.setText(message.getBody());
-                holder.rightTimeTV.setText(message.getTime());
-                break;
-            }
-            case "LeftImage":{
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                holder.rightEL.setVisibility(View.GONE);
-                holder.leftTV.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.VISIBLE);
-                holder.leftIV.setVisibility(View.VISIBLE);
-                holder.leftIVCV.setVisibility(View.VISIBLE);
-                if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
-                    final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
-                    if (image!= null && image.exists()) {
-                        Picasso.with(context).load(image).into(holder.leftIV);
-                    } else {
-                        imageLoader.loadImage(message.getImageList().get(0).toString(), new ImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String s, View view) {
-                                holder.leftIV.setImageBitmap(null);
-                            }
+            else{
+                if(holder instanceof LeftImageViewHolder){
+                    final LeftImageViewHolder holder1 =(LeftImageViewHolder) holder;
+                    if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
+                        final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
+                        if (image!= null && image.exists()) {
+                            Picasso.with(context).load(image).into(holder1.leftIV);
+                        } else {
+                            imageLoader.loadImage(message.getImageList().get(0).toString(), new ImageLoadingListener() {
+                                @Override
+                                public void onLoadingStarted(String s, View view) {
+                                    holder1.leftIV.setImageBitmap(null);
+                                }
 
-                            @Override
-                            public void onLoadingFailed(String s, View view, FailReason failReason) {
+                                @Override
+                                public void onLoadingFailed(String s, View view, FailReason failReason) {
 
-                            }
+                                }
 
-                            @Override
-                            public void onLoadingComplete(String s, View view, final Bitmap bitmap) {
-                                Picasso.with(context).load(s).into(holder.leftIV);
+                                @Override
+                                public void onLoadingComplete(String s, View view, final Bitmap bitmap) {
+                                    Picasso.with(context).load(s).into(holder1.leftIV);
 
-                            }
+                                }
 
-                            @Override
-                            public void onLoadingCancelled(String s, View view) {
+                                @Override
+                                public void onLoadingCancelled(String s, View view) {
 
-                            }
-                        });
+                                }
+                            });
+                        }
+                    }else {
+                        holder1.leftIV.setImageBitmap(null);
                     }
-                }else {
-                    holder.rightIV.setImageBitmap(null);
-                }
-                holder.leftTimeTV.setText(message.getTime());
-                break;
-            }
-            case "RightImage":{
-                holder.rightCollageView.setVisibility(View.GONE);
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.GONE);
-                holder.rightTV.setVisibility(View.GONE);
-                holder.rightEL.setVisibility(View.VISIBLE);
-                holder.rightEL.setExpand(true);
-                holder.rightIV.setVisibility(View.VISIBLE);
-                holder.rightIVCV.setVisibility(View.VISIBLE);
 
-                //holder.rightIV.setImageBitmap(null);
-
-                if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
-                    final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
-                    if (image!= null && image.exists()) {
-                        Picasso.with(context).load(image).into(holder.rightIV);
-                    } else {
-                        imageLoader.loadImage(message.getImageList().get(0).toString(), new ImageLoadingListener() {
-                            @Override
-                            public void onLoadingStarted(String s, View view) {
-                                holder.rightIV.setImageBitmap(null);
-                            }
-
-                            @Override
-                            public void onLoadingFailed(String s, View view, FailReason failReason) {
-
-                            }
-
-                            @Override
-                            public void onLoadingComplete(String s, View view, final Bitmap bitmap) {
-                                Picasso.with(context).load(s).into(holder.rightIV);
-
-                            }
-
-                            @Override
-                            public void onLoadingCancelled(String s, View view) {
-
-                            }
-                        });
-                    }
-                }else {
-                    holder.rightIV.setImageBitmap(null);
-                }
-                /*Picasso.with(context).load(message.getImageList().get(0).toString()).into(holder.rightIV);*/
-                holder.rightTimeTV.setText(message.getTime());
-                holder.rightIV.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        holder.rightIV.setTransitionName("photoTransition");
-
-                        Intent intent = new Intent(context,ImageFFActivity.class);
-                        intent.putExtra("photoURI",message.getImageList().get(0).toString());
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.rightIV,holder.rightIV.getTransitionName());
-                        context.startActivity(intent, optionsCompat.toBundle());
-                    }
-                });
-                break;
-
-            }
-            case "quick": {
-
-                holder.quickContainerHSV.setVisibility(View.VISIBLE);
-                holder.rightEL.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.GONE);
-                for (int i = 0; i < message.getQuickList().size(); i++) {
-
-                    View child1, space;
-                    LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    child1 = inflater.inflate(R.layout.quick_reply_layout, null);
-                    MaterialRippleLayout quickMRL = child1.findViewById(R.id.quickMRL);
-                    TextView text1 = child1.findViewById(R.id.quickTV);
-                    text1.setTypeface(regular);
-                    text1.setText(message.getQuickList().get(i));
-                    text1.setTag(i);
-                    View.OnClickListener listener = new View.OnClickListener() {
+                    holder1.leftTimeTV.setText(message.getTime());
+                    holder1.leftIV.setTransitionName("photoTransition");
+                    holder1.leftIV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            Intent intent = new Intent(context,ImageFFActivity.class);
+                            intent.putExtra("photoURI",message.getImageList().get(0).toString());
+                            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.leftIV,holder1.leftIV.getTransitionName());
+                            context.startActivity(intent, optionsCompat.toBundle());
+                        }
+                    });
+                }
+                else{
+                    if(holder instanceof RightImageViewHolder){
+                        final RightImageViewHolder holder1 =(RightImageViewHolder) holder;
+                        if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
+                            final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
+                            if (image!= null && image.exists()) {
+                                Picasso.with(context).load(image).into(holder1.rightIV);
+                            } else {
+                                imageLoader.loadImage(message.getImageList().get(0).toString(), new ImageLoadingListener() {
+                                    @Override
+                                    public void onLoadingStarted(String s, View view) {
+                                        holder1.rightIV.setImageBitmap(null);
+                                    }
 
-                            int i = (Integer) view.getTag();
-                            messageList.remove(position);
-                            notifyItemRemoved(position);
-                            messageList.add(new Message("RIGHT",message.getQuickList().get(i).trim().toString(),getTime()));
-                            notifyItemInserted(messageList.size()-1);
+                                    @Override
+                                    public void onLoadingFailed(String s, View view, FailReason failReason) {
+
+                                    }
+
+                                    @Override
+                                    public void onLoadingComplete(String s, View view, final Bitmap bitmap) {
+                                        Picasso.with(context).load(s).into(holder1.rightIV);
+
+                                    }
+
+                                    @Override
+                                    public void onLoadingCancelled(String s, View view) {
+
+                                    }
+                                });
+                            }
+                        }else {
+                            holder1.rightIV.setImageBitmap(null);
+                        }
+                        holder1.rightIV.setTransitionName("photoTransition");
+                        holder1.rightIV.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(context,ImageFFActivity.class);
+                                intent.putExtra("photoURI",message.getImageList().get(0).toString());
+                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightIV,holder1.rightIV.getTransitionName());
+                                context.startActivity(intent, optionsCompat.toBundle());
+                            }
+                        });
+                        holder1.rightTimeTV.setText(message.getTime());
+                    }
+                    else{
+                        if(holder instanceof LeftImagesViewHolder){
+                            final LeftImagesViewHolder holder1 =(LeftImagesViewHolder) holder;
+                            List<String> imageList = new ArrayList<>();
+                            for(int i=0;i<message.getImageList().size();i++){
+                                imageList.add(message.getImageList().get(i).toString());
+                            }
+                            holder1.leftTimeTV.setText(message.getTime());
+                            holder1.leftCollageView
+                                    .photoMargin(8)
+                                    .photoPadding(0)
+                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                                    .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+                                    .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
+                                    .useCards(true)// adds cardview backgrounds to all photos
+                                    .loadPhotos(imageList);
+
+                            holder1.leftCollageView.setTransitionName("photoTransition");
+                            holder1.leftCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                                @Override
+                                public void onPhotoClick(int i) {
+
+                                    Intent intent = new Intent(context,ImageFFActivity.class);
+                                    intent.putExtra("photoURI",message.getImageList().get(i).toString());
+                                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.leftCollageView,holder1.leftCollageView.getTransitionName());
+                                    context.startActivity(intent, optionsCompat.toBundle());
+                                }
+                            });
+                        }
+                        else{
+
+                            final RightImagesViewHolder holder1 =(RightImagesViewHolder) holder;
+                            List<String> imageList = new ArrayList<>();
+                            for(int i=0;i<message.getImageList().size();i++){
+                                imageList.add(message.getImageList().get(i).toString());
+                            }
+                            holder1.rightTimeTV.setText(message.getTime());
+                            holder1.rightCollageView
+                                    .photoMargin(8)
+                                    .photoPadding(0)
+                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                                    .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+                                    .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
+                                    .useCards(true)// adds cardview backgrounds to all photos
+                                    .loadPhotos(imageList);
+
+                            holder1.rightCollageView.setTransitionName("photoTransition");
+                            holder1.rightCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                                @Override
+                                public void onPhotoClick(int i) {
+
+                                    Intent intent = new Intent(context,ImageFFActivity.class);
+                                    intent.putExtra("photoURI",message.getImageList().get(i).toString());
+                                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightCollageView,holder1.rightCollageView.getTransitionName());
+                                    context.startActivity(intent, optionsCompat.toBundle());
+                                }
+
+                            });
 
                         }
-                    };
-                    text1.setOnClickListener(listener);
 
-                    holder.quickListLL.addView(child1);
 
-                }
-                break;
-            }
-
-            case "RightImages":{
-
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                holder.rightTV.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.GONE);
-                holder.rightTV.setVisibility(View.GONE);
-                holder.rightIV.setVisibility(View.GONE);
-                holder.rightEL.setVisibility(View.VISIBLE);
-                holder.rightCollageView.setVisibility(View.VISIBLE);
-                List<String> imageList = new ArrayList<>();
-                for(int i=0;i<message.getImageList().size();i++){
-                    imageList.add(message.getImageList().get(i).toString());
-                }
-                holder.rightTimeTV.setText(message.getTime());
-                holder.rightCollageView
-                        .photoMargin(8)
-                        .photoPadding(0)
-                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
-                        .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
-                        .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
-                        .useCards(true)// adds cardview backgrounds to all photos
-                        .loadPhotos(imageList);
-
-                holder.rightCollageView.setTransitionName("photoTransition");
-                holder.rightCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
-                    @Override
-                    public void onPhotoClick(int i) {
-
-                        Intent intent = new Intent(context,ImageFFActivity.class);
-                        intent.putExtra("photoURI",message.getImageList().get(i).toString());
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.rightCollageView,holder.rightCollageView.getTransitionName());
-                        context.startActivity(intent, optionsCompat.toBundle());
                     }
-                });
-                break;
-            }
 
-            case "LeftImages":{
-
-                holder.quickContainerHSV.setVisibility(View.GONE);
-                holder.rightTV.setVisibility(View.GONE);
-                holder.rightTV.setVisibility(View.GONE);
-                holder.rightIV.setVisibility(View.GONE);
-                holder.rightEL.setVisibility(View.GONE);
-                holder.leftEL.setVisibility(View.VISIBLE);
-                holder.leftCollageView.setVisibility(View.VISIBLE);
-                List<String> imageList = new ArrayList<>();
-                for(int i=0;i<message.getImageList().size();i++){
-                    imageList.add(message.getImageList().get(i).toString());
                 }
-                holder.leftTimeTV.setText(message.getTime());
-                holder.leftCollageView
-                        .photoMargin(8)
-                        .photoPadding(0)
-                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
-                        .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
-                        .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
-                        .useCards(true)// adds cardview backgrounds to all photos
-                        .loadPhotos(imageList);
-
-                holder.leftCollageView.setTransitionName("photoTransition");
-                holder.leftCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
-                    @Override
-                    public void onPhotoClick(int i) {
-
-                        Intent intent = new Intent(context,ImageFFActivity.class);
-                        intent.putExtra("photoURI",message.getImageList().get(i).toString());
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.leftCollageView,holder.leftCollageView.getTransitionName());
-                        context.startActivity(intent, optionsCompat.toBundle());
-                    }
-                });
-                break;
             }
-
-
-
-
         }
+    }
 
 
-    }
-    public void setLoaded() {
-        loading = false;
-    }
 
 
     @Override
@@ -409,14 +503,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         SimpleDateFormat mdformat = new SimpleDateFormat("dd MMM yyyy HH:mm");
         String time = mdformat.format(calendar.getTime());
         return time;
-    }
-
-    public void setOnLoadMoreListener(OnLoadMoreListener onLoadMoreListener) {
-        this.onLoadMoreListener = onLoadMoreListener;
-    }
-
-    public interface OnLoadMoreListener {
-        void onLoadMore();
     }
 
 

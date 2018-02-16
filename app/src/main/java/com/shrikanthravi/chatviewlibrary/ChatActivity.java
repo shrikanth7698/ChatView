@@ -115,6 +115,7 @@ public class ChatActivity extends AppCompatActivity {
 
         System.out.println("Testing "+dbHandler.numberOfRows());
         loadMore();
+        chatRV.smoothScrollToPosition(0);
 
         sendMRL.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,17 +224,10 @@ public class ChatActivity extends AppCompatActivity {
         });
 
 
-        messageAdapter.setOnLoadMoreListener(new MessageAdapter.OnLoadMoreListener() {
+        chatRV.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
-                loadMoreProgressBar.setVisibility(View.VISIBLE);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                    loadMore();
-                    }
-                },2000);
+                loadMore();
             }
         });
 
@@ -296,8 +290,10 @@ public class ChatActivity extends AppCompatActivity {
     }*/
 
     public void loadMore(){
-        System.out.println("testing2 ");
+
+        loadMoreProgressBar.setVisibility(View.VISIBLE);
         if(start<(dbHandler.numberOfRows()-20)) {
+            System.out.println("testing1 "+start);
             ArrayList<Message> pagedList = new ArrayList<>();
             pagedList.addAll(dbHandler.getAllMessages(start,20));
             int temp = messageList.size();
@@ -310,8 +306,9 @@ public class ChatActivity extends AppCompatActivity {
         }
         else{
             int temp = dbHandler.numberOfRows()-start;
+            System.out.println("testing2 "+temp);
             if(temp<=0){
-                Toast.makeText(ChatActivity.this,"No Data",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(ChatActivity.this,"No Data",Toast.LENGTH_SHORT).show();
             }
             else{
                 ArrayList<Message> pagedList = new ArrayList<>();
@@ -320,9 +317,11 @@ public class ChatActivity extends AppCompatActivity {
                 for(int i=0;i<pagedList.size();i++){
                     messageList.add(pagedList.get(i));
                 }
-                messageAdapter.notifyDataSetChanged();
+                start = dbHandler.numberOfRows();
+                messageAdapter.notifyItemRangeInserted(temp1-1,messageList.size());
             }
         }
+
         loadMoreProgressBar.setVisibility(View.GONE);
     }
 }
