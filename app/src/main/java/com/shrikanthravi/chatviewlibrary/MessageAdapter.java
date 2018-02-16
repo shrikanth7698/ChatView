@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -239,11 +240,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     View child1, space;
                     LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                     child1 = inflater.inflate(R.layout.quick_reply_layout, null);
+                    MaterialRippleLayout quickMRL = child1.findViewById(R.id.quickMRL);
                     TextView text1 = child1.findViewById(R.id.quickTV);
                     text1.setTypeface(regular);
                     text1.setText(message.getQuickList().get(i));
-                    child1.setTag(i);
-
+                    text1.setTag(i);
                     View.OnClickListener listener = new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -256,7 +257,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
                         }
                     };
-                    child1.setOnClickListener(listener);
+                    text1.setOnClickListener(listener);
 
                     holder.quickListLL.addView(child1);
 

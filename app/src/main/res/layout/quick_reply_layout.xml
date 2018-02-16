@@ -9,6 +9,7 @@
         android:layout_height="wrap_content"
         app:mrl_rippleColor="@android:color/tab_indicator_text"
         app:mrl_rippleOverlay="true"
+        android:id="@+id/quickMRL"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
         app:mrl_rippleRoundedCorners="15dp">
@@ -18,7 +19,6 @@
             android:textColor="@android:color/white"
             android:text="Hello"
             android:id="@+id/quickTV"
-            android:elevation="10dp"
             android:textSize="17sp"
             android:paddingLeft="15dp"
             android:paddingRight="15dp"

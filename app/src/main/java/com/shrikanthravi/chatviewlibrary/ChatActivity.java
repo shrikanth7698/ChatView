@@ -109,6 +109,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(messageET.getText().toString().trim().length()!=0){
+                    if(messageList.size()!=0) {
+                        if (messageList.get(messageList.size() - 1).getType().equals("quick")) {
+                            messageList.remove(messageList.size()-1);
+                            messageAdapter.notifyItemRemoved(messageList.size());
+                        }
+                    }
                     messageList.add(new Message("RIGHT",messageET.getText().toString().trim(),getTime()));
                     messageAdapter.notifyItemInserted(messageList.size());
                     chatRV.smoothScrollToPosition(messageList.size()-1);
@@ -119,6 +125,21 @@ public class ChatActivity extends AppCompatActivity {
                         public void run() {
                             messageList.add(new Message("LEFT",getRandomText(),getTime()));
                             messageAdapter.notifyItemInserted(messageList.size()-1);
+                            chatRV.smoothScrollToPosition(messageList.size()-1);
+                            List<String> quickList = new ArrayList<>();
+                            quickList.add("Hello1");
+                            quickList.add("Hello2");
+                            quickList.add("Hello3");
+                            quickList.add("Hello4");
+                            quickList.add("Hello5");
+                            quickList.add("Hello6");
+                            quickList.add("Hello7");
+                            quickList.add("Hello8");
+                            quickList.add("Hello9");
+
+
+                            messageList.add(new Message("quick","",quickList));
+                            messageAdapter.notifyItemInserted(messageList.size());
                             chatRV.smoothScrollToPosition(messageList.size()-1);
                         }
                     },1000);
@@ -218,7 +239,7 @@ public class ChatActivity extends AppCompatActivity {
             if(mSelected.size()==1){
 
                 messageList.add(new Message("RightImage","",getTime(),mSelected));
-                messageAdapter.notifyItemInserted(messageList.size()-1);
+                messageAdapter.notifyItemInserted(messageList.size());
                 chatRV.smoothScrollToPosition(messageList.size()-1);
             }
 
