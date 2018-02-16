@@ -133,7 +133,61 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(ChatActivity.this,ProfileActivity.class);
+                Pair<View, String> p1 = Pair.create((View)profilePicCV, profilePicCV.getTransitionName());
+                Pair<View, String> p2 = Pair.create((View)usernameTV, usernameTV.getTransitionName());
+                Pair<View, String> p3 = Pair.create((View)userStatusTV, userStatusTV.getTransitionName());
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(ChatActivity.this,p1,p2,p3);
+                startActivity(intent, optionsCompat.toBundle());
 
+                /*Animation floatingAnim = AnimationUtils.loadAnimation(ChatActivity.this,R.anim.floating_anim);
+                profilePicCV.setAnimation(floatingAnim);
+                profilePicCV.startAnimation(floatingAnim);
+
+                PopupMenu popup = new PopupMenu(ChatActivity.this,view, Gravity.END,0,R.style.MyPopupMenu);
+                try {
+                    Field[] fields = popup.getClass().getDeclaredFields();
+                    for (Field field : fields) {
+                        if ("mPopup".equals(field.getName())) {
+                            field.setAccessible(true);
+                            Object menuPopupHelper = field.get(popup);
+                            Class<?> classPopupHelper = Class.forName(menuPopupHelper.getClass().getName());
+                            Method setForceIcons = classPopupHelper.getMethod("setForceShowIcon", boolean.class);
+                            setForceIcons.invoke(menuPopupHelper, true);
+                            break;
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                popup.getMenuInflater().inflate(R.menu.profile_pic_popup, popup.getMenu());
+                Menu menu = popup.getMenu();
+                for(int i=0;i<menu.size();i++){
+                    applyFontToMenuItem(menu.getItem(i));
+                }
+
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if(item.getTitle().toString().equals("View Profile")){
+                            Intent intent = new Intent(ChatActivity.this,ProfileActivity.class);
+                            ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(ChatActivity.this, profilePicCV,profilePicCV.getTransitionName());
+                            startActivity(intent, optionsCompat.toBundle());
+                        }
+                        return true;
+                    }
+                });
+
+                popup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu menu) {
+                        profilePicCV.clearAnimation();
+                    }
+                });
+
+
+                popup.show();*/
             }
         });
 
@@ -193,7 +247,12 @@ public class ChatActivity extends AppCompatActivity {
         return randomStringBuilder.toString();
     }
 
+    /*private void applyFontToMenuItem(MenuItem mi) {
 
+        SpannableString mNewTitle = new SpannableString(mi.getTitle());
+        mNewTitle.setSpan(new CustomTypeFaceSpan("", regular, Color.BLACK), 0, mNewTitle.length(), Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        mi.setTitle(mNewTitle);
+    }*/
 
 }
 

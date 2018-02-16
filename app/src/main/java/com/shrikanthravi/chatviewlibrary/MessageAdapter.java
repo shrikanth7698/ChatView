@@ -208,7 +208,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     public void onClick(View view) {
                         holder.rightIV.setTransitionName("photoTransition");
 
-
+                        Intent intent = new Intent(context,ImageFFActivity.class);
+                        intent.putExtra("photoURI",message.getImageList().get(0).toString());
+                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder.rightIV,holder.rightIV.getTransitionName());
+                        context.startActivity(intent, optionsCompat.toBundle());
                     }
                 });
                 break;
