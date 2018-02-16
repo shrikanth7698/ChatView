@@ -311,11 +311,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         if(holder instanceof LeftTextViewHolder){
             ((LeftTextViewHolder) holder).leftTV.setText(message.getBody());
+            ((LeftTextViewHolder) holder).leftTV.setTypeface(regular);
             ((LeftTextViewHolder) holder).leftTimeTV.setText(message.getTime());
         }
         else{
             if(holder instanceof RightTextViewHolder){
                 ((RightTextViewHolder) holder).rightTV.setText(message.getBody());
+                ((RightTextViewHolder) holder).rightTV.setTypeface(regular);
                 ((RightTextViewHolder) holder).rightTimeTV.setText(message.getTime());
             }
             else{
@@ -354,6 +356,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
 
                     holder1.leftTimeTV.setText(message.getTime());
+                    holder1.leftTimeTV.setTypeface(regular);
                     holder1.leftIV.setTransitionName("photoTransition");
                     holder1.leftIV.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -410,6 +413,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             }
                         });
                         holder1.rightTimeTV.setText(message.getTime());
+                        holder1.rightTimeTV.setTypeface(regular);
                     }
                     else{
                         if(holder instanceof LeftImagesViewHolder){
@@ -419,6 +423,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 imageList.add(message.getImageList().get(i).toString());
                             }
                             holder1.leftTimeTV.setText(message.getTime());
+                            holder1.leftTimeTV.setTypeface(regular);
                             holder1.leftCollageView
                                     .photoMargin(8)
                                     .photoPadding(0)
@@ -448,6 +453,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 imageList.add(message.getImageList().get(i).toString());
                             }
                             holder1.rightTimeTV.setText(message.getTime());
+                            holder1.rightTimeTV.setTypeface(regular);
                             holder1.rightCollageView
                                     .photoMargin(8)
                                     .photoPadding(0)
