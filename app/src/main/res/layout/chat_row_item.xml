@@ -131,6 +131,12 @@
                             android:visibility="gone"
                             android:background="@drawable/right_iv_bg"
                             />
+                        <com.lopei.collageview.CollageView
+                            android:id="@+id/rightCollageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:padding="8dp" />
                     </android.support.v7.widget.CardView>
 
                 </RelativeLayout>

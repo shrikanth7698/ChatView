@@ -222,11 +222,16 @@ public class ChatActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data);
-            if(mSelected.size()==1){
 
-                messageList.add(new Message("RightImage","",getTime(),mSelected));
+            if(mSelected.size()==1) {
+                messageList.add(new Message("RightImage", "", getTime(), mSelected));
                 messageAdapter.notifyItemInserted(messageList.size());
-                chatRV.smoothScrollToPosition(messageList.size()-1);
+                chatRV.smoothScrollToPosition(messageList.size() - 1);
+            }
+            else{
+                messageList.add(new Message("RightImages", "", getTime(), mSelected));
+                messageAdapter.notifyItemInserted(messageList.size());
+                chatRV.smoothScrollToPosition(messageList.size() - 1);
             }
 
         }

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
+import com.lopei.collageview.CollageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
@@ -26,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,6 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         public ImageView leftIV,rightIV;
         public HorizontalScrollView quickContainerHSV;
         public LinearLayout quickListLL;
+        public CollageView rightCollageView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -66,6 +70,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             rightIVCV = view.findViewById(R.id.rightIVCV);
             quickContainerHSV = view.findViewById(R.id.quickContainerHSV);
             quickListLL = view.findViewById(R.id.quickListLL);
+            rightCollageView = view.findViewById(R.id.rightCollageView);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -122,6 +127,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 break;
             }
             case "RIGHT":{
+                holder.rightCollageView.setVisibility(View.GONE);
                 holder.quickContainerHSV.setVisibility(View.GONE);
                 holder.leftEL.setVisibility(View.GONE);
                 holder.rightIVCV.setVisibility(View.GONE);
@@ -173,6 +179,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 break;
             }
             case "RightImage":{
+                holder.rightCollageView.setVisibility(View.GONE);
                 holder.quickContainerHSV.setVisibility(View.GONE);
                 holder.leftEL.setVisibility(View.GONE);
                 holder.rightTV.setVisibility(View.GONE);
@@ -262,6 +269,30 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                     holder.quickListLL.addView(child1);
 
                 }
+                break;
+            }
+
+            case "RightImages":{
+
+                holder.quickContainerHSV.setVisibility(View.GONE);
+                holder.rightTV.setVisibility(View.GONE);
+                holder.leftEL.setVisibility(View.GONE);
+                holder.rightTV.setVisibility(View.GONE);
+                holder.rightIV.setVisibility(View.GONE);
+                holder.rightEL.setVisibility(View.VISIBLE);
+                holder.rightCollageView.setVisibility(View.VISIBLE);
+                List<String> imageList = new ArrayList<>();
+                for(int i=0;i<message.getImageList().size();i++){
+                    imageList.add(message.getImageList().get(i).toString());
+                }
+                holder.rightCollageView
+                        .photoMargin(8)
+                        .photoPadding(0)
+                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                        .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+                        .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
+                        .useCards(true)// adds cardview backgrounds to all photos
+                        .loadPhotos(imageList);
                 break;
             }
 
