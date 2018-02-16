@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:animateLayoutChanges="true"
                 android:orientation="vertical">
+
                 <HorizontalScrollView
                     android:layout_width="match_parent"
                     android:id="@+id/moreLL"

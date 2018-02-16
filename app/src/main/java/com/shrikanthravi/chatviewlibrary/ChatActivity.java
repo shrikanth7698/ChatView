@@ -126,21 +126,7 @@ public class ChatActivity extends AppCompatActivity {
                             messageList.add(new Message("LEFT",getRandomText(),getTime()));
                             messageAdapter.notifyItemInserted(messageList.size()-1);
                             chatRV.smoothScrollToPosition(messageList.size()-1);
-                            List<String> quickList = new ArrayList<>();
-                            quickList.add("Hello1");
-                            quickList.add("Hello2");
-                            quickList.add("Hello3");
-                            quickList.add("Hello4");
-                            quickList.add("Hello5");
-                            quickList.add("Hello6");
-                            quickList.add("Hello7");
-                            quickList.add("Hello8");
-                            quickList.add("Hello9");
 
-
-                            messageList.add(new Message("quick","",quickList));
-                            messageAdapter.notifyItemInserted(messageList.size());
-                            chatRV.smoothScrollToPosition(messageList.size()-1);
                         }
                     },1000);
                 }
