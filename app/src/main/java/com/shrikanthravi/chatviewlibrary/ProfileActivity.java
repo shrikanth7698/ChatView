@@ -19,7 +19,7 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        getWindow().setSharedElementEnterTransition(TransitionInflater.from(this).inflateTransition(R.transition.image_transition));
+
 
         //Changing the font throughout the activity
         regular = Typeface.createFromAsset(getAssets(), "fonts/product_san_regular.ttf");

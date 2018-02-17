@@ -427,7 +427,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             holder1.leftCollageView
                                     .photoMargin(8)
                                     .photoPadding(0)
-                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent2))
                                     .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
                                     .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
                                     .useCards(true)// adds cardview backgrounds to all photos

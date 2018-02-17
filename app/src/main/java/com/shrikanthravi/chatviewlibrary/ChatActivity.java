@@ -251,14 +251,35 @@ public class ChatActivity extends AppCompatActivity {
                 messageList.add(0,new Message("RightImage", "", getTime(), mSelected));
                 messageAdapter.notifyItemInserted(0);
                 chatRV.smoothScrollToPosition(0);
-
                 dbHandler.insertMessage(new Message("RightImage", "", getTime(), mSelected));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        messageList.add(0,new Message("LeftImage", "", getTime(), mSelected));
+                        messageAdapter.notifyItemInserted(0);
+                        chatRV.smoothScrollToPosition(0);
+                        dbHandler.insertMessage(new Message("LeftImage", "", getTime(), mSelected));
+                    }
+                },3000);
             }
             else{
                 messageList.add(0,new Message("RightImages", "", getTime(), mSelected));
                 messageAdapter.notifyItemInserted(0);
                 chatRV.smoothScrollToPosition(0);
                 dbHandler.insertMessage(new Message("RightImages", "", getTime(), mSelected));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        messageList.add(0,new Message("LeftImages", "", getTime(), mSelected));
+                        messageAdapter.notifyItemInserted(0);
+                        chatRV.smoothScrollToPosition(0);
+                        dbHandler.insertMessage(new Message("LeftImages", "", getTime(), mSelected));
+                    }
+                },3000);
             }
 
         }
