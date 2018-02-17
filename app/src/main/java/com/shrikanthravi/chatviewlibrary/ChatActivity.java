@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Handler;
@@ -61,7 +62,7 @@ public class ChatActivity extends AppCompatActivity {
     DBHandler dbHandler;
     ProgressBar loadMoreProgressBar;
     int start=0;
-    int end=25;
+    int end=20;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +92,7 @@ public class ChatActivity extends AppCompatActivity {
         loadMoreProgressBar = findViewById(R.id.loadMoreProgressBar);
         //Initialization end
         loadMoreProgressBar.setVisibility(View.GONE);
+        loadMoreProgressBar.getIndeterminateDrawable().setColorFilter(getResources().getColor(R.color.colorAccent), PorterDuff.Mode.MULTIPLY);
 
         expandIconView.setState(1,false);
         expandIconView.setOnClickListener(new View.OnClickListener() {
@@ -302,7 +304,7 @@ public class ChatActivity extends AppCompatActivity {
             for(int i=0;i<pagedList.size();i++){
                 messageList.add(pagedList.get(i));
             }
-            //messageAdapter.notifyItemRangeInserted(temp,pagedList.size());
+            //messageAdapter.notifyItemRangeInserted(temp-1,pagedList.size()-1);
             messageAdapter.notifyDataSetChanged();
             start = start + 20;
         }
@@ -320,7 +322,8 @@ public class ChatActivity extends AppCompatActivity {
                     messageList.add(pagedList.get(i));
                 }
                 start = dbHandler.numberOfRows();
-                messageAdapter.notifyItemRangeInserted(temp1-1,messageList.size());
+                //messageAdapter.notifyItemRangeInserted(temp1-1,messageList.size());
+                messageAdapter.notifyDataSetChanged();
             }
         }
 
