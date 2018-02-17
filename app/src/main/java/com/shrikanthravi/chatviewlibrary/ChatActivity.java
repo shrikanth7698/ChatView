@@ -231,7 +231,10 @@ public class ChatActivity extends AppCompatActivity {
         chatRV.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
             @Override
             public void onLoadMore() {
-                loadMore();
+                if(messageList.size()>=20){
+                    loadMore();
+                }
+
             }
         });
 
