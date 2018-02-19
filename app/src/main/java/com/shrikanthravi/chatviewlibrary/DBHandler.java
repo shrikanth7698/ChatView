@@ -16,10 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-/**
- * Created by Anto on 10-05-2017.
- */
-
 public class DBHandler extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "ChatUI";
