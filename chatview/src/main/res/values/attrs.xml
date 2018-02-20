@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ChatView">
-
+        <attr name="showSenderLayout" format="boolean"/>
+        <attr name="leftBubbleLayoutColor" format="color"/>
+        <attr name="rightBubbleLayoutColor" format="color"/>
+        <attr name="leftBubbleTextColor" format="color" />
+        <attr name="rightBubbleTextColor" format="color" />
+        <attr name="chatViewBackgroundColor" format="color" />
+        <attr name="timeTextColor" format="color" />
+        <attr name="chatViewBackground" format="integer" />
+        <attr name="leftBubbleIcon" format="integer" />
+        <attr name="rightBubbleIcon" format="integer" />
+        <attr name="showLeftBubbleIcon" format="boolean" />
+        <attr name="showRightBubbleIcon" format="boolean" />
     </declare-styleable>
 </resources>

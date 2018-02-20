@@ -558,5 +558,35 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return time;
     }
 
+    public void setLeftBubbleIcon(){
+
+    }
+
+    public void setRightBubbleIcon(){
+
+    }
+
+    public void showLeftBubbleIcon(){
+
+    }
+
+    public void showRightBubbleIcon(){
+
+    }
+
+    public void hideLeftBubbleIcon(){
+
+    }
+
+    public void hideRightBubbleIcon(){
+
+    }
+
+
+
+
+
+
+
 
 }

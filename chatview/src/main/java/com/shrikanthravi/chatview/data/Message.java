@@ -12,57 +12,25 @@ import java.util.List;
 
 public class Message {
 
-    long id;
-    String type;
-    String body;
-    String time;
-    String status;
-    List<Uri> imageList;
-    List<String>  quickList;
+    public static String LeftSimpleMessage = "LEFT";
+    public static String RightSimpleMessage = "RIGHT";
+    public static String LeftSingleImage = "LeftImage";
+    public static String RightSingleImage = "RightImage";
+    public static String LeftMultipleImages = "LeftImages";
+    public static String RightMultipleImages = "RightImages";
 
-    public Message(String type, String body, String time) {
-        this.type = type;
-        this.body = body;
-        this.time = time;
+    protected long id;
+    protected String type;
+    protected String body;
+    protected String time;
+    protected String status;
+    protected List<Uri> imageList;
+    protected String userName;
+    protected Uri userIcon;
+
+    public Message(){
     }
 
-    public Message(String type, String body, String time, String status) {
-        this.type = type;
-        this.body = body;
-        this.time = time;
-        this.status = status;
-    }
-
-    public Message(String type, String body, String time, List<Uri> imageList) {
-        this.type = type;
-        this.body = body;
-        this.time = time;
-        this.imageList = imageList;
-    }
-
-    public Message( String type, String body, List<String> quickList) {
-        this.type = type;
-        this.body = body;
-        this.quickList = quickList;
-    }
-
-    public Message(long id, String type, String body, String time, List<Uri> imageList) {
-        this.id = id;
-        this.type = type;
-        this.body = body;
-        this.time = time;
-        this.imageList = imageList;
-    }
-
-    public Message(long id, String type, String body, String time, String status, List<Uri> imageList, List<String> quickList) {
-        this.id = id;
-        this.type = type;
-        this.body = body;
-        this.time = time;
-        this.status = status;
-        this.imageList = imageList;
-        this.quickList = quickList;
-    }
 
     public long getId() {
         return id;
@@ -112,12 +80,20 @@ public class Message {
         this.imageList = imageList;
     }
 
-    public List<String> getQuickList() {
-        return quickList;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setQuickList(List<String> quickList) {
-        this.quickList = quickList;
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Uri getUserIcon() {
+        return userIcon;
+    }
+
+    public void setUserIcon(Uri userIcon) {
+        this.userIcon = userIcon;
     }
 }
 

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fitsSystemWindows="true"
+    tools:context="com.shrikanthravi.chatviewlibrary.ChatViewTestActivity">
+    <com.shrikanthravi.chatview.widget.ChatView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:showSenderLayout="false"
+        android:layout_above="@+id/sendLL"
+        android:id="@+id/chatView">
+
+    </com.shrikanthravi.chatview.widget.ChatView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sendLL"
+        android:background="@drawable/gradient1"
+        android:layout_alignParentBottom="true">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            app:cardElevation="10dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="24dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/expandMRL"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginRight="2dp"
+                        app:mrl_rippleRoundedCorners="30dp"
+                        app:mrl_rippleOverlay="true">
+                        <com.github.zagum.expandicon.ExpandIconView
+                            android:layout_width="40dp"
+                            android:id="@+id/expandIconView"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center"/>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                        <EditText
+                            android:id="@+id/messageET1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/et_bg"
+                            android:hint="Say something..."
+                            android:minHeight="45dp"
+                            android:paddingBottom="4dp"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="10dp"
+                            android:paddingTop="4dp"
+                            android:textColor="@android:color/black"
+                            android:textSize="18sp" />
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/sendMRL"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginTop="2dp"
+                        android:layout_marginBottom="2dp"
+
+                        android:layout_marginRight="4dp"
+                        app:mrl_rippleRoundedCorners="30dp"
+                        app:mrl_rippleOverlay="true">
+
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:id="@+id/sendIcon"
+                            android:src="@drawable/send_icon"
+                            android:tint="@color/colorAccent"
+                            android:layout_gravity="center"/>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</RelativeLayout>

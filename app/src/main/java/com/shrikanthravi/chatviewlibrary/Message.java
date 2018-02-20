@@ -1,13 +1,9 @@
 package com.shrikanthravi.chatviewlibrary;
 
+
 import android.net.Uri;
 
 import java.util.List;
-
-/**
- * Created by shrikanthravi on 16/02/18.
- */
-
 
 public class Message {
 
@@ -17,7 +13,7 @@ public class Message {
     String time;
     String status;
     List<Uri> imageList;
-    List<String>  quickList;
+    List<String> quickList;
 
     public Message(String type, String body, String time) {
         this.type = type;
