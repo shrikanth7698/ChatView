@@ -1,5 +1,7 @@
 package com.shrikanthravi.chatviewlibrary;
 
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +12,9 @@ import android.widget.ImageView;
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.shrikanthravi.chatview.widget.ChatView;
 import com.shrikanthravi.chatview.data.Message;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.PicassoEngine;
 
 import java.text.SimpleDateFormat;
 import java.util.Random;
@@ -85,4 +90,64 @@ public class ChatViewTestActivity extends AppCompatActivity {
         }
         return randomStringBuilder.toString();
     }
+
+    /*
+
+    galleryMRL.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Matisse.from(ChatActivity.this)
+                    .choose(MimeType.allOf())
+                    .countable(true)
+                    .maxSelectable(9)
+                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                    .thumbnailScale(0.85f)
+                    .imageEngine(new PicassoEngine())
+                    .forResult(imagePickerRequestCode);
+        }
+    });
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK) {
+            mSelected = Matisse.obtainResult(data);
+
+            if(mSelected.size()==1) {
+                messageList.add(0,new com.shrikanthravi.chatviewlibrary.Message("RightImage", "", getTime(), mSelected));
+                messageAdapter.notifyItemInserted(0);
+                chatRV.smoothScrollToPosition(0);
+                dbHandler.insertMessage(new com.shrikanthravi.chatviewlibrary.Message("RightImage", "", getTime(), mSelected));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        messageList.add(0,new com.shrikanthravi.chatviewlibrary.Message("LeftImage", "", getTime(), mSelected));
+                        messageAdapter.notifyItemInserted(0);
+                        chatRV.smoothScrollToPosition(0);
+                        dbHandler.insertMessage(new com.shrikanthravi.chatviewlibrary.Message("LeftImage", "", getTime(), mSelected));
+                    }
+                },3000);
+            }
+            else{
+                messageList.add(0,new com.shrikanthravi.chatviewlibrary.Message("RightImages", "", getTime(), mSelected));
+                messageAdapter.notifyItemInserted(0);
+                chatRV.smoothScrollToPosition(0);
+                dbHandler.insertMessage(new com.shrikanthravi.chatviewlibrary.Message("RightImages", "", getTime(), mSelected));
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        messageList.add(0,new com.shrikanthravi.chatviewlibrary.Message("LeftImages", "", getTime(), mSelected));
+                        messageAdapter.notifyItemInserted(0);
+                        chatRV.smoothScrollToPosition(0);
+                        dbHandler.insertMessage(new com.shrikanthravi.chatviewlibrary.Message("LeftImages", "", getTime(), mSelected));
+                    }
+                },3000);
+            }
+
+        }
+    }
+    */
 }
