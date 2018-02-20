@@ -68,7 +68,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             return 4;
                         }
                         else{
-                            return 5;
+                            if(messageList.get(position).getType().equals("RightImages")){
+                                return 5;
+                            }
+                            else{
+                                
+                                    return 6;
+
+                            }
+
                         }
                     }
                 }
@@ -110,9 +118,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             viewHolder = new LeftImagesViewHolder(view);
                         }
                         else{
-                            View view = LayoutInflater.from(parent.getContext())
-                                    .inflate(R.layout.right_images_layout, parent, false);
-                            viewHolder = new RightImagesViewHolder(view);
+                            if(viewType==5) {
+                                View view = LayoutInflater.from(parent.getContext())
+                                        .inflate(R.layout.right_images_layout, parent, false);
+                                viewHolder = new RightImagesViewHolder(view);
+                            }
+                            else{
+                                    View view = LayoutInflater.from(parent.getContext())
+                                            .inflate(R.layout.left_typing_layout, parent, false);
+                                    viewHolder = new LeftTypingViewHolder(view);
+
+                            }
                         }
                     }
                 }
@@ -121,7 +137,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
 
 
-        return viewHolder ;
+        return viewHolder;
     }
 
 
@@ -287,6 +303,26 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    public class LeftTypingViewHolder extends RecyclerView.ViewHolder {
+
+
+        public LeftTypingViewHolder(View view) {
+            super(view);
+
+
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+    }
+
+
     public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
 
         this.messageList = verticalList;
@@ -447,34 +483,43 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         }
                         else{
 
-                            final RightImagesViewHolder holder1 =(RightImagesViewHolder) holder;
-                            List<String> imageList = new ArrayList<>();
-                            for(int i=0;i<message.getImageList().size();i++){
-                                imageList.add(message.getImageList().get(i).toString());
-                            }
-                            holder1.rightTimeTV.setText(message.getTime());
-                            holder1.rightTimeTV.setTypeface(regular);
-                            holder1.rightCollageView
-                                    .photoMargin(8)
-                                    .photoPadding(0)
-                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
-                                    .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
-                                    .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
-                                    .useCards(true)// adds cardview backgrounds to all photos
-                                    .loadPhotos(imageList);
-
-                            holder1.rightCollageView.setTransitionName("photoTransition");
-                            holder1.rightCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
-                                @Override
-                                public void onPhotoClick(int i) {
-
-                                    Intent intent = new Intent(context,ImageFFActivity.class);
-                                    intent.putExtra("photoURI",message.getImageList().get(i).toString());
-                                    ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightCollageView,holder1.rightCollageView.getTransitionName());
-                                    context.startActivity(intent, optionsCompat.toBundle());
+                            if(holder instanceof RightImagesViewHolder) {
+                                final RightImagesViewHolder holder1 = (RightImagesViewHolder) holder;
+                                List<String> imageList = new ArrayList<>();
+                                for (int i = 0; i < message.getImageList().size(); i++) {
+                                    imageList.add(message.getImageList().get(i).toString());
                                 }
+                                holder1.rightTimeTV.setText(message.getTime());
+                                holder1.rightTimeTV.setTypeface(regular);
+                                holder1.rightCollageView
+                                        .photoMargin(8)
+                                        .photoPadding(0)
+                                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                                        .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
+                                        .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
+                                        .useCards(true)// adds cardview backgrounds to all photos
+                                        .loadPhotos(imageList);
 
-                            });
+                                holder1.rightCollageView.setTransitionName("photoTransition");
+                                holder1.rightCollageView.setOnPhotoClickListener(new CollageView.OnPhotoClickListener() {
+                                    @Override
+                                    public void onPhotoClick(int i) {
+
+                                        Intent intent = new Intent(context, ImageFFActivity.class);
+                                        intent.putExtra("photoURI", message.getImageList().get(i).toString());
+                                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightCollageView, holder1.rightCollageView.getTransitionName());
+                                        context.startActivity(intent, optionsCompat.toBundle());
+                                    }
+
+                                });
+                            }
+                            else{
+
+                             if(holder instanceof LeftTypingViewHolder){
+
+
+                             }
+                            }
 
                         }
 

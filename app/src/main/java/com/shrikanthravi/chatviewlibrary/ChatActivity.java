@@ -132,18 +132,32 @@ public class ChatActivity extends AppCompatActivity {
                     chatRV.smoothScrollToPosition(0);
                     dbHandler.insertMessage(new Message("RIGHT",messageET.getText().toString().trim(),getTime()));
                     messageET.setText("");
+                    final Handler handler1 = new Handler();
+                    handler1.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            messageList.add(0,new Message("LeftTyping",messageET.getText().toString().trim(),getTime()));
+                            messageAdapter.notifyItemInserted(0);
+                            chatRV.smoothScrollToPosition(0);
+                        }
+                    },500);
 
                     final Handler handler = new Handler();
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
+                            if(messageList.get(0).getType().equals("LeftTyping")){
+                                messageList.remove(0);
+                                messageAdapter.notifyItemRemoved(0);
+                            }
                             messageList.add(0,new Message("LEFT",getRandomText(),getTime()));
                             messageAdapter.notifyItemInserted(0);
                             chatRV.smoothScrollToPosition(0);
                             dbHandler.insertMessage(new Message("LEFT",getRandomText(),getTime()));
 
                         }
-                    },1000);
+                    },3000);
                 }
                 else{
                     messageET.setText("");
