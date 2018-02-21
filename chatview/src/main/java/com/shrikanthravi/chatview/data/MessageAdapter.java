@@ -7,7 +7,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -47,6 +49,18 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Context context;
     MessageFilter filter;
     ImageLoader imageLoader;
+
+
+    protected boolean showSenderLL=false;
+    protected boolean showLeftBubbleIcon=true;
+    protected boolean showRightBubbleIcon=true;
+
+    private int leftBubbleLayoutColor = R.color.colorAccent2;
+    private int rightBubbleLayoutColor = R.color.colorAccent1;
+    private int leftBubbleTextColor = android.R.color.black;
+    private int rightBubbleTextColor = android.R.color.white;
+    private int chatViewBackgroundColor = android.R.color.white;
+    private int timeTextColor = android.R.color.tab_indicator_text;
 
     @Override
     public int getItemViewType(int position) {
@@ -144,7 +158,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
 
-    public class LeftTextViewHolder extends RecyclerView.ViewHolder {
+    protected class LeftTextViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTV,leftTimeTV;
         public ExpandableLayout leftEL,rightEL;
@@ -157,6 +171,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             rightEL = view.findViewById(R.id.rightEL);
+            setBackgroundColor(leftBubbleLayoutColor);
+            setTextColor(leftBubbleTextColor);
+            setTimeTextColor(timeTextColor);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -168,8 +185,21 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+
+        public void setBackgroundColor(int color){
+            Drawable backgroundDrawable = DrawableCompat.wrap(leftTV.getBackground()).mutate();
+            DrawableCompat.setTint(backgroundDrawable,color);
+        }
+
+        public void setTextColor(int color){
+            leftTV.setTextColor(color);
+        }
+
+        public void setTimeTextColor(int color){
+            leftTimeTV.setTextColor(color);
+        }
     }
-    public class RightTextViewHolder extends RecyclerView.ViewHolder {
+    protected class RightTextViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTV,rightTimeTV;
         public ExpandableLayout leftEL;
@@ -181,6 +211,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightTV = view.findViewById(R.id.rightTV);
             rightTimeTV = view.findViewById(R.id.rightTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
+            setBackgroundColor(rightBubbleLayoutColor);
+            setTextColor(rightBubbleTextColor);
+            setTimeTextColor(timeTextColor);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -192,9 +225,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+
+        public void setBackgroundColor(int color){
+            Drawable backgroundDrawable = DrawableCompat.wrap(rightTV.getBackground()).mutate();
+            DrawableCompat.setTint(backgroundDrawable,color);
+        }
+
+        public void setTextColor(int color){
+            rightTV.setTextColor(color);
+        }
+
+        public void setTimeTextColor(int color){
+            rightTimeTV.setTextColor(color);
+        }
+
+
     }
 
-    public class LeftImageViewHolder extends RecyclerView.ViewHolder {
+    protected class LeftImageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTV,leftTimeTV;
         public ExpandableLayout leftEL;
@@ -210,6 +258,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftEL = view.findViewById(R.id.leftEL);
             leftIV = view.findViewById(R.id.leftIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
+            setBackgroundColor(leftBubbleLayoutColor);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -221,9 +270,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+        public void setBackgroundColor(int color){
+            Drawable backgroundDrawable = DrawableCompat.wrap(leftIV.getBackground()).mutate();
+            DrawableCompat.setTint(backgroundDrawable,color);
+        }
     }
 
-    public class RightImageViewHolder extends RecyclerView.ViewHolder {
+    protected class RightImageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTV,rightTimeTV;
         public ExpandableLayout rightEL;
@@ -239,6 +292,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightEL = view.findViewById(R.id.rightEL);
             rightIV = view.findViewById(R.id.rightIV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
+            setBackgroundColor(rightBubbleLayoutColor);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -250,9 +304,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+
+        public void setBackgroundColor(int color){
+            Drawable backgroundDrawable = DrawableCompat.wrap(rightIV.getBackground()).mutate();
+            DrawableCompat.setTint(backgroundDrawable,color);
+        }
     }
 
-    public class LeftImagesViewHolder extends RecyclerView.ViewHolder {
+    protected class LeftImagesViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTimeTV;
         public ExpandableLayout rightEL;
@@ -276,9 +335,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+
     }
 
-    public class RightImagesViewHolder extends RecyclerView.ViewHolder {
+    protected class RightImagesViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTimeTV;
         public ExpandableLayout rightEL;
@@ -305,7 +365,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    public class LeftTypingViewHolder extends RecyclerView.ViewHolder {
+    protected class LeftTypingViewHolder extends RecyclerView.ViewHolder {
 
 
         public LeftTypingViewHolder(View view) {
@@ -332,7 +392,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.filterList = verticalList;
         filter = new MessageFilter(verticalList,this);
         imageLoader = ImageLoader.getInstance();
-
 
     }
 
@@ -465,7 +524,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             holder1.leftCollageView
                                     .photoMargin(8)
                                     .photoPadding(0)
-                                    .backgroundColor(context.getResources().getColor(R.color.colorAccent2))
+                                    .backgroundColor(leftBubbleLayoutColor)
                                     .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
                                     .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
                                     .useCards(true)// adds cardview backgrounds to all photos
@@ -496,7 +555,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 holder1.rightCollageView
                                         .photoMargin(8)
                                         .photoPadding(0)
-                                        .backgroundColor(context.getResources().getColor(R.color.colorAccent1))
+                                        .backgroundColor(rightBubbleLayoutColor)
                                         .useFirstAsHeader(false) // makes first photo fit device widtdh and use full line
                                         .defaultPhotosForLine(2) // sets default photos number for line of photos (can be changed by program at runtime)
                                         .useCards(true)// adds cardview backgrounds to all photos
@@ -558,31 +617,36 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         return time;
     }
 
-    public void setLeftBubbleIcon(){
+
+    public void showLeftBubbleIcon(boolean b){
+        this.showLeftBubbleIcon=b;
+    }
+
+    public void showRightBubbleIcon(boolean b){
+        this.showRightBubbleIcon = b;
+    }
+
+    public void setLeftBubbleLayoutColor(int color){
+        this.leftBubbleLayoutColor = color;
+    }
+
+    public void setRightBubbleLayoutColor(int color){
+        this.rightBubbleLayoutColor = color;
+
 
     }
 
-    public void setRightBubbleIcon(){
-
+    public void setLeftBubbleTextColor(int color){
+        this.leftBubbleTextColor = color;
     }
 
-    public void showLeftBubbleIcon(){
-
+    public void setRightBubbleTextColor(int color){
+        this.rightBubbleTextColor = color;
     }
 
-    public void showRightBubbleIcon(){
-
+    public void setTimeTextColor(int color){
+        this.timeTextColor = color;
     }
-
-    public void hideLeftBubbleIcon(){
-
-    }
-
-    public void hideRightBubbleIcon(){
-
-    }
-
-
 
 
 

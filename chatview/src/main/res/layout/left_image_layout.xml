@@ -30,7 +30,7 @@
                     app:cardCornerRadius="12.5dp"
                     android:layout_gravity="top"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/colorAccent1"
+                    app:cardBackgroundColor="@color/colorAccent2"
                     app:cardElevation="2.5dp">
                     <ImageView
                         android:layout_width="25dp"

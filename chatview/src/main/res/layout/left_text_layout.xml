@@ -29,7 +29,7 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12.5dp"
                     android:layout_gravity="center"
-                    app:cardBackgroundColor="@color/colorAccent1"
+                    app:cardBackgroundColor="@color/colorAccent2"
                     android:layout_margin="5dp"
                     app:cardElevation="2.5dp">
                     <ImageView

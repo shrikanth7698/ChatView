@@ -103,7 +103,7 @@ public class ChatView extends RelativeLayout {
         setRightBubbleTextColor(attrs.getColor(R.styleable.ChatView_rightBubbleTextColor,mContext.getResources().getColor(rightBubbleTextColor)));
         setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,mContext.getResources().getColor(chatViewBackgroundColor)));
         setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
-        
+
     }
 
 
@@ -141,19 +141,19 @@ public class ChatView extends RelativeLayout {
     }
 
     public void setLeftBubbleLayoutColor(int color){
-
+        messageAdapter.setLeftBubbleLayoutColor(color);
     }
 
     public void setRightBubbleLayoutColor(int color){
-
+        messageAdapter.setRightBubbleLayoutColor(color);
     }
 
     public void setLeftBubbleTextColor(int color){
-
+        messageAdapter.setLeftBubbleTextColor(color);
     }
 
     public void setRightBubbleTextColor(int color){
-
+        messageAdapter.setRightBubbleTextColor(color);
     }
 
     public void setChatViewBackgroundColor(int color){
@@ -161,7 +161,7 @@ public class ChatView extends RelativeLayout {
     }
 
     public void setTimeTextColor(int color){
-
+        messageAdapter.setTimeTextColor(color);
     }
 
 
