@@ -58,6 +58,7 @@ public class ChatView extends RelativeLayout {
     private int chatViewBackgroundColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
     private int senderNameTextColor = android.R.color.tab_indicator_text;
+    private int ChatViewBackgroundColor = android.R.color.white;
     private Typeface typeface;
 
     public ChatView(Context context, AttributeSet attrs) {
@@ -107,15 +108,16 @@ public class ChatView extends RelativeLayout {
         showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
         showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
         showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
-        setLeftBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_leftBubbleLayoutColor,mContext.getResources().getColor(leftBubbleLayoutColor)));
-        setRightBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_rightBubbleLayoutColor,mContext.getResources().getColor(rightBubbleLayoutColor)));
-        setLeftBubbleTextColor(attrs.getColor(R.styleable.ChatView_leftBubbleTextColor,mContext.getResources().getColor(leftBubbleTextColor)));
-        setRightBubbleTextColor(attrs.getColor(R.styleable.ChatView_rightBubbleTextColor,mContext.getResources().getColor(rightBubbleTextColor)));
+        setLeftBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_leftBubbleLayoutColor,getResources().getColor(leftBubbleLayoutColor)));
+        setRightBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_rightBubbleLayoutColor,getResources().getColor(rightBubbleLayoutColor)));
+        setLeftBubbleTextColor(attrs.getColor(R.styleable.ChatView_leftBubbleTextColor,getResources().getColor(leftBubbleTextColor)));
+        setRightBubbleTextColor(attrs.getColor(R.styleable.ChatView_rightBubbleTextColor,getResources().getColor(rightBubbleTextColor)));
         setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,mContext.getResources().getColor(chatViewBackgroundColor)));
         setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
         setSenderNameTextColor(attrs.getColor(R.styleable.ChatView_senderNameTextColor,getResources().getColor(senderNameTextColor)));
         showSenderName(attrs.getBoolean(R.styleable.ChatView_showSenderName,showSenderName));
         setTextSize(attrs.getDimension(R.styleable.ChatView_textSize,20));
+        setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,getResources().getColor(chatViewBackgroundColor)));
 
 
     }
@@ -132,6 +134,12 @@ public class ChatView extends RelativeLayout {
     //Use this method to remove a message from chatview
     public void removeMessage(Message message){
         messageList.remove(message);
+        messageAdapter.notifyDataSetChanged();
+    }
+
+    //Use this method to clear all messages
+    public void clearMessages(){
+        messageList.clear();
         messageAdapter.notifyDataSetChanged();
     }
 
@@ -184,7 +192,7 @@ public class ChatView extends RelativeLayout {
 
     //For changing chatview background color
     public void setChatViewBackgroundColor(int color){
-
+        mLayoutRoot.setBackgroundColor(color);
     }
 
     //For changing time text color which is displayed (expands) when message is clicked
@@ -202,7 +210,7 @@ public class ChatView extends RelativeLayout {
     }
 
     public void setTextSize(float size){
-
+        messageAdapter.setTextSize(size);
     }
 
     private class WrapContentLinearLayoutManager extends LinearLayoutManager {
