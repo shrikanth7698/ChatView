@@ -181,6 +181,7 @@ Note: You can customize the chatview in both xml and java way.
 *  Supports multiple images in a single row.
 *  Easily customizable.
 
+Check the sample app https://github.com/shrikanth7698/ChatView/tree/master/app
 ## Contributions are welcome
 
 ### License
