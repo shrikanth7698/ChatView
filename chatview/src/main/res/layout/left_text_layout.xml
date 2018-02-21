@@ -29,12 +29,14 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12.5dp"
                     android:layout_gravity="center"
+                    app:cardBackgroundColor="@color/colorAccent1"
                     android:layout_margin="5dp"
                     app:cardElevation="2.5dp">
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/man2"/>
+                        android:tint="@android:color/white"
+                        android:src="@drawable/profile_icon"/>
                 </android.support.v7.widget.CardView>
                 <TextView
                     android:layout_width="wrap_content"

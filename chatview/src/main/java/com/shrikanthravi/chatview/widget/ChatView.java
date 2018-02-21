@@ -2,6 +2,7 @@ package com.shrikanthravi.chatview.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -40,6 +41,15 @@ public class ChatView extends RelativeLayout {
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
     protected boolean showSenderLL=false;
+    protected boolean showLeftBubbleIcon=true;
+    protected boolean showRightBubbleIcon=true;
+
+    private int leftBubbleLayoutColor = R.color.colorAccent2;
+    private int rightBubbleLayoutColor = R.color.colorAccent1;
+    private int leftBubbleTextColor = android.R.color.black;
+    private int rightBubbleTextColor = android.R.color.white;
+    private int chatViewBackgroundColor = android.R.color.white;
+    private int timeTextColor = android.R.color.tab_indicator_text;
 
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -84,14 +94,16 @@ public class ChatView extends RelativeLayout {
 
     protected void setAttributes(TypedArray attrs){
         //set Attributes from xml
-        showSenderLL = attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL);
-        if(showSenderLL){
-            sendLL.setVisibility(GONE);
-        }
-        else{
-            sendLL.setVisibility(GONE);
-        }
-
+        showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
+        showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
+        showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
+        setLeftBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_leftBubbleLayoutColor,mContext.getResources().getColor(leftBubbleLayoutColor)));
+        setRightBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_rightBubbleLayoutColor,mContext.getResources().getColor(rightBubbleLayoutColor)));
+        setLeftBubbleTextColor(attrs.getColor(R.styleable.ChatView_leftBubbleTextColor,mContext.getResources().getColor(leftBubbleTextColor)));
+        setRightBubbleTextColor(attrs.getColor(R.styleable.ChatView_rightBubbleTextColor,mContext.getResources().getColor(rightBubbleTextColor)));
+        setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,mContext.getResources().getColor(chatViewBackgroundColor)));
+        setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
+        
     }
 
 
@@ -111,6 +123,46 @@ public class ChatView extends RelativeLayout {
 
     }
 
+    public void showSenderLayout(boolean b){
+        if(showSenderLL){
+            sendLL.setVisibility(VISIBLE);
+        }
+        else{
+            sendLL.setVisibility(GONE);
+        }
+    }
+
+    public void showLeftBubbleIcon(boolean b){
+
+    }
+
+    public void showRightBubbleIcon(boolean b){
+
+    }
+
+    public void setLeftBubbleLayoutColor(int color){
+
+    }
+
+    public void setRightBubbleLayoutColor(int color){
+
+    }
+
+    public void setLeftBubbleTextColor(int color){
+
+    }
+
+    public void setRightBubbleTextColor(int color){
+
+    }
+
+    public void setChatViewBackgroundColor(int color){
+
+    }
+
+    public void setTimeTextColor(int color){
+
+    }
 
 
     private class WrapContentLinearLayoutManager extends LinearLayoutManager {

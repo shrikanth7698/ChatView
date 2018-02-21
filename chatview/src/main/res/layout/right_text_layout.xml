@@ -47,11 +47,13 @@
                     app:cardCornerRadius="12.5dp"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/colorAccent2"
                     app:cardElevation="2.5dp">
                     <ImageView
                         android:layout_width="25dp"
                         android:layout_height="25dp"
-                        android:src="@drawable/man1"/>
+                        android:tint="@android:color/white"
+                        android:src="@drawable/profile_icon"/>
                 </android.support.v7.widget.CardView>
             </LinearLayout>
 
