@@ -5,6 +5,7 @@ This is an Android library which can be used to add chat functionality to your a
 This library is still in beta but will be improved over time.
 <br>
 <br>
+![Library Explanation](https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png)
 ### Version
 v0.1.0
 <br>
@@ -24,6 +25,164 @@ dependencies {
 	compile 'com.github.shrikanth7698:ChatView:v0.1.0'
 }
 ```
+## Usage
+
+Drop the ChatView in your XML layout as is shown below:
+```
+    <com.shrikanthravi.chatview.widget.ChatView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:showSenderLayout="false" 
+        app:leftBubbleLayoutColor="#ff7b7b"
+        app:rightBubbleLayoutColor="@color/colorAccent2"
+        app:leftBubbleTextColor="@android:color/white"
+        app:rightBubbleTextColor="@android:color/black"
+        android:layout_above="@+id/sendLL"
+        app:showSenderName="true"
+        android:id="@+id/chatView">
+
+    </com.shrikanthravi.chatview.widget.ChatView>
+
+```
+don't forget to add this attribute to your root layout.
+```
+xmlns:app="http://schemas.android.com/apk/res-auto"
+```
+And then in your Activity or Fragment
+```
+ChatView chatView = (ChatView) findViewById(R.id.chatview);
+```
+Sample code
+```
+//sample code to add message to right
+Message message = new Message();
+                    message.setBody(messageET.getText().toString().trim()); //message body
+                    message.setType(Message.RightSimpleMessage); //message type
+                    message.setTime(getTime()); //message time (String)
+                    message.setUserName("Groot"); //sender name
+		    //sender icon
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot")); 
+                    chatView.addMessage(message);
+		    
+//sample code to add message to right
+Message message1 = new Message();
+                    message1.setBody(messageET.getText().toString().trim());
+                    message1.setType(Message.LeftSimpleMessage);
+                    message1.setTime(getTime());
+                    message1.setUserName("Hodor");
+                    message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+		    chatView.addMessage(message);
+
+//to clear messages
+chatview.clearMessages();
+
+//to remove message
+chatview.remove(position) //or  chatview.remove(message)
+
+		    
+```
+Message types
+```
+//Message.LeftSimpleMessage
+	message.setType(Message.LeftSimpleMessage);
+	message.setBody(body); //string
+	
+//Message.RightSimpleMessage
+	message.setType(Message.RightSimpleMessage);
+	message.setBody(body); //string
+	
+//Message.LeftSingleImage
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"))
+	message.setType(Message.LeftSingleImage);
+	message.setImageList(mSelected);
+	
+//Message.RightSingleImage
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	message.setType(Message.RightSingleImage);
+	message.setImageList(mSelected);	
+	
+//Message.LeftMultipleImages (can hold upto 10 images in a single row as a collage view)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));	
+	message.setType(Message.LeftMultipleImages);
+	message.setImageList(mSelected);	
+	
+//Message.RightMultipleImages (can hold upto 10 images in a single row as a collage view)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));	
+	message.setType(Message.RightMultipleImages);
+	message.setImageList(mSelected);		
+```
+### Customization
+![Library Explanation](https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png)
+
+Note: You can customize the chatview in both xml and java way.
+```
+//xml 
+
+<com.shrikanthravi.chatview.widget.ChatView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+	app:showLeftBubbleIcon="true or false" //  (4)
+	app:showRightBubbleIcon="true or false" //  (2)
+        app:showSenderLayout="false" // still in beta (set the value to false)
+        app:leftBubbleLayoutColor="#ff7b7b"  //   (5)
+        app:rightBubbleLayoutColor="@color/colorAccent2" //   (3)
+        app:leftBubbleTextColor="@android:color/white" // (5)
+        app:rightBubbleTextColor="@android:color/black" //  (3)
+        android:layout_above="@+id/sendLL"
+	app:textSize="text size"
+	app:chatViewBackground="your color"  //   (10)
+	app:timeTextColor="your color" 	//  (11)
+        app:showSenderName="true" //  (1)
+        android:id="@+id/chatView">
+	
+//java
+
+
+//Message.LeftSingleImage      (7)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"))
+	message.setType(Message.LeftSingleImage);
+	message.setImageList(mSelected);
+	
+//Message.RightSingleImage    (6)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	message.setType(Message.RightSingleImage);
+	message.setImageList(mSelected);	
+	
+//Message.LeftMultipleImages (can hold upto 10 images in a single row as a collage view)   (9)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));	
+	message.setType(Message.LeftMultipleImages);
+	message.setImageList(mSelected);	
+	
+//Message.RightMultipleImages (can hold upto 10 images in a single row as a collage view)   (8)
+	List<Uri> mSelected  = new ArrayList<>();
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));
+	mselected.add(Uri.parse("Your image"));	
+	message.setType(Message.RightMultipleImages);
+	message.setImageList(mSelected);		
+
+
+```
+### Features
+*  Supports Group mode (Like whatsapp group).
+*  Supports multiple images in a single row.
+*  Easily customizable.
+
+## Contributions are welcome
+
 ### License
 ```
 MIT License
