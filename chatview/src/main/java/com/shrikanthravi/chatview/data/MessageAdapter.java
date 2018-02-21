@@ -53,8 +53,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Typeface typeface;
 
     protected boolean showSenderLL=false;
-    protected boolean showLeftBubbleIcon=true;
-    protected boolean showRightBubbleIcon=true;
+    protected boolean showLeftBubbleIcon=false;
+    protected boolean showRightBubbleIcon=false;
     protected boolean showSenderName=false;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
@@ -164,7 +164,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
         public TextView leftTV,leftTimeTV,senderNameTV;
         public ExpandableLayout leftEL,rightEL;
-        public ImageView lefttMessageStatusIV;
+        public ImageView lefttMessageStatusIV,leftBubbleIconIV;
+        public CardView leftBubbleIconCV;
 
         public LeftTextViewHolder(View view) {
             super(view);
@@ -174,11 +175,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftEL = view.findViewById(R.id.leftEL);
             rightEL = view.findViewById(R.id.rightEL);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            leftBubbleIconIV = view.findViewById(R.id.leftBubbleIconIV);
+            leftBubbleIconCV = view.findViewById(R.id.leftBubbleIconCV);
             setBackgroundColor(leftBubbleLayoutColor);
             setTextColor(leftBubbleTextColor);
             setTimeTextColor(timeTextColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showLeftBubbleIcon(showLeftBubbleIcon);
 
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
@@ -218,12 +222,24 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 senderNameTV.setVisibility(View.GONE);
             }
         }
+
+        public void showLeftBubbleIcon(boolean b){
+            if(b){
+                leftBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
+
+
     }
     protected class RightTextViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTV,rightTimeTV,senderNameTV;
         public ExpandableLayout leftEL;
-        public ImageView rightMessageStatusIV;
+        public ImageView rightMessageStatusIV,rightBubbleIconIV;
+        public CardView rightBubbleIconCV;
 
         public RightTextViewHolder(View view) {
             super(view);
@@ -232,11 +248,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightTimeTV = view.findViewById(R.id.rightTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            rightBubbleIconCV = view.findViewById(R.id.rightBubbleIconCV);
+            rightBubbleIconIV = view.findViewById(R.id.rightBubbleIconIV);
             setBackgroundColor(rightBubbleLayoutColor);
             setTextColor(rightBubbleTextColor);
             setTimeTextColor(timeTextColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showRightBubbleIcon(showRightBubbleIcon);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
 
@@ -275,13 +294,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 senderNameTV.setVisibility(View.GONE);
             }
         }
+
+        public void showRightBubbleIcon(boolean b){
+            if(b){
+                rightBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                rightBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class LeftImageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTV,leftTimeTV,senderNameTV;
         public ExpandableLayout leftEL;
-        public ImageView leftMessageStatusIV;
+        public ImageView lefttMessageStatusIV,leftBubbleIconIV;
+        public CardView leftBubbleIconCV;
         public CardView leftIVCV;
         public ImageView leftIV;
 
@@ -294,9 +323,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftIV = view.findViewById(R.id.leftIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            leftBubbleIconIV = view.findViewById(R.id.leftBubbleIconIV);
+            leftBubbleIconCV = view.findViewById(R.id.leftBubbleIconCV);
+
             setBackgroundColor(leftBubbleLayoutColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showLeftBubbleIcon(showLeftBubbleIcon);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -309,13 +342,16 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 }
             });
         }
+
         public void setBackgroundColor(int color){
             Drawable backgroundDrawable = DrawableCompat.wrap(leftIV.getBackground()).mutate();
             DrawableCompat.setTint(backgroundDrawable,color);
         }
+
         public void setSenderNameTextColor(int color){
             senderNameTV.setTextColor(color);
         }
+
         public void showSenderName(boolean b){
             if(b){
                 senderNameTV.setVisibility(View.VISIBLE);
@@ -324,13 +360,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 senderNameTV.setVisibility(View.GONE);
             }
         }
+
+        public void showLeftBubbleIcon(boolean b){
+            if(b){
+                leftBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class RightImageViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTV,rightTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
-        public ImageView rightMessageStatusIV;
+        public ImageView rightMessageStatusIV,rightBubbleIconIV;
+        public CardView rightBubbleIconCV;
         public CardView rightIVCV;
         public ImageView rightIV;
 
@@ -343,11 +389,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightIV = view.findViewById(R.id.rightIV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            rightBubbleIconCV = view.findViewById(R.id.rightBubbleIconCV);
+            rightBubbleIconIV = view.findViewById(R.id.rightBubbleIconIV);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             setBackgroundColor(rightBubbleLayoutColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showRightBubbleIcon(showRightBubbleIcon);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -375,13 +424,22 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 senderNameTV.setVisibility(View.GONE);
             }
         }
+        public void showRightBubbleIcon(boolean b){
+            if(b){
+                rightBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                rightBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class LeftImagesViewHolder extends RecyclerView.ViewHolder {
 
         public TextView leftTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
-        public ImageView leftMessageStatusIV;
+        public ImageView lefttMessageStatusIV,leftBubbleIconIV;
+        public CardView leftBubbleIconCV;
         public CollageView leftCollageView;
 
         public LeftImagesViewHolder(View view) {
@@ -391,8 +449,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightEL = view.findViewById(R.id.rightEL);
             leftCollageView = view.findViewById(R.id.leftCollageView);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            leftBubbleIconIV = view.findViewById(R.id.leftBubbleIconIV);
+            leftBubbleIconCV = view.findViewById(R.id.leftBubbleIconCV);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showLeftBubbleIcon(showLeftBubbleIcon);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -416,13 +477,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 senderNameTV.setVisibility(View.GONE);
             }
         }
+
+        public void showLeftBubbleIcon(boolean b){
+            if(b){
+                leftBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class RightImagesViewHolder extends RecyclerView.ViewHolder {
 
         public TextView rightTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
-        public ImageView rightMessageStatusIV;
+        public ImageView rightMessageStatusIV,rightBubbleIconIV;
+        public CardView rightBubbleIconCV;
         public CollageView rightCollageView,leftCollageView;
 
         public RightImagesViewHolder(View view) {
@@ -433,8 +504,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightCollageView = view.findViewById(R.id.rightCollageView);
             leftCollageView = view.findViewById(R.id.leftCollageView);
             senderNameTV = view.findViewById(R.id.senderNameTV);
+            rightBubbleIconCV = view.findViewById(R.id.rightBubbleIconCV);
+            rightBubbleIconIV = view.findViewById(R.id.rightBubbleIconIV);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
+            showRightBubbleIcon(showRightBubbleIcon);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -458,6 +532,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
             else{
                 senderNameTV.setVisibility(View.GONE);
+            }
+        }
+        public void showRightBubbleIcon(boolean b){
+            if(b){
+                rightBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                rightBubbleIconCV.setVisibility(View.GONE);
             }
         }
     }

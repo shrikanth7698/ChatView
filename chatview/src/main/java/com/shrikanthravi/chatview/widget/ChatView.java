@@ -46,8 +46,8 @@ public class ChatView extends RelativeLayout {
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
     protected boolean showSenderLL=false;
-    protected boolean showLeftBubbleIcon=true;
-    protected boolean showRightBubbleIcon=true;
+    protected boolean showLeftBubbleIcon=false;
+    protected boolean showRightBubbleIcon=false;
     protected boolean showSenderName=false;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
@@ -116,6 +116,7 @@ public class ChatView extends RelativeLayout {
         showSenderName(attrs.getBoolean(R.styleable.ChatView_showSenderName,showSenderName));
         setMode(attrs.getInt(R.styleable.ChatView_mode,1));
 
+
     }
 
     //Use this method to add a message to chatview
@@ -135,6 +136,7 @@ public class ChatView extends RelativeLayout {
 
     //Use this to switch between personal mode or group mode
     public void setMode(int mode){
+        System.out.println("Mode testing "+mode);
         this.mode = mode;
         if(mode==1){
 
