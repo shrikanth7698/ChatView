@@ -16,7 +16,7 @@
         app:rightBubbleTextColor="@android:color/black"
         android:layout_above="@+id/sendLL"
         app:mode="group"
-        app:showSenderName="false"
+        app:showSenderName="true"
         android:id="@+id/chatView">
 
     </com.shrikanthravi.chatview.widget.ChatView>

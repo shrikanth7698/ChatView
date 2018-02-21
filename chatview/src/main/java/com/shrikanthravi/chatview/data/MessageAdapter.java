@@ -52,10 +52,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     ImageLoader imageLoader;
     Typeface typeface;
 
-    protected boolean showSenderLL=false;
-    protected boolean showLeftBubbleIcon=false;
-    protected boolean showRightBubbleIcon=false;
-    protected boolean showSenderName=false;
+
+    protected boolean showLeftBubbleIcon=true;
+    protected boolean showRightBubbleIcon=true;
+    protected boolean showSenderName=true;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
     private int rightBubbleLayoutColor = R.color.colorAccent1;
@@ -588,18 +588,33 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         final Message message = messageList.get(position);
 
         if(holder instanceof LeftTextViewHolder){
-            ((LeftTextViewHolder) holder).leftTV.setText(message.getBody());
-            ((LeftTextViewHolder) holder).leftTimeTV.setText(message.getTime());
+            final LeftTextViewHolder holder1 =(LeftTextViewHolder) holder;
+            holder1.leftTV.setText(message.getBody());
+            holder1.leftTimeTV.setText(message.getTime());
+
+            if(message.getUserIcon()!=null) {
+                Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
+            }
+            holder1.senderNameTV.setText(message.getUserName());
         }
         else{
             if(holder instanceof RightTextViewHolder){
-                ((RightTextViewHolder) holder).rightTV.setText(message.getBody());
-
-                ((RightTextViewHolder) holder).rightTimeTV.setText(message.getTime());
+                final RightTextViewHolder holder1 =(RightTextViewHolder) holder;
+                holder1.rightTV.setText(message.getBody());
+                holder1.rightTimeTV.setText(message.getTime());
+                if(message.getUserIcon()!=null) {
+                    Picasso.with(context).load(message.getUserIcon()).into(holder1.rightBubbleIconIV);
+                }
+                holder1.senderNameTV.setText(message.getUserName());
             }
             else{
                 if(holder instanceof LeftImageViewHolder){
                     final LeftImageViewHolder holder1 =(LeftImageViewHolder) holder;
+
+                    if(message.getUserIcon()!=null) {
+                        Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
+                    }
+                    holder1.senderNameTV.setText(message.getUserName());
                     if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
                         final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
                         if (image!= null && image.exists()) {
@@ -648,6 +663,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                 else{
                     if(holder instanceof RightImageViewHolder){
                         final RightImageViewHolder holder1 =(RightImageViewHolder) holder;
+
+                        if(message.getUserIcon()!=null) {
+                            Picasso.with(context).load(message.getUserIcon()).into(holder1.rightBubbleIconIV);
+                        }
+                        holder1.senderNameTV.setText(message.getUserName());
+
                         if (message.getImageList().get(0) != null && !message.getImageList().get(0).equals("")) {
                             final File image = DiskCacheUtils.findInCache(message.getImageList().get(0).toString(), imageLoader.getDiskCache());
                             if (image!= null && image.exists()) {
@@ -695,6 +716,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     else{
                         if(holder instanceof LeftImagesViewHolder){
                             final LeftImagesViewHolder holder1 =(LeftImagesViewHolder) holder;
+
+                            if(message.getUserIcon()!=null) {
+                                Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
+                            }
+                            holder1.senderNameTV.setText(message.getUserName());
+
                             List<String> imageList = new ArrayList<>();
                             for(int i=0;i<message.getImageList().size();i++){
                                 imageList.add(message.getImageList().get(i).toString());
@@ -726,6 +753,11 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                             if(holder instanceof RightImagesViewHolder) {
                                 final RightImagesViewHolder holder1 = (RightImagesViewHolder) holder;
+
+                                if(message.getUserIcon()!=null) {
+                                    Picasso.with(context).load(message.getUserIcon()).into(holder1.rightBubbleIconIV);
+                                }
+                                holder1.senderNameTV.setText(message.getUserName());
                                 List<String> imageList = new ArrayList<>();
                                 for (int i = 0; i < message.getImageList().size(); i++) {
                                     imageList.add(message.getImageList().get(i).toString());
@@ -756,7 +788,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             else{
 
                                 if(holder instanceof LeftTypingViewHolder){
-
 
                                 }
                             }

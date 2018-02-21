@@ -9,15 +9,9 @@
         <attr name="chatViewBackgroundColor" format="color" />
         <attr name="timeTextColor" format="color" />
         <attr name="chatViewBackground" format="integer" />
-        <attr name="leftBubbleIcon" format="integer" />
-        <attr name="rightBubbleIcon" format="integer" />
         <attr name="textSize" format="dimension" />
         <attr name="showLeftBubbleIcon" format="boolean" />
         <attr name="showRightBubbleIcon" format="boolean" />
-        <attr name="mode">
-            <enum name="personal" value="1"/>
-            <enum name="group" value="2"/>
-        </attr>
         <attr name="showSenderName" format="boolean" />
         <attr name="senderNameTextColor" format="color" />
     </declare-styleable>

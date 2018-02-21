@@ -2,6 +2,7 @@ package com.shrikanthravi.chatviewlibrary;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.net.Uri;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
     ChatView chatView;
     ImageView sendIcon;
     EditText messageET;
-
+    boolean switchbool=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,27 +43,32 @@ public class ChatViewTestActivity extends AppCompatActivity {
         sendIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Message message = new Message();
-                message.setBody(messageET.getText().toString());
-                message.setType(Message.RightSimpleMessage);
-                message.setTime(getTime());
+                if(switchbool) {
+                    Message message = new Message();
+                    message.setBody(messageET.getText().toString().trim());
+                    message.setType(Message.RightSimpleMessage);
+                    message.setTime(getTime());
+                    message.setUserName("Groot");
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                    chatView.addMessage(message);
+                    messageET.setText("");
+                    switchbool=false;
+                }
+                else{
+                    Message message1 = new Message();
+                    message1.setBody(messageET.getText().toString().trim());
+                    message1.setType(Message.LeftSimpleMessage);
+                    message1.setTime(getTime());
+                    message1.setUserName("Hodor");
+                    message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                    chatView.addMessage(message1);
+                    messageET.setText("");
+                    switchbool=true;
+                }
 
 
-                chatView.addMessage(message);
-                final Handler handler1 = new Handler();
-                messageET.setText("");
 
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Message message = new Message();
-                        message.setBody(getRandomText());
-                        message.setType(Message.LeftSimpleMessage);
-                        message.setTime(getTime());
-                        chatView.addMessage(message);
-                    }
-                },2000);
+
             }
         });
             //new Message("RIGHT",messageET.getText().toString().trim(),getTime())

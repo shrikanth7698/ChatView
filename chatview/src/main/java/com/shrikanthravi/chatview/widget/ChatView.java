@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
@@ -46,9 +47,9 @@ public class ChatView extends RelativeLayout {
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
     protected boolean showSenderLL=false;
-    protected boolean showLeftBubbleIcon=false;
-    protected boolean showRightBubbleIcon=false;
-    protected boolean showSenderName=false;
+    protected boolean showLeftBubbleIcon=true;
+    protected boolean showRightBubbleIcon=true;
+    protected boolean showSenderName=true;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
     private int rightBubbleLayoutColor = R.color.colorAccent1;
@@ -114,7 +115,7 @@ public class ChatView extends RelativeLayout {
         setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
         setSenderNameTextColor(attrs.getColor(R.styleable.ChatView_senderNameTextColor,getResources().getColor(senderNameTextColor)));
         showSenderName(attrs.getBoolean(R.styleable.ChatView_showSenderName,showSenderName));
-        setMode(attrs.getInt(R.styleable.ChatView_mode,1));
+        setTextSize(attrs.getDimension(R.styleable.ChatView_textSize,20));
 
 
     }
@@ -132,26 +133,6 @@ public class ChatView extends RelativeLayout {
     public void removeMessage(Message message){
         messageList.remove(message);
         messageAdapter.notifyDataSetChanged();
-    }
-
-    //Use this to switch between personal mode or group mode
-    public void setMode(int mode){
-        System.out.println("Mode testing "+mode);
-        this.mode = mode;
-        if(mode==1){
-
-            //Personal mode
-            showLeftBubbleIcon(true);
-            showRightBubbleIcon(false);
-
-        }
-        else {
-
-            //Group mode
-            showLeftBubbleIcon(true);
-            showRightBubbleIcon(true);
-
-        }
     }
 
 
@@ -220,8 +201,9 @@ public class ChatView extends RelativeLayout {
         messageAdapter.setSenderNameTextColor(color);
     }
 
-
-
+    public void setTextSize(float size){
+        
+    }
 
     private class WrapContentLinearLayoutManager extends LinearLayoutManager {
         public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
