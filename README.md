@@ -20,6 +20,9 @@ allprojects {
 ```
 Then add dependency
 ```
+dependencies {
+	compile 'com.github.shrikanth7698:ChatView:v0.1.0'
+}
 ```
 ### License
 ```
