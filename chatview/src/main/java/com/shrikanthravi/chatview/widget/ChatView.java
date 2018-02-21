@@ -202,7 +202,7 @@ public class ChatView extends RelativeLayout {
     }
 
     public void setTextSize(float size){
-        
+
     }
 
     private class WrapContentLinearLayoutManager extends LinearLayoutManager {

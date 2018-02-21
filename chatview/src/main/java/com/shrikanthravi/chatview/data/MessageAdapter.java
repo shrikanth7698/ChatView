@@ -53,6 +53,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Typeface typeface;
 
 
+
     protected boolean showLeftBubbleIcon=true;
     protected boolean showRightBubbleIcon=true;
     protected boolean showSenderName=true;
@@ -63,6 +64,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int rightBubbleTextColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
     private int senderNameTextColor = android.R.color.tab_indicator_text;
+    private float textSize = 20;
 
     @Override
     public int getItemViewType(int position) {
@@ -183,6 +185,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
             showLeftBubbleIcon(showLeftBubbleIcon);
+            setTextSize(textSize);
 
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
@@ -232,6 +235,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             }
         }
 
+        public void setTextSize(float size){
+            leftTV.setTextSize(size);
+        }
+
 
     }
     protected class RightTextViewHolder extends RecyclerView.ViewHolder {
@@ -256,6 +263,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
             showRightBubbleIcon(showRightBubbleIcon);
+            setTextSize(textSize);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
 
@@ -302,6 +310,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             else{
                 rightBubbleIconCV.setVisibility(View.GONE);
             }
+        }
+
+        public void setTextSize(float size){
+            rightTV.setTextSize(size);
         }
     }
 
@@ -870,7 +882,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.senderNameTextColor = color;
     }
 
-
+    public void setTextSize(float size){
+        this.textSize = size;
+    }
 
 
 
