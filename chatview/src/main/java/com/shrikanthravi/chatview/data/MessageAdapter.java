@@ -55,12 +55,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     protected boolean showSenderLL=false;
     protected boolean showLeftBubbleIcon=true;
     protected boolean showRightBubbleIcon=true;
+    protected boolean showSenderName=false;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
     private int rightBubbleLayoutColor = R.color.colorAccent1;
     private int leftBubbleTextColor = android.R.color.black;
     private int rightBubbleTextColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
+    private int senderNameTextColor = android.R.color.tab_indicator_text;
 
     @Override
     public int getItemViewType(int position) {
@@ -160,7 +162,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     protected class LeftTextViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView leftTV,leftTimeTV;
+        public TextView leftTV,leftTimeTV,senderNameTV;
         public ExpandableLayout leftEL,rightEL;
         public ImageView lefttMessageStatusIV;
 
@@ -171,9 +173,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             rightEL = view.findViewById(R.id.rightEL);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
             setBackgroundColor(leftBubbleLayoutColor);
             setTextColor(leftBubbleTextColor);
             setTimeTextColor(timeTextColor);
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
 
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
@@ -200,10 +205,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public void setTimeTextColor(int color){
             leftTimeTV.setTextColor(color);
         }
+
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
     }
     protected class RightTextViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView rightTV,rightTimeTV;
+        public TextView rightTV,rightTimeTV,senderNameTV;
         public ExpandableLayout leftEL;
         public ImageView rightMessageStatusIV;
 
@@ -213,12 +231,15 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightTV = view.findViewById(R.id.rightTV);
             rightTimeTV = view.findViewById(R.id.rightTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
             setBackgroundColor(rightBubbleLayoutColor);
             setTextColor(rightBubbleTextColor);
             setTimeTextColor(timeTextColor);
-
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
+
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -243,12 +264,22 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightTimeTV.setTextColor(color);
         }
 
-
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class LeftImageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView leftTV,leftTimeTV;
+        public TextView leftTV,leftTimeTV,senderNameTV;
         public ExpandableLayout leftEL;
         public ImageView leftMessageStatusIV;
         public CardView leftIVCV;
@@ -262,7 +293,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftEL = view.findViewById(R.id.leftEL);
             leftIV = view.findViewById(R.id.leftIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
             setBackgroundColor(leftBubbleLayoutColor);
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -279,11 +313,22 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Drawable backgroundDrawable = DrawableCompat.wrap(leftIV.getBackground()).mutate();
             DrawableCompat.setTint(backgroundDrawable,color);
         }
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class RightImageViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView rightTV,rightTimeTV;
+        public TextView rightTV,rightTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
         public ImageView rightMessageStatusIV;
         public CardView rightIVCV;
@@ -297,10 +342,12 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightEL = view.findViewById(R.id.rightEL);
             rightIV = view.findViewById(R.id.rightIV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             setBackgroundColor(rightBubbleLayoutColor);
-
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -316,11 +363,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             Drawable backgroundDrawable = DrawableCompat.wrap(rightIV.getBackground()).mutate();
             DrawableCompat.setTint(backgroundDrawable,color);
         }
+
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class LeftImagesViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView leftTimeTV;
+        public TextView leftTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
         public ImageView leftMessageStatusIV;
         public CollageView leftCollageView;
@@ -331,7 +390,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
             rightEL = view.findViewById(R.id.rightEL);
             leftCollageView = view.findViewById(R.id.leftCollageView);
-
+            senderNameTV = view.findViewById(R.id.senderNameTV);
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -343,11 +404,23 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             });
         }
 
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
     }
 
     protected class RightImagesViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView rightTimeTV;
+        public TextView rightTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
         public ImageView rightMessageStatusIV;
         public CollageView rightCollageView,leftCollageView;
@@ -359,7 +432,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightEL = view.findViewById(R.id.rightEL);
             rightCollageView = view.findViewById(R.id.rightCollageView);
             leftCollageView = view.findViewById(R.id.leftCollageView);
-
+            senderNameTV = view.findViewById(R.id.senderNameTV);
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
             FontChanger fontChanger = new FontChanger(typeface);
             fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -371,6 +446,19 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return true;
                 }
             });
+        }
+
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -659,6 +747,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void setTypeface(Typeface typeface){
         this.typeface = typeface;
+    }
+
+    public void showSenderName(boolean b){
+        this.showSenderName = b;
+    }
+
+    public void setSenderNameTextColor(int color){
+        this.senderNameTextColor = color;
     }
 
 

@@ -18,5 +18,7 @@
             <enum name="personal" value="1"/>
             <enum name="group" value="2"/>
         </attr>
+        <attr name="showSenderName" format="boolean" />
+        <attr name="senderNameTextColor" format="color" />
     </declare-styleable>
 </resources>

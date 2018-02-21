@@ -12,10 +12,13 @@ import java.util.List;
 
 public class Message {
 
+
     public static String LeftSimpleMessage = "LEFT";
     public static String RightSimpleMessage = "RIGHT";
     public static String LeftSingleImage = "LeftImage";
     public static String RightSingleImage = "RightImage";
+
+    //Can hold upto 11 images.
     public static String LeftMultipleImages = "LeftImages";
     public static String RightMultipleImages = "RightImages";
 
@@ -29,8 +32,8 @@ public class Message {
     protected Uri userIcon;
 
     public Message(){
-    }
 
+    }
 
     public long getId() {
         return id;

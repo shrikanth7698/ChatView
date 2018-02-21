@@ -48,6 +48,7 @@ public class ChatView extends RelativeLayout {
     protected boolean showSenderLL=false;
     protected boolean showLeftBubbleIcon=true;
     protected boolean showRightBubbleIcon=true;
+    protected boolean showSenderName=false;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
     private int rightBubbleLayoutColor = R.color.colorAccent1;
@@ -55,6 +56,7 @@ public class ChatView extends RelativeLayout {
     private int rightBubbleTextColor = android.R.color.white;
     private int chatViewBackgroundColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
+    private int senderNameTextColor = android.R.color.tab_indicator_text;
     private Typeface typeface;
 
     public ChatView(Context context, AttributeSet attrs) {
@@ -99,8 +101,8 @@ public class ChatView extends RelativeLayout {
     }
 
     protected void setAttributes(TypedArray attrs){
+
         //set Attributes from xml
-        setMode(attrs.getInt(R.styleable.ChatView_mode,1));
         showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
         showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
         showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
@@ -110,11 +112,14 @@ public class ChatView extends RelativeLayout {
         setRightBubbleTextColor(attrs.getColor(R.styleable.ChatView_rightBubbleTextColor,mContext.getResources().getColor(rightBubbleTextColor)));
         setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,mContext.getResources().getColor(chatViewBackgroundColor)));
         setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
+        setSenderNameTextColor(attrs.getColor(R.styleable.ChatView_senderNameTextColor,getResources().getColor(senderNameTextColor)));
+        showSenderName(attrs.getBoolean(R.styleable.ChatView_showSenderName,showSenderName));
+        setMode(attrs.getInt(R.styleable.ChatView_mode,1));
 
     }
 
+    //Use this method to add a message to chatview
     public void addMessage(Message message){
-
 
         messageList.add(0,message);
         messageAdapter.notifyItemInserted(0);
@@ -122,27 +127,33 @@ public class ChatView extends RelativeLayout {
         mLayoutRoot.invalidate();
     }
 
+    //Use this method to remove a message from chatview
     public void removeMessage(Message message){
         messageList.remove(message);
         messageAdapter.notifyDataSetChanged();
-
     }
 
+    //Use this to switch between personal mode or group mode
     public void setMode(int mode){
         this.mode = mode;
         if(mode==1){
 
+            //Personal mode
             showLeftBubbleIcon(true);
             showRightBubbleIcon(false);
+
         }
         else {
 
+            //Group mode
             showLeftBubbleIcon(true);
             showRightBubbleIcon(true);
+
         }
     }
 
 
+    //For hiding or showing sender layout which contains an edittext ,send button and many others features
     public void showSenderLayout(boolean b){
         if(showSenderLL){
             sendLL.setVisibility(VISIBLE);
@@ -152,41 +163,62 @@ public class ChatView extends RelativeLayout {
         }
     }
 
+    //For groups (showing or hiding sender name which appears on top of the message)
+    public void showSenderName(boolean b){
+        messageAdapter.showSenderName(b);
+    }
+
+    //For showing or hiding sender icon in left
     public void showLeftBubbleIcon(boolean b){
         messageAdapter.showLeftBubbleIcon(b);
     }
 
+    //For showing or hiding receiver icon in right
     public void showRightBubbleIcon(boolean b){
         messageAdapter.showRightBubbleIcon(b);
     }
 
+
+    //For changing left bubble layout color
     public void setLeftBubbleLayoutColor(int color){
         messageAdapter.setLeftBubbleLayoutColor(color);
     }
 
+    //for changing right bubble layout color
     public void setRightBubbleLayoutColor(int color){
         messageAdapter.setRightBubbleLayoutColor(color);
     }
 
+    //For changing left bubble text color
     public void setLeftBubbleTextColor(int color){
         messageAdapter.setLeftBubbleTextColor(color);
     }
 
+    //For changing right bubble text color
     public void setRightBubbleTextColor(int color){
         messageAdapter.setRightBubbleTextColor(color);
     }
 
+    //For changing chatview background color
     public void setChatViewBackgroundColor(int color){
-        
+
     }
 
+    //For changing time text color which is displayed (expands) when message is clicked
     public void setTimeTextColor(int color){
         messageAdapter.setTimeTextColor(color);
     }
 
+    //For changing typeface of text inside
     public void setTypeface(Typeface typeface){
         messageAdapter.setTypeface(typeface);
     }
+
+    public void setSenderNameTextColor(int color){
+        messageAdapter.setSenderNameTextColor(color);
+    }
+
+
 
 
     private class WrapContentLinearLayoutManager extends LinearLayoutManager {
