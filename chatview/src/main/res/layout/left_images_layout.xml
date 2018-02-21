@@ -28,11 +28,13 @@
                     android:layout_height="wrap_content"
                     app:cardCornerRadius="12.5dp"
                     android:layout_gravity="center"
+                    android:id="@+id/leftBubbleIconCV"
                     android:layout_margin="5dp"
                     app:cardBackgroundColor="@color/colorAccent2"
                     app:cardElevation="2.5dp">
                     <ImageView
                         android:layout_width="25dp"
+                        android:id="@+id/leftBubbleIconIV"
                         android:layout_height="25dp"
                         android:tint="@android:color/white"
                         android:src="@drawable/profile_icon"/>

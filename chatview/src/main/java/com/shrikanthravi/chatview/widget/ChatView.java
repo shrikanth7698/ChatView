@@ -3,6 +3,7 @@ package com.shrikanthravi.chatview.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -50,6 +51,7 @@ public class ChatView extends RelativeLayout {
     private int rightBubbleTextColor = android.R.color.white;
     private int chatViewBackgroundColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
+    private Typeface typeface;
 
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -106,8 +108,6 @@ public class ChatView extends RelativeLayout {
 
     }
 
-
-
     public void addMessage(Message message){
 
 
@@ -123,6 +123,8 @@ public class ChatView extends RelativeLayout {
 
     }
 
+
+
     public void showSenderLayout(boolean b){
         if(showSenderLL){
             sendLL.setVisibility(VISIBLE);
@@ -131,13 +133,13 @@ public class ChatView extends RelativeLayout {
             sendLL.setVisibility(GONE);
         }
     }
-
+    
     public void showLeftBubbleIcon(boolean b){
-
+        messageAdapter.showLeftBubbleIcon(b);
     }
 
     public void showRightBubbleIcon(boolean b){
-
+        messageAdapter.showRightBubbleIcon(b);
     }
 
     public void setLeftBubbleLayoutColor(int color){
@@ -162,6 +164,10 @@ public class ChatView extends RelativeLayout {
 
     public void setTimeTextColor(int color){
         messageAdapter.setTimeTextColor(color);
+    }
+
+    public void setTypeface(Typeface typeface){
+        messageAdapter.setTypeface(typeface);
     }
 
 

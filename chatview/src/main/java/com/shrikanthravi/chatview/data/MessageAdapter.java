@@ -29,6 +29,7 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.nostra13.universalimageloader.utils.L;
 import com.shrikanthravi.chatview.R;
+import com.shrikanthravi.chatview.utils.FontChanger;
 import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
@@ -49,7 +50,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     Context context;
     MessageFilter filter;
     ImageLoader imageLoader;
-
+    Typeface typeface;
 
     protected boolean showSenderLL=false;
     protected boolean showLeftBubbleIcon=true;
@@ -59,7 +60,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int rightBubbleLayoutColor = R.color.colorAccent1;
     private int leftBubbleTextColor = android.R.color.black;
     private int rightBubbleTextColor = android.R.color.white;
-    private int chatViewBackgroundColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
 
     @Override
@@ -175,6 +175,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setTextColor(leftBubbleTextColor);
             setTimeTextColor(timeTextColor);
 
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -215,6 +217,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             setTextColor(rightBubbleTextColor);
             setTimeTextColor(timeTextColor);
 
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -259,7 +263,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftIV = view.findViewById(R.id.leftIV);
             leftIVCV = view.findViewById(R.id.leftIVCV);
             setBackgroundColor(leftBubbleLayoutColor);
-
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -292,6 +297,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightEL = view.findViewById(R.id.rightEL);
             rightIV = view.findViewById(R.id.rightIV);
             rightIVCV = view.findViewById(R.id.rightIVCV);
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             setBackgroundColor(rightBubbleLayoutColor);
 
             view.setOnLongClickListener(new View.OnLongClickListener() {
@@ -353,6 +360,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             rightCollageView = view.findViewById(R.id.rightCollageView);
             leftCollageView = view.findViewById(R.id.leftCollageView);
 
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -372,6 +381,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(view);
 
 
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
             view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -392,6 +403,8 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.filterList = verticalList;
         filter = new MessageFilter(verticalList,this);
         imageLoader = ImageLoader.getInstance();
+        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
+
 
     }
 
@@ -401,20 +414,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
 
-        Typeface regular = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
-        Typeface bold = Typeface.createFromAsset(context.getAssets(), "fonts/product_sans_bold.ttf");
 
         final Message message = messageList.get(position);
 
         if(holder instanceof LeftTextViewHolder){
             ((LeftTextViewHolder) holder).leftTV.setText(message.getBody());
-            ((LeftTextViewHolder) holder).leftTV.setTypeface(regular);
             ((LeftTextViewHolder) holder).leftTimeTV.setText(message.getTime());
         }
         else{
             if(holder instanceof RightTextViewHolder){
                 ((RightTextViewHolder) holder).rightTV.setText(message.getBody());
-                ((RightTextViewHolder) holder).rightTV.setTypeface(regular);
+
                 ((RightTextViewHolder) holder).rightTimeTV.setText(message.getTime());
             }
             else{
@@ -453,7 +463,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     }
 
                     holder1.leftTimeTV.setText(message.getTime());
-                    holder1.leftTimeTV.setTypeface(regular);
+
                     holder1.leftIV.setTransitionName("photoTransition");
                     holder1.leftIV.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -510,7 +520,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             }
                         });
                         holder1.rightTimeTV.setText(message.getTime());
-                        holder1.rightTimeTV.setTypeface(regular);
+
                     }
                     else{
                         if(holder instanceof LeftImagesViewHolder){
@@ -520,7 +530,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 imageList.add(message.getImageList().get(i).toString());
                             }
                             holder1.leftTimeTV.setText(message.getTime());
-                            holder1.leftTimeTV.setTypeface(regular);
+
                             holder1.leftCollageView
                                     .photoMargin(8)
                                     .photoPadding(0)
@@ -551,7 +561,6 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     imageList.add(message.getImageList().get(i).toString());
                                 }
                                 holder1.rightTimeTV.setText(message.getTime());
-                                holder1.rightTimeTV.setTypeface(regular);
                                 holder1.rightCollageView
                                         .photoMargin(8)
                                         .photoPadding(0)
@@ -646,6 +655,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     public void setTimeTextColor(int color){
         this.timeTextColor = color;
+    }
+
+    public void setTypeface(Typeface typeface){
+        this.typeface = typeface;
     }
 
 
