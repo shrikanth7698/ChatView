@@ -14,5 +14,9 @@
         <attr name="textSize" format="dimension" />
         <attr name="showLeftBubbleIcon" format="boolean" />
         <attr name="showRightBubbleIcon" format="boolean" />
+        <attr name="mode">
+            <enum name="personal" value="1"/>
+            <enum name="group" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>

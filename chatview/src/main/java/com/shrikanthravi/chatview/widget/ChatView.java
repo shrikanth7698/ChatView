@@ -31,9 +31,13 @@ import jp.wasabeef.recyclerview.animators.ScaleInBottomAnimator;
 
 public class ChatView extends RelativeLayout {
 
+    public static int Personal = 1;
+    public static int Group = 2;
+
     protected Context mContext;
     protected LayoutInflater mLayoutInflater;
 
+    protected int mode=1;
     protected RelativeLayout mLayoutRoot;
     protected RecyclerView chatRV;
     protected LinearLayout sendLL;
@@ -96,6 +100,7 @@ public class ChatView extends RelativeLayout {
 
     protected void setAttributes(TypedArray attrs){
         //set Attributes from xml
+        setMode(attrs.getInt(R.styleable.ChatView_mode,1));
         showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
         showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
         showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
@@ -123,6 +128,19 @@ public class ChatView extends RelativeLayout {
 
     }
 
+    public void setMode(int mode){
+        this.mode = mode;
+        if(mode==1){
+
+            showLeftBubbleIcon(true);
+            showRightBubbleIcon(false);
+        }
+        else {
+
+            showLeftBubbleIcon(true);
+            showRightBubbleIcon(true);
+        }
+    }
 
 
     public void showSenderLayout(boolean b){
@@ -133,7 +151,7 @@ public class ChatView extends RelativeLayout {
             sendLL.setVisibility(GONE);
         }
     }
-    
+
     public void showLeftBubbleIcon(boolean b){
         messageAdapter.showLeftBubbleIcon(b);
     }
@@ -159,7 +177,7 @@ public class ChatView extends RelativeLayout {
     }
 
     public void setChatViewBackgroundColor(int color){
-
+        
     }
 
     public void setTimeTextColor(int color){
