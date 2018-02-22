@@ -1,17 +1,22 @@
 # ChatView for Android
 
-<br/>
-<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview_library_icon_1.png" width="100"/>
+
+<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview_library_icon_1.png" width="100" >
 <br/>
 This is an Android library which can be used to add chat functionality to your android application with just a few lines of code.
 <br/>
 This library is still in beta but will be improved over time.
-<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="350"/>
-### Video Support
-<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview%20library%20video.gif" width="300"/>
+<br/>
+
+<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="350" >
+
 ### Version
 v0.1.0
 <br/>
+### Video Support
+<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview%20library%20video.gif" width="300" >
+<br/>
+
 ### Installation
 Add this to your root build.gradle at the end of repositories:
 ```
@@ -135,7 +140,7 @@ Note: You can customize the chatview in both xml and java way.
 	app:showLeftBubbleIcon="true or false" //  (4)
 	app:showRightBubbleIcon="true or false" //  (2)
         app:showSenderLayout="false" // still in beta (set the value to false)
-        app:leftBubbleLayoutColor="#ff7b7b"  //   (5)
+        app:leftBubbleLayoutColor="#ff7b7b"  //   (5)
         app:rightBubbleLayoutColor="@color/colorAccent2" //   (3)
         app:leftBubbleTextColor="@android:color/white" // (5)
         app:rightBubbleTextColor="@android:color/black" //  (3)
