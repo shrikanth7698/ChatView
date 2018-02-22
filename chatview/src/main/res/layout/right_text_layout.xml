@@ -61,7 +61,7 @@
                     android:layout_gravity="center"
                     android:id="@+id/rightBubbleIconCV"
                     android:layout_margin="5dp"
-                    app:cardBackgroundColor="@color/colorAccent3"
+                    app:cardBackgroundColor="@color/colorAccent2"
                     app:cardElevation="2.5dp">
                     <ImageView
                         android:layout_width="25dp"
