@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:animateLayoutChanges="true"
     android:layout_height="match_parent"
     android:transitionName="videoFF"
     android:background="@android:color/black"
@@ -10,6 +11,38 @@
     <TextureView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         android:id="@+id/textureView"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/video_controller_bg_gradient"
+        android:id="@+id/seekbarLL"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <com.marcinmoskala.arcseekbar.ArcSeekBar
+            android:id="@+id/seekArc"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            app:progressColor="@color/colorAccent1"
+            app:progressBackgroundColor="@color/transparent_white_hex_1"
+            app:progressBackgroundWidth="2.5dp"
+            app:progress="20"
+            app:progressWidth="5dp"
+
+            app:roundEdges="true" />
+        <com.ohoussein.playpause.PlayPauseView
+            android:id="@+id/play_pause_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="-50dp"
+
+            android:clickable="true"
+            android:foreground="?android:selectableItemBackground"
+            app:fill_color="@color/colorAccent1"
+            app:pause_bg="@color/transparent_white_hex_4"
+            app:play_bg="@color/transparent_white_hex_4" />
+    </LinearLayout>
 </RelativeLayout>

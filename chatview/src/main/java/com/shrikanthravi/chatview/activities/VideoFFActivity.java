@@ -4,14 +4,20 @@ import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
+import com.marcinmoskala.arcseekbar.ArcSeekBar;
+import com.marcinmoskala.arcseekbar.ProgressListener;
+import com.ohoussein.playpause.PlayPauseView;
 import com.shrikanthravi.chatview.R;
 
 
@@ -21,6 +27,13 @@ public class VideoFFActivity extends AppCompatActivity {
 
     TextureView textureView;
     static MediaPlayer mediaPlayer;
+    ArcSeekBar seekBar;
+    PlayPauseView playPauseView;
+    ImageView previewIV;
+    boolean seekbarTracking=false;
+    LinearLayout seekbarLL;
+    boolean showSeekbarLL=false;
+    boolean released=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,12 +42,31 @@ public class VideoFFActivity extends AppCompatActivity {
 
         textureView = findViewById(R.id.textureView);
         mediaPlayer = new MediaPlayer();
+        seekBar = findViewById(R.id.seekArc);
+        playPauseView = findViewById(R.id.play_pause_view);
+        seekbarLL = findViewById(R.id.seekbarLL);
+
+        showSeekBarLL();
+
+        textureView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+                    showSeekBarLL();
+
+
+            }
+        });
+
+
 
         textureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
                 prepareVideo(surfaceTexture);
                 adjustAspectRatio(textureView,mediaPlayer.getVideoWidth(),mediaPlayer.getVideoHeight());
+
             }
 
             @Override
@@ -52,7 +84,70 @@ public class VideoFFActivity extends AppCompatActivity {
                 adjustAspectRatio(textureView,mediaPlayer.getVideoWidth(),mediaPlayer.getVideoHeight());
             }
         });
+        seekBar.setOnStartTrackingTouch(new ProgressListener() {
+            @Override
+            public void invoke(int i) {
+                seekbarTracking=true;
+                showSeekbarLL=true;
+                released=false;
+            }
+        });
+
+
+        seekBar.setOnStopTrackingTouch(new ProgressListener() {
+            @Override
+            public void invoke(int i) {
+                seekbarTracking=false;
+                showSeekbarLL=false;
+                released=true;
+                showSeekBarLL();
+
+            }
+        });
+
+        seekBar.setOnProgressChangedListener(new ProgressListener() {
+            @Override
+            public void invoke(int i) {
+                if(seekbarTracking){
+                    mediaPlayer.seekTo(i);
+                }
+            }
+        });
+        if(playPauseView.isPlay()) {
+            playPauseView.toggle(true);
+        }
+
+        playPauseView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(playPauseView.isPlay()){
+                    playPauseView.toggle(true);
+                    mediaPlayer.start();
+                }
+                else{
+                    playPauseView.toggle(true);
+                    mediaPlayer.pause();
+                }
+            }
+        });
+
+        final Handler handler = new Handler();
+        VideoFFActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(mediaPlayer!=null) {
+                    seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                }
+                handler.postDelayed(this,1000);
+            }
+        });
+
+
+
     }
+
+
+
 
     public void prepareVideo(SurfaceTexture t)
     {
@@ -67,13 +162,14 @@ public class VideoFFActivity extends AppCompatActivity {
 
                     mp.setLooping(true);
                     mediaPlayer.start();
-
+                    seekBar.setMaxProgress(mediaPlayer.getDuration());
                     //adjustAspectRatio(textureView,mp.getVideoWidth(),mp.getVideoHeight());
                     //iVideoPreparedListener.onVideoPrepared(video);
                 }
 
 
             });
+
         } catch (IllegalArgumentException e1) {
             e1.printStackTrace();
         } catch (SecurityException e1) {
@@ -163,5 +259,23 @@ public class VideoFFActivity extends AppCompatActivity {
         //finish();
 
         mediaPlayer.reset();
+    }
+
+    public void showSeekBarLL(){
+
+        seekbarLL.setVisibility(View.VISIBLE);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!showSeekbarLL) {
+                        seekbarLL.setVisibility(View.GONE);
+
+                    }
+                }
+            }, 4000);
+
+
+
     }
 }
