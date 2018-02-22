@@ -1,2 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.shrikanthravi.chatview" />
+    package="com.shrikanthravi.chatview">
+
+    <application android:hardwareAccelerated="true">
+        <activity android:name=".activities.ImageFFActivity" />
+        <activity android:name=".activities.VideoFFActivity"></activity>
+    </application>
+
+</manifest>

@@ -6,20 +6,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Point;
+import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.lopei.collageview.CollageView;
@@ -29,14 +42,20 @@ import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.nostra13.universalimageloader.utils.L;
 import com.shrikanthravi.chatview.R;
+import com.shrikanthravi.chatview.activities.ImageFFActivity;
 import com.shrikanthravi.chatview.utils.FontChanger;
+
 import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by shrikanthravi on 16/02/18.
@@ -93,7 +112,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                             }
                             else{
 
-                                return 6;
+                                if(messageList.get(position).getType().equals("LeftTyping")) {
+                                    return 6;
+                                }
+                                else{
+                                    if(messageList.get(position).getType().equals("LeftVideo")){
+                                        return 7;
+                                    }
+                                    else{
+
+
+                                            return 8;
+
+                                    }
+                                }
 
                             }
 
@@ -144,9 +176,25 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 viewHolder = new RightImagesViewHolder(view);
                             }
                             else{
-                                View view = LayoutInflater.from(parent.getContext())
-                                        .inflate(R.layout.left_typing_layout, parent, false);
-                                viewHolder = new LeftTypingViewHolder(view);
+                                if(viewType==6) {
+                                    View view = LayoutInflater.from(parent.getContext())
+                                            .inflate(R.layout.left_typing_layout, parent, false);
+                                    viewHolder = new LeftTypingViewHolder(view);
+                                }
+                                else{
+                                    if(viewType==7) {
+                                        View view = LayoutInflater.from(parent.getContext())
+                                                .inflate(R.layout.left_video_layout, parent, false);
+                                        viewHolder = new LeftVideoViewHolder(view);
+                                    }
+                                    else{
+
+                                            View view = LayoutInflater.from(parent.getContext())
+                                                    .inflate(R.layout.right_video_layout, parent, false);
+                                            viewHolder = new RightVideoViewHolder(view);
+
+                                    }
+                                }
 
                             }
                         }
@@ -329,7 +377,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public LeftImageViewHolder(View view) {
             super(view);
 
-            leftTV = view.findViewById(R.id.leftTV);
+
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             leftIV = view.findViewById(R.id.leftIV);
@@ -395,7 +443,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public RightImageViewHolder(View view) {
             super(view);
 
-            rightTV = view.findViewById(R.id.rightTV);
+
             rightTimeTV = view.findViewById(R.id.rightTimeTV);
             rightEL = view.findViewById(R.id.rightEL);
             rightIV = view.findViewById(R.id.rightIV);
@@ -556,6 +604,127 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
+    protected class LeftVideoViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView leftTimeTV,senderNameTV;
+        public ExpandableLayout leftEL;
+        public ImageView lefttMessageStatusIV,leftBubbleIconIV;
+        public CardView leftBubbleIconCV;
+        public CardView leftIVCV;
+        public ImageView leftIV;
+        public LinearLayout videoLL;
+
+        public LeftVideoViewHolder(View view) {
+            super(view);
+
+
+            leftTimeTV = view.findViewById(R.id.leftTimeTV);
+            leftEL = view.findViewById(R.id.leftEL);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
+            leftBubbleIconIV = view.findViewById(R.id.leftBubbleIconIV);
+            leftBubbleIconCV = view.findViewById(R.id.leftBubbleIconCV);
+            videoLL = view.findViewById(R.id.videoLL);
+
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
+            showLeftBubbleIcon(showLeftBubbleIcon);
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+
+
+
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
+
+        public void showLeftBubbleIcon(boolean b){
+            if(b){
+                leftBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                leftBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    protected class RightVideoViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView rightTimeTV,senderNameTV;
+        public ExpandableLayout rightEL;
+        public ImageView rightMessageStatusIV,rightBubbleIconIV;
+        public CardView rightBubbleIconCV;
+        public LinearLayout videoLL;
+
+        public RightVideoViewHolder(View view) {
+            super(view);
+
+            rightTimeTV = view.findViewById(R.id.rightTimeTV);
+            rightEL = view.findViewById(R.id.rightEL);
+            senderNameTV = view.findViewById(R.id.senderNameTV);
+            rightBubbleIconCV = view.findViewById(R.id.rightBubbleIconCV);
+            rightBubbleIconIV = view.findViewById(R.id.rightBubbleIconIV);
+            videoLL = view.findViewById(R.id.videoLL);
+
+            setSenderNameTextColor(senderNameTextColor);
+            showSenderName(showSenderName);
+            showRightBubbleIcon(showRightBubbleIcon);
+            FontChanger fontChanger = new FontChanger(typeface);
+            fontChanger.replaceFonts((ViewGroup)view);
+            view.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+
+                    int pos = getLayoutPosition();
+
+                    return true;
+                }
+            });
+        }
+
+        public void setSenderNameTextColor(int color){
+            senderNameTV.setTextColor(color);
+        }
+
+        public void showSenderName(boolean b){
+            if(b){
+                senderNameTV.setVisibility(View.VISIBLE);
+            }
+            else{
+                senderNameTV.setVisibility(View.GONE);
+            }
+        }
+        public void showRightBubbleIcon(boolean b){
+            if(b){
+                rightBubbleIconCV.setVisibility(View.VISIBLE);
+            }
+            else{
+                rightBubbleIconCV.setVisibility(View.GONE);
+            }
+        }
+    }
+
+
+
+
     protected class LeftTypingViewHolder extends RecyclerView.ViewHolder {
 
 
@@ -665,10 +834,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     holder1.leftIV.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            /*Intent intent = new Intent(context,ImageFFActivity.class);
+                            Intent intent = new Intent(context,ImageFFActivity.class);
                             intent.putExtra("photoURI",message.getImageList().get(0).toString());
                             ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.leftIV,holder1.leftIV.getTransitionName());
-                            context.startActivity(intent, optionsCompat.toBundle());*/
+                            context.startActivity(intent, optionsCompat.toBundle());
                         }
                     });
                 }
@@ -716,10 +885,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                         holder1.rightIV.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                /*Intent intent = new Intent(context,ImageFFActivity.class);
+                                Intent intent = new Intent(context,ImageFFActivity.class);
                                 intent.putExtra("photoURI",message.getImageList().get(0).toString());
                                 ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightIV,holder1.rightIV.getTransitionName());
-                                context.startActivity(intent, optionsCompat.toBundle());*/
+                                context.startActivity(intent, optionsCompat.toBundle());
                             }
                         });
                         holder1.rightTimeTV.setText(message.getTime());
@@ -754,10 +923,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 @Override
                                 public void onPhotoClick(int i) {
 
-                                    /*Intent intent = new Intent(context,ImageFFActivity.class);
+                                    Intent intent = new Intent(context,ImageFFActivity.class);
                                     intent.putExtra("photoURI",message.getImageList().get(i).toString());
                                     ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.leftCollageView,holder1.leftCollageView.getTransitionName());
-                                    context.startActivity(intent, optionsCompat.toBundle());*/
+                                    context.startActivity(intent, optionsCompat.toBundle());
                                 }
                             });
                         }
@@ -789,10 +958,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     @Override
                                     public void onPhotoClick(int i) {
 
-                                        /*Intent intent = new Intent(context, ImageFFActivity.class);
+                                        Intent intent = new Intent(context, ImageFFActivity.class);
                                         intent.putExtra("photoURI", message.getImageList().get(i).toString());
                                         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, holder1.rightCollageView, holder1.rightCollageView.getTransitionName());
-                                        context.startActivity(intent, optionsCompat.toBundle());*/
+                                        context.startActivity(intent, optionsCompat.toBundle());
                                     }
 
                                 });
@@ -801,6 +970,43 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                                 if(holder instanceof LeftTypingViewHolder){
 
+                                }
+                                else{
+                                    if(holder instanceof LeftVideoViewHolder){
+                                        final LeftVideoViewHolder holder1 =(LeftVideoViewHolder) holder;
+                                        final VideoPlayer videoPlayer = new VideoPlayer(context,message.getVideoUri().toString());
+                                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                                        videoPlayer.setLayoutParams(params);
+                                        //((LeftVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
+                                        holder1.videoLL.addView(videoPlayer);
+                                        videoPlayer.loadVideo(message.getVideoUri().toString());
+                                        //adjustAspectRatio(videoPlayer,videoPlayer.getMp().getVideoWidth(),videoPlayer.getMp().getVideoHeight());
+                                        if(message.getUserIcon()!=null) {
+                                            Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
+                                        }
+                                        holder1.senderNameTV.setText(message.getUserName());
+
+                                        holder1.leftTimeTV.setText(message.getTime());
+
+                                    }
+                                    else{
+                                        final RightVideoViewHolder holder1 = (RightVideoViewHolder) holder;
+                                        final VideoPlayer videoPlayer = new VideoPlayer(context,message.getVideoUri().toString());
+                                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                                        videoPlayer.setLayoutParams(params);
+                                        //((RightVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
+                                        holder1.videoLL.addView(videoPlayer);
+                                        videoPlayer.loadVideo(message.getVideoUri().toString());
+                                        //adjustAspectRatio(videoPlayer,videoPlayer.getMp().getVideoWidth(),videoPlayer.getMp().getVideoHeight());
+
+                                        if(message.getUserIcon()!=null) {
+                                            Picasso.with(context).load(message.getUserIcon()).into(holder1.rightBubbleIconIV);
+                                        }
+                                        holder1.senderNameTV.setText(message.getUserName());
+
+                                        holder1.rightTimeTV.setText(message.getTime());
+
+                                    }
                                 }
                             }
 
@@ -815,6 +1021,20 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
+    @Override
+    public void onViewRecycled(RecyclerView.ViewHolder holder) {
+        super.onViewRecycled(holder);
+        Log.d(TAG, "onViewRecycledCalled");
+        if(holder instanceof LeftVideoViewHolder){
+            ((LeftVideoViewHolder) holder).videoLL.removeAllViews();
+        }
+        else{
+            if(holder instanceof RightVideoViewHolder){
+                ((RightVideoViewHolder) holder).videoLL.removeAllViews();
+            }
+        }
+
+    }
 
 
     @Override
@@ -886,7 +1106,48 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         this.textSize = size;
     }
 
+    public static int getScreenWidth(Context c) {
+        int screenWidth = 0; // this is part of the class not the method
+        if (screenWidth == 0) {
+            WindowManager wm = (WindowManager) c.getSystemService(Context.WINDOW_SERVICE);
+            Display display = wm.getDefaultDisplay();
+            Point size = new Point();
+            display.getSize(size);
+            screenWidth = size.x;
+        }
 
+        return screenWidth;
+    }
+
+    private void adjustAspectRatio(VideoPlayer m_TextureView,int videoWidth, int videoHeight) {
+        int viewWidth = m_TextureView.getWidth();
+        int viewHeight = m_TextureView.getHeight();
+        double aspectRatio = (double) videoHeight / videoWidth;
+
+        int newWidth, newHeight;
+        if (viewHeight > (int) (viewWidth * aspectRatio)) {
+            // limited by narrow width; restrict height
+            newWidth = viewWidth;
+            newHeight = (int) (viewWidth * aspectRatio);
+        } else {
+            // limited by short height; restrict width
+            newWidth = (int) (viewHeight / aspectRatio);
+            newHeight = viewHeight;
+        }
+        int xoff = (viewWidth - newWidth) / 2;
+        int yoff = (viewHeight - newHeight) / 2;
+        Log.v(TAG, "video=" + videoWidth + "x" + videoHeight +
+                " view=" + viewWidth + "x" + viewHeight +
+                " newView=" + newWidth + "x" + newHeight +
+                " off=" + xoff + "," + yoff);
+
+        Matrix txform = new Matrix();
+        m_TextureView.getTransform(txform);
+        txform.setScale((float) newWidth / viewWidth, (float) newHeight / viewHeight);
+        //txform.postRotate(10);          // just for fun
+        txform.postTranslate(xoff, yoff);
+        m_TextureView.setTransform(txform);
+    }
 
 
 }

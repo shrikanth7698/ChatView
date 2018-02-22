@@ -12,6 +12,8 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.widget.EditText;
+import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
@@ -39,10 +41,13 @@ public class ChatView extends RelativeLayout {
     protected LayoutInflater mLayoutInflater;
 
     protected int mode=1;
+    protected boolean more=false;
     protected RelativeLayout mLayoutRoot;
     protected RecyclerView chatRV;
     protected LinearLayout sendLL;
     protected MaterialRippleLayout sendMRL;
+    protected HorizontalScrollView moreHSV;
+    protected MaterialRippleLayout galleryMRL,videoMRL;
     protected ExpandIconView expandIconView;
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
@@ -50,6 +55,7 @@ public class ChatView extends RelativeLayout {
     protected boolean showLeftBubbleIcon=true;
     protected boolean showRightBubbleIcon=true;
     protected boolean showSenderName=true;
+    protected EditText messageET;
 
     private int leftBubbleLayoutColor = R.color.colorAccent2;
     private int rightBubbleLayoutColor = R.color.colorAccent1;
@@ -60,6 +66,10 @@ public class ChatView extends RelativeLayout {
     private int senderNameTextColor = android.R.color.tab_indicator_text;
     private int ChatViewBackgroundColor = android.R.color.white;
     private Typeface typeface;
+    private OnClickSendButtonListener onClickSendButtonListener;
+    private OnClickGalleryButtonListener onClickGalleryButtonListener;
+    private OnClickVideoButtonListener onClickVideoButtonListener;
+
 
     public ChatView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -89,6 +99,10 @@ public class ChatView extends RelativeLayout {
         chatRV = rootView.findViewById(R.id.chatRV);
         sendLL = rootView.findViewById(R.id.sendLL);
         sendMRL = rootView.findViewById(R.id.sendMRL);
+        moreHSV = rootView.findViewById(R.id.moreLL);
+        messageET = rootView.findViewById(R.id.messageET);
+        galleryMRL = rootView.findViewById(R.id.galleryMRL);
+        videoMRL = rootView.findViewById(R.id.videoMRL);
         expandIconView = rootView.findViewById(R.id.expandIconView);
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList,context,chatRV);
@@ -99,13 +113,52 @@ public class ChatView extends RelativeLayout {
         chatRV.setAdapter(messageAdapter);
 
 
+        expandIconView.setState(1,false);
+
+        expandIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(more){
+                    expandIconView.setState(1,true);
+                    moreHSV.setVisibility(View.GONE);
+                    more=false;
+                }
+                else{
+                    expandIconView.setState(0,true);
+                    moreHSV.setVisibility(View.VISIBLE);
+                    more=true;
+                }
+            }
+        });
+
+        sendMRL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sendButtonClicked();
+            }
+        });
+
+        galleryMRL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                galleryButtonClicked();
+            }
+        });
+
+        videoMRL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                videoButtonClicked();
+            }
+        });
+
 
     }
 
     protected void setAttributes(TypedArray attrs){
 
         //set Attributes from xml
-        //showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
+        showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,true));
         showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
         showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
         setLeftBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_leftBubbleLayoutColor,getResources().getColor(leftBubbleLayoutColor)));
@@ -120,6 +173,47 @@ public class ChatView extends RelativeLayout {
         setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,getResources().getColor(chatViewBackgroundColor)));
 
 
+    }
+
+    public interface OnClickSendButtonListener{
+        public void onSendButtonClick(String body);
+    }
+    public interface OnClickGalleryButtonListener{
+        public void onGalleryButtonClick();
+    }
+
+    public interface OnClickVideoButtonListener{
+        public void onVideoButtonClick();
+    }
+    public void setOnClickSendButtonListener(OnClickSendButtonListener onClickSendButtonListener){
+        this.onClickSendButtonListener = onClickSendButtonListener;
+    }
+
+    public void setOnClickGalleryButtonListener(OnClickGalleryButtonListener onClickGalleryButtonListener){
+        this.onClickGalleryButtonListener = onClickGalleryButtonListener;
+    }
+    public void setOnClickVideoButtonListener(OnClickVideoButtonListener onClickVideoButtonListener){
+        this.onClickVideoButtonListener = onClickVideoButtonListener;
+    }
+
+    public void sendButtonClicked(){
+        if(onClickSendButtonListener!=null){
+
+            onClickSendButtonListener.onSendButtonClick(messageET.getText().toString());
+            messageET.setText("");
+        }
+    }
+
+    public void galleryButtonClicked(){
+        if(onClickGalleryButtonListener!=null){
+            onClickGalleryButtonListener.onGalleryButtonClick();
+        }
+    }
+
+    public void videoButtonClicked(){
+        if(onClickVideoButtonListener!=null){
+            onClickVideoButtonListener.onVideoButtonClick();
+        }
     }
 
     //Use this method to add a message to chatview
@@ -145,14 +239,15 @@ public class ChatView extends RelativeLayout {
 
 
     //For hiding or showing sender layout which contains an edittext ,send button and many others features
-    /*public void showSenderLayout(boolean b){
-        if(showSenderLL){
+    public void showSenderLayout(boolean b){
+        this.showSenderLL=b;
+        if(b){
             sendLL.setVisibility(VISIBLE);
         }
         else{
             sendLL.setVisibility(GONE);
         }
-    }*/
+    }
 
     //For groups (showing or hiding sender name which appears on top of the message)
     public void showSenderName(boolean b){

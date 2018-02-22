@@ -2,8 +2,10 @@ package com.shrikanthravi.chatviewlibrary;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.shrikanthravi.chatview.data.Message;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
+import com.zhihu.matisse.filter.Filter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,12 +34,14 @@ public class ChatViewTestActivity extends AppCompatActivity {
     ExpandIconView expandIconView;
     MaterialRippleLayout galleryMRL;
     int imagePickerRequestCode=10;
+    int SELECT_VIDEO=11;
     ChatView chatView;
     ImageView sendIcon;
     EditText messageET;
     boolean switchbool=true;
     boolean more = false;
     List<Uri> mSelected;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +60,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
         galleryMRL = findViewById(R.id.galleryMRL1);
         mSelected  = new ArrayList<>();
 
-        System.out.println("send clicked");
+        /*System.out.println("send clicked");
 
         sendIcon  = findViewById(R.id.sendIcon);
 
@@ -105,9 +110,9 @@ public class ChatViewTestActivity extends AppCompatActivity {
                     more=true;
                 }
             }
-        });
+        });*/
 
-        galleryMRL.setOnClickListener(new View.OnClickListener() {
+        /*galleryMRL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Matisse.from(ChatViewTestActivity.this)
@@ -118,6 +123,57 @@ public class ChatViewTestActivity extends AppCompatActivity {
                         .thumbnailScale(0.85f)
                         .imageEngine(new PicassoEngine())
                         .forResult(imagePickerRequestCode);
+            }
+        });*/
+
+        chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
+            @Override
+            public void onSendButtonClick(String body) {
+                if(switchbool) {
+                    Message message = new Message();
+                    message.setBody(body);
+                    message.setType(Message.RightSimpleMessage);
+                    message.setTime(getTime());
+                    message.setUserName("Groot");
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                    chatView.addMessage(message);
+
+                    switchbool=false;
+                }
+                else{
+                    Message message1 = new Message();
+                    message1.setBody(body);
+                    message1.setType(Message.LeftSimpleMessage);
+                    message1.setTime(getTime());
+                    message1.setUserName("Hodor");
+                    message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                    chatView.addMessage(message1);
+
+                    switchbool=true;
+                }
+            }
+        });
+
+        chatView.setOnClickGalleryButtonListener(new ChatView.OnClickGalleryButtonListener() {
+            @Override
+            public void onGalleryButtonClick() {
+                Matisse.from(ChatViewTestActivity.this)
+                        .choose(MimeType.allOf())
+                        .countable(true)
+                        .maxSelectable(9)
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new PicassoEngine())
+                        .forResult(imagePickerRequestCode);
+            }
+        });
+
+        chatView.setOnClickVideoButtonListener(new ChatView.OnClickVideoButtonListener() {
+            @Override
+            public void onVideoButtonClick() {
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                i.setType("video/*");
+                startActivityForResult(i, SELECT_VIDEO);
             }
         });
 
@@ -217,8 +273,49 @@ public class ChatViewTestActivity extends AppCompatActivity {
 
                 }
             }
+            else {
+            if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK) {
+
+
+                if (switchbool) {
+                    Message message = new Message();
+                    message.setType(Message.RightVideo);
+                    message.setTime(getTime());
+                    message.setUserName("Groot");
+                    message.setVideoUri(Uri.parse(getPath(data.getData())));
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                    chatView.addMessage(message);
+                    switchbool = false;
+                } else {
+                    Message message = new Message();
+
+                    message.setType(Message.LeftVideo);
+                    message.setTime(getTime());
+                    message.setUserName("Hodor");
+                    message.setVideoUri(Uri.parse(getPath(data.getData())));
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                    chatView.addMessage(message);
+                    switchbool = true;
+                }
+            }
+
+
+            }
+
 
         }
+
+    public String getPath(Uri uri) {
+        String[] projection = { MediaStore.Images.Media.DATA };
+        Cursor cursor = managedQuery(uri, projection, null, null, null);
+        if(cursor!=null) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        }
+        else return null;
+    }
+
 
 
 }

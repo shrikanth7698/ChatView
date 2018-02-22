@@ -22,6 +22,10 @@ public class Message {
     public static String LeftMultipleImages = "LeftImages";
     public static String RightMultipleImages = "RightImages";
 
+    //Single Video
+    public static String LeftVideo = "LeftVideo";
+    public static String RightVideo = "RightVideo";
+
     protected long id;
     protected String type;
     protected String body;
@@ -30,6 +34,7 @@ public class Message {
     protected List<Uri> imageList;
     protected String userName;
     protected Uri userIcon;
+    protected Uri videoUri;
 
     public Message(){
 
@@ -97,6 +102,14 @@ public class Message {
 
     public void setUserIcon(Uri userIcon) {
         this.userIcon = userIcon;
+    }
+
+    public Uri getVideoUri() {
+        return videoUri;
+    }
+
+    public void setVideoUri(Uri videoUri) {
+        this.videoUri = videoUri;
     }
 }
 

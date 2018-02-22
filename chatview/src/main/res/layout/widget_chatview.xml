@@ -18,7 +18,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sendLL"
-        android:visibility="gone"
         android:background="@drawable/gradient1"
         android:layout_alignParentBottom="true">
 
@@ -96,6 +95,24 @@
                                 android:layout_height="wrap_content"
                                 android:tint="@color/colorAccent"
                                 android:src="@drawable/gallery_icon"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="4dp"/>
+                        </com.balysv.materialripple.MaterialRippleLayout>
+                        <com.balysv.materialripple.MaterialRippleLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:mrl_rippleRoundedCorners="30dp"
+                            app:mrl_rippleOverlay="true"
+                            android:minHeight="40dp"
+                            android:id="@+id/videoMRL"
+                            android:minWidth="40dp"
+                            android:layout_gravity="center">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tint="@color/colorAccent"
+                                android:src="@drawable/video_icon"
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"/>

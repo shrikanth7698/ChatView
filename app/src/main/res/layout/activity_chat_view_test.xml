@@ -14,6 +14,7 @@
         app:leftBubbleTextColor="@android:color/white"
         app:rightBubbleTextColor="@android:color/black"
         android:layout_above="@+id/sendLL"
+        app:showSenderLayout="true"
         app:showSenderName="true"
         android:id="@+id/chatView">
 
@@ -23,6 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/sendLL"
+        android:visibility="gone"
         android:background="@drawable/gradient1"
         android:layout_alignParentBottom="true">
 
