@@ -650,6 +650,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             super(view);
 
 
+            leftIVCV = view.findViewById(R.id.leftIVCV);
             leftTimeTV = view.findViewById(R.id.leftTimeTV);
             leftEL = view.findViewById(R.id.leftEL);
             senderNameTV = view.findViewById(R.id.senderNameTV);
@@ -657,6 +658,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             leftBubbleIconCV = view.findViewById(R.id.leftBubbleIconCV);
             videoLL = view.findViewById(R.id.videoLL);
 
+            setBackgroundColor(leftBubbleLayoutColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
             showLeftBubbleIcon(showLeftBubbleIcon);
@@ -671,6 +673,10 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return true;
                 }
             });
+        }
+
+        public void setBackgroundColor(int color){
+            leftIVCV.setCardBackgroundColor(color);
         }
 
 
@@ -703,7 +709,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         public TextView rightTimeTV,senderNameTV;
         public ExpandableLayout rightEL;
         public ImageView rightMessageStatusIV,rightBubbleIconIV;
-        public CardView rightBubbleIconCV;
+        public CardView rightBubbleIconCV,rightIVCV;
         public LinearLayout videoLL;
 
         public RightVideoViewHolder(View view) {
@@ -711,11 +717,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
             rightTimeTV = view.findViewById(R.id.rightTimeTV);
             rightEL = view.findViewById(R.id.rightEL);
+            rightIVCV = view.findViewById(R.id.rightIVCV);
             senderNameTV = view.findViewById(R.id.senderNameTV);
             rightBubbleIconCV = view.findViewById(R.id.rightBubbleIconCV);
             rightBubbleIconIV = view.findViewById(R.id.rightBubbleIconIV);
             videoLL = view.findViewById(R.id.videoLL);
 
+            setBackgroundColor(rightBubbleLayoutColor);
             setSenderNameTextColor(senderNameTextColor);
             showSenderName(showSenderName);
             showRightBubbleIcon(showRightBubbleIcon);
@@ -730,6 +738,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     return true;
                 }
             });
+        }
+        public void setBackgroundColor(int color){
+            rightIVCV.setCardBackgroundColor(color);
         }
 
         public void setSenderNameTextColor(int color){
@@ -1000,6 +1011,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                         final VideoPlayer videoPlayer = new VideoPlayer(context);
                                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                                         videoPlayer.setLayoutParams(params);
+                                        videoPlayer.setScaleType(VideoPlayer.ScaleType.CENTER_CROP);
                                         //((LeftVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
                                         //holder1.videoLL.removeAllViews();
                                         holder1.videoLL.addView(videoPlayer);
@@ -1027,7 +1039,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                         final RightVideoViewHolder holder1 = (RightVideoViewHolder) holder;
                                         final VideoPlayer videoPlayer = new VideoPlayer(context);
                                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-
+                                        videoPlayer.setScaleType(VideoPlayer.ScaleType.CENTER_CROP);
                                         videoPlayer.setLayoutParams(params);
                                         //((RightVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
                                         //holder1.videoLL.removeAllViews();

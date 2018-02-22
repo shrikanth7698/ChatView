@@ -22,11 +22,19 @@ public class VideoPlayer extends TextureView implements TextureView.SurfaceTextu
 
     private static String TAG = "VideoPlayer";
 
+    public enum ScaleType {
+        CENTER_CROP, TOP, BOTTOM
+    }
+
+
     /**This flag determines that if current VideoPlayer object is first item of the list if it is first item of list*/
     boolean isFirstListItem;
 
     boolean isLoaded;
     boolean isMpPrepared;
+
+    private float mVideoHeight;
+    private float mVideoWidth;
 
     IVideoPreparedListener iVideoPreparedListener;
 
@@ -35,6 +43,7 @@ public class VideoPlayer extends TextureView implements TextureView.SurfaceTextu
     MediaPlayer mp;
     Surface surface;
     SurfaceTexture s;
+    private ScaleType mScaleType;
 
     public interface IVideoPreparedListener {
 
@@ -92,6 +101,59 @@ public class VideoPlayer extends TextureView implements TextureView.SurfaceTextu
     public void onSurfaceTextureUpdated(SurfaceTexture surface) {
     }
 
+    public void setScaleType(ScaleType scaleType) {
+        mScaleType = scaleType;
+    }
+
+    private void updateTextureViewSize() {
+        float viewWidth = getWidth();
+        float viewHeight = getHeight();
+
+        float scaleX = 1.0f;
+        float scaleY = 1.0f;
+
+        if (mVideoWidth > viewWidth && mVideoHeight > viewHeight) {
+            scaleX = mVideoWidth / viewWidth;
+            scaleY = mVideoHeight / viewHeight;
+        } else if (mVideoWidth < viewWidth && mVideoHeight < viewHeight) {
+            scaleY = viewWidth / mVideoWidth;
+            scaleX = viewHeight / mVideoHeight;
+        } else if (viewWidth > mVideoWidth) {
+            scaleY = (viewWidth / mVideoWidth) / (viewHeight / mVideoHeight);
+        } else if (viewHeight > mVideoHeight) {
+            scaleX = (viewHeight / mVideoHeight) / (viewWidth / mVideoWidth);
+        }
+
+        // Calculate pivot points, in our case crop from center
+        int pivotPointX;
+        int pivotPointY;
+
+        switch (mScaleType) {
+            case TOP:
+                pivotPointX = 0;
+                pivotPointY = 0;
+                break;
+            case BOTTOM:
+                pivotPointX = (int) (viewWidth);
+                pivotPointY = (int) (viewHeight);
+                break;
+            case CENTER_CROP:
+                pivotPointX = (int) (viewWidth / 2);
+                pivotPointY = (int) (viewHeight / 2);
+                break;
+            default:
+                pivotPointX = (int) (viewWidth / 2);
+                pivotPointY = (int) (viewHeight / 2);
+                break;
+        }
+
+        Matrix matrix = new Matrix();
+        matrix.setScale(scaleX, scaleY, pivotPointX, pivotPointY);
+
+        setTransform(matrix);
+    }
+
+
     public void prepareVideo(SurfaceTexture t)
     {
 
@@ -108,10 +170,20 @@ public class VideoPlayer extends TextureView implements TextureView.SurfaceTextu
                     isMpPrepared = true;
                     mp.setLooping(true);
                     mp.setVolume(0,0);
+                    mp.setOnVideoSizeChangedListener(
+                            new MediaPlayer.OnVideoSizeChangedListener() {
+                                @Override
+                                public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
+                                    mVideoWidth = width;
+                                    mVideoHeight = height;
+                                    updateTextureViewSize();
+                                }
+
+                });
                     //startPlay();
                     changePlayState();
                     //iVideoPreparedListener.onVideoPrepared(video);
-                    adjustAspectRatio(VideoPlayer.this,mp.getVideoWidth(),mp.getVideoHeight());
+                    //adjustAspectRatio(VideoPlayer.this,mp.getVideoWidth(),mp.getVideoHeight());
                 }
 
 
