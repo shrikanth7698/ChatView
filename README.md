@@ -8,11 +8,11 @@ This is an Android library which can be used to add chat functionality to your a
 This library is still in beta but will be improved over time.
 <br>
 <br>
-![Library Explanation](https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png)
+<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="350"/>
 ### Version
 v0.1.0
 <br>
-Video Support
+### Video Support
 <img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview%20library%20video.gif" width="300"/>
 <br>
 
