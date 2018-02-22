@@ -4,6 +4,8 @@ package com.shrikanthravi.chatview.data;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -19,6 +21,7 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -74,6 +77,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
 
+
     protected boolean showLeftBubbleIcon=true;
     protected boolean showRightBubbleIcon=true;
     protected boolean showSenderName=true;
@@ -85,6 +89,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int timeTextColor = android.R.color.tab_indicator_text;
     private int senderNameTextColor = android.R.color.tab_indicator_text;
     private float textSize = 20;
+
+    public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
+
+        this.messageList = verticalList;
+        this.context = context;
+        this.filterList = verticalList;
+        filter = new MessageFilter(verticalList,this);
+        imageLoader = ImageLoader.getInstance();
+        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
+
+    }
 
     @Override
     public int getItemViewType(int position) {
@@ -185,14 +200,30 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 else{
                                     if(viewType==7) {
                                         View view = LayoutInflater.from(parent.getContext())
-                                                .inflate(R.layout.left_video_layout, parent, false);
+                                                .inflate(R.layout.left_video_layout, parent, false);/*
+                                        Configuration configuration = context.getResources().getConfiguration();
+                                        int screenWidthDp = configuration.screenWidthDp; //The current width of the available screen space, in dp units, corresponding to screen width resource qualifier.
+                                        int smallestScreenWidthDp = configuration.smallestScreenWidthDp; //The smallest screen size an application will see in normal operation, corresponding to smallest screen width resource qualifier.*/
+
                                         viewHolder = new LeftVideoViewHolder(view);
+
+                                        /*int screenWidthPixels = (int) convertDpToPixel(screenWidthDp, context);
+                                        RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidthPixels);*/
+                                        /*viewHolder.itemView.findViewById(R.id.videoLL).setLayoutParams(rel_btn);*/
                                     }
                                     else{
 
                                             View view = LayoutInflater.from(parent.getContext())
                                                     .inflate(R.layout.right_video_layout, parent, false);
                                             viewHolder = new RightVideoViewHolder(view);
+
+                                            /*Configuration configuration = context.getResources().getConfiguration();
+                                            int screenWidthDp = configuration.screenWidthDp; //The current width of the available screen space, in dp units, corresponding to screen width resource qualifier.
+                                            int smallestScreenWidthDp = configuration.smallestScreenWidthDp; //The smallest screen size an application will see in normal operation, corresponding to smallest screen width resource qualifier.*/
+
+                                            /*int screenWidthPixels = (int) convertDpToPixel(screenWidthDp, context);
+                                            RelativeLayout.LayoutParams rel_btn = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, screenWidthPixels);
+                                            viewHolder.itemView.findViewById(R.id.videoLL).setLayoutParams(rel_btn);*/
 
                                     }
                                 }
@@ -748,17 +779,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
 
-    public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
 
-        this.messageList = verticalList;
-        this.context = context;
-        this.filterList = verticalList;
-        filter = new MessageFilter(verticalList,this);
-        imageLoader = ImageLoader.getInstance();
-        typeface = Typeface.createFromAsset(context.getAssets(), "fonts/product_san_regular.ttf");
-
-
-    }
 
 
 
@@ -768,6 +789,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
 
         final Message message = messageList.get(position);
+        messageList.get(position).setIndexPosition(position);
 
         if(holder instanceof LeftTextViewHolder){
             final LeftTextViewHolder holder1 =(LeftTextViewHolder) holder;
@@ -975,13 +997,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                 else{
                                     if(holder instanceof LeftVideoViewHolder){
                                         final LeftVideoViewHolder holder1 =(LeftVideoViewHolder) holder;
-                                        final VideoPlayer videoPlayer = new VideoPlayer(context,message.getVideoUri().toString());
+                                        final VideoPlayer videoPlayer = new VideoPlayer(context);
                                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                                         videoPlayer.setLayoutParams(params);
                                         //((LeftVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
+                                        //holder1.videoLL.removeAllViews();
                                         holder1.videoLL.addView(videoPlayer);
-                                        videoPlayer.loadVideo(message.getVideoUri().toString());
-                                        //adjustAspectRatio(videoPlayer,videoPlayer.getMp().getVideoWidth(),videoPlayer.getMp().getVideoHeight());
+                                        videoPlayer.loadVideo(message.getVideoUri().toString(),message);
                                         if(message.getUserIcon()!=null) {
                                             Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
                                         }
@@ -1003,12 +1025,14 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                     }
                                     else{
                                         final RightVideoViewHolder holder1 = (RightVideoViewHolder) holder;
-                                        final VideoPlayer videoPlayer = new VideoPlayer(context,message.getVideoUri().toString());
+                                        final VideoPlayer videoPlayer = new VideoPlayer(context);
                                         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+
                                         videoPlayer.setLayoutParams(params);
                                         //((RightVideoViewHolder) holder).videoLL.getLayoutParams().height = getScreenWidth(context) * 9 /16;
+                                        //holder1.videoLL.removeAllViews();
                                         holder1.videoLL.addView(videoPlayer);
-                                        videoPlayer.loadVideo(message.getVideoUri().toString());
+                                        videoPlayer.loadVideo(message.getVideoUri().toString(),message);
                                         //adjustAspectRatio(videoPlayer,videoPlayer.getMp().getVideoWidth(),videoPlayer.getMp().getVideoHeight());
 
                                         if(message.getUserIcon()!=null) {
@@ -1170,6 +1194,13 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
         //txform.postRotate(10);          // just for fun
         txform.postTranslate(xoff, yoff);
         m_TextureView.setTransform(txform);
+    }
+
+    public static float convertDpToPixel(float dp, Context context){
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float)metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
     }
 
 

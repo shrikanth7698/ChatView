@@ -153,6 +153,8 @@ public class ChatView extends RelativeLayout {
         });
 
 
+
+
     }
 
     protected void setAttributes(TypedArray attrs){

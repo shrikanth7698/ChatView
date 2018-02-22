@@ -35,9 +35,18 @@ public class Message {
     protected String userName;
     protected Uri userIcon;
     protected Uri videoUri;
+    protected int indexPosition;
 
     public Message(){
 
+    }
+
+    public int getIndexPosition() {
+        return indexPosition;
+    }
+
+    public void setIndexPosition(int indexPosition) {
+        this.indexPosition = indexPosition;
     }
 
     public long getId() {

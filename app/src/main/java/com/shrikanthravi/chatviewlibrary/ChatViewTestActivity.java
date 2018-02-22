@@ -22,6 +22,7 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -306,6 +307,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
         }
 
     public String getPath(Uri uri) {
+        System.out.println("getpath "+uri.toString());
         String[] projection = { MediaStore.Images.Media.DATA };
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         if(cursor!=null) {

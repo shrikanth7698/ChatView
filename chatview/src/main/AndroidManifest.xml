@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.shrikanthravi.chatview">
 
-    <application android:hardwareAccelerated="true">
+    <application android:hardwareAccelerated="true"
+        android:largeHeap="true">
         <activity android:name=".activities.ImageFFActivity" />
         <activity
             android:name=".activities.VideoFFActivity"

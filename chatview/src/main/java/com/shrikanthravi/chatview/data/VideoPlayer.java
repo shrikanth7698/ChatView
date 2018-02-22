@@ -18,13 +18,8 @@ import static android.content.ContentValues.TAG;
 /**
  * Created by shrikanthravi on 22/02/18.
  */
+public class VideoPlayer extends TextureView implements TextureView.SurfaceTextureListener {
 
- class VideoPlayer extends TextureView implements TextureView.SurfaceTextureListener {
-
-    public interface IVideoPreparedListener {
-
-        public void onVideoPrepared(MediaStore.Video video);
-    }
     private static String TAG = "VideoPlayer";
 
     /**This flag determines that if current VideoPlayer object is first item of the list if it is first item of list*/
@@ -35,23 +30,19 @@ import static android.content.ContentValues.TAG;
 
     IVideoPreparedListener iVideoPreparedListener;
 
-    MediaStore.Video video;
+    Message video;
     String url;
-    public static MediaPlayer mp;
+    MediaPlayer mp;
     Surface surface;
     SurfaceTexture s;
 
-    public MediaPlayer getMp() {
-        return mp;
+    public interface IVideoPreparedListener {
+
+        public void onVideoPrepared(Message video);
     }
 
-    public void setMp(MediaPlayer mp) {
-        this.mp = mp;
-    }
-
-    public VideoPlayer(Context context, String url) {
+    public VideoPlayer(Context context) {
         super(context);
-        this.url = url;
     }
 
     public VideoPlayer(Context context, AttributeSet attrs)
@@ -59,9 +50,10 @@ import static android.content.ContentValues.TAG;
         super(context, attrs);
     }
 
-    public void loadVideo(String localPath) {
+    public void loadVideo(String localPath, Message video) {
 
         this.url = localPath;
+        this.video = video;
         isLoaded = true;
 
         if (this.isAvailable()) {
@@ -74,7 +66,6 @@ import static android.content.ContentValues.TAG;
     @Override
     public void onSurfaceTextureAvailable(final SurfaceTexture surface, int width, int height) {
         isMpPrepared = false;
-        System.out.println("Video texture available");
         prepareVideo(surface);
     }
 
@@ -111,15 +102,16 @@ import static android.content.ContentValues.TAG;
         try {
             mp.setDataSource(url);
             mp.prepareAsync();
+
             mp.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 public void onPrepared(MediaPlayer mp) {
                     isMpPrepared = true;
                     mp.setLooping(true);
                     mp.setVolume(0,0);
-                    startPlay();
-
-                    adjustAspectRatio(VideoPlayer.this,mp.getVideoWidth(),mp.getVideoHeight());
+                    //startPlay();
+                    changePlayState();
                     //iVideoPreparedListener.onVideoPrepared(video);
+                    adjustAspectRatio(VideoPlayer.this,mp.getVideoWidth(),mp.getVideoHeight());
                 }
 
 
@@ -158,15 +150,7 @@ import static android.content.ContentValues.TAG;
     @Override
     protected void onVisibilityChanged(View changedView, int visibility) {
         super.onVisibilityChanged(changedView, visibility);
-        if(visibility==VISIBLE){
-            startPlay();
-        }
-        else{
-            pausePlay();
-        }
     }
-
-
 
     public boolean startPlay()
     {

@@ -2,6 +2,7 @@ package com.shrikanthravi.chatview.activities;
 
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
 import android.view.TextureView;
+import android.view.WindowManager;
 
 import com.shrikanthravi.chatview.R;
 
@@ -22,6 +24,7 @@ public class VideoFFActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_video_ff);
 
         textureView = findViewById(R.id.textureView);
@@ -130,24 +133,34 @@ public class VideoFFActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //To support reverse transitions when user clicks the device back button
+
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int volume_level= am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setVolume(volume_level-(volume_level/2),volume_level-(volume_level/2));
         supportFinishAfterTransition();
-        mediaPlayer.reset();
+
     }
 
     @Override
     protected void onStop() {
         super.onStop();
 
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int volume_level= am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setVolume(volume_level-(volume_level/2),volume_level-(volume_level/2));
         mediaPlayer.reset();
-        finish();
+        //finish();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
 
-        mediaPlayer.reset();
-        finish();
+
+        AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
+        int volume_level= am.getStreamVolume(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setVolume(volume_level-(volume_level/2),volume_level-(volume_level/2));;
+        //finish();
 
         mediaPlayer.reset();
     }

@@ -16,7 +16,9 @@
         <activity android:name=".ProfileActivity" />
         <activity android:name=".ImageFFActivity" />
         <activity android:name=".ChatViewTestActivity"
-            android:hardwareAccelerated="true">
+            android:hardwareAccelerated="true"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
