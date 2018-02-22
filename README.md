@@ -182,6 +182,11 @@ Note: You can customize the chatview in both xml and java way.
 *  Easily customizable.
 
 Check the sample app https://github.com/shrikanth7698/ChatView/tree/master/app
+
+## Upcoming features
+* Video Support
+* Location Support
+* Contact support
 ## Contributions are welcome
 
 ### License
