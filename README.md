@@ -1,5 +1,8 @@
 # ChatView for Android
 
+<br>
+<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview_library_icon_1.png" width="100"/>
+<br>
 This is an Android library which can be used to add chat functionality to your android application with just a few lines of code.
 <br>
 This library is still in beta but will be improved over time.
@@ -9,6 +12,10 @@ This library is still in beta but will be improved over time.
 ### Version
 v0.1.0
 <br>
+Video Support
+<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview%20library%20video.gif" width="300"/>
+<br>
+
 ### Installation
 Add this to your root build.gradle at the end of repositories:
 ```
