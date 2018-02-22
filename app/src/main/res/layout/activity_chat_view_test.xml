@@ -9,7 +9,6 @@
     <com.shrikanthravi.chatview.widget.ChatView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:showSenderLayout="false"
         app:leftBubbleLayoutColor="#ff7b7b"
         app:rightBubbleLayoutColor="@color/colorAccent2"
         app:leftBubbleTextColor="@android:color/white"

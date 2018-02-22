@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ChatView">
-        <attr name="showSenderLayout" format="boolean" />
         <attr name="leftBubbleLayoutColor" format="color" />
         <attr name="rightBubbleLayoutColor" format="color" />
         <attr name="leftBubbleTextColor" format="color" />

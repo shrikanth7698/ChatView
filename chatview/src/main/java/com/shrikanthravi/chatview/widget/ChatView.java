@@ -105,7 +105,7 @@ public class ChatView extends RelativeLayout {
     protected void setAttributes(TypedArray attrs){
 
         //set Attributes from xml
-        showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
+        //showSenderLayout(attrs.getBoolean(R.styleable.ChatView_showSenderLayout,showSenderLL));
         showLeftBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showLeftBubbleIcon,showLeftBubbleIcon));
         showRightBubbleIcon(attrs.getBoolean(R.styleable.ChatView_showRightBubbleIcon,showRightBubbleIcon));
         setLeftBubbleLayoutColor(attrs.getColor(R.styleable.ChatView_leftBubbleLayoutColor,getResources().getColor(leftBubbleLayoutColor)));
@@ -145,14 +145,14 @@ public class ChatView extends RelativeLayout {
 
 
     //For hiding or showing sender layout which contains an edittext ,send button and many others features
-    public void showSenderLayout(boolean b){
+    /*public void showSenderLayout(boolean b){
         if(showSenderLL){
             sendLL.setVisibility(VISIBLE);
         }
         else{
             sendLL.setVisibility(GONE);
         }
-    }
+    }*/
 
     //For groups (showing or hiding sender name which appears on top of the message)
     public void showSenderName(boolean b){
