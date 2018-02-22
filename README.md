@@ -64,7 +64,7 @@ Message message = new Message();
                     message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot")); 
                     chatView.addMessage(message);
 		    
-//sample code to add message to right
+//sample code to add message to left
 Message message1 = new Message();
                     message1.setBody(messageET.getText().toString().trim());
                     message1.setType(Message.LeftSimpleMessage);
