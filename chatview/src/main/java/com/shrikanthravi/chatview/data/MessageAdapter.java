@@ -43,6 +43,7 @@ import com.nostra13.universalimageloader.utils.DiskCacheUtils;
 import com.nostra13.universalimageloader.utils.L;
 import com.shrikanthravi.chatview.R;
 import com.shrikanthravi.chatview.activities.ImageFFActivity;
+import com.shrikanthravi.chatview.activities.VideoFFActivity;
 import com.shrikanthravi.chatview.utils.FontChanger;
 
 import com.silencedut.expandablelayout.ExpandableLayout;
@@ -984,6 +985,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                         if(message.getUserIcon()!=null) {
                                             Picasso.with(context).load(message.getUserIcon()).into(holder1.leftBubbleIconIV);
                                         }
+
+                                        videoPlayer.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                videoPlayer.setTransitionName("videoFF");
+                                                Intent intent = new Intent(context, VideoFFActivity.class);
+                                                intent.putExtra("videoURI", message.getVideoUri().toString());
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, videoPlayer, videoPlayer.getTransitionName());
+                                                context.startActivity(intent, optionsCompat.toBundle());
+                                            }
+                                        });
                                         holder1.senderNameTV.setText(message.getUserName());
 
                                         holder1.leftTimeTV.setText(message.getTime());
@@ -1002,6 +1014,17 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                         if(message.getUserIcon()!=null) {
                                             Picasso.with(context).load(message.getUserIcon()).into(holder1.rightBubbleIconIV);
                                         }
+
+                                        videoPlayer.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                videoPlayer.setTransitionName("videoFF");
+                                                Intent intent = new Intent(context, VideoFFActivity.class);
+                                                intent.putExtra("videoURI", message.getVideoUri().toString());
+                                                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, videoPlayer, videoPlayer.getTransitionName());
+                                                context.startActivity(intent, optionsCompat.toBundle());
+                                            }
+                                        });
                                         holder1.senderNameTV.setText(message.getUserName());
 
                                         holder1.rightTimeTV.setText(message.getTime());

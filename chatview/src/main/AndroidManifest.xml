@@ -4,7 +4,9 @@
 
     <application android:hardwareAccelerated="true">
         <activity android:name=".activities.ImageFFActivity" />
-        <activity android:name=".activities.VideoFFActivity"></activity>
+        <activity
+            android:name=".activities.VideoFFActivity"
+            android:configChanges="orientation|screenSize"></activity>
     </application>
 
 </manifest>

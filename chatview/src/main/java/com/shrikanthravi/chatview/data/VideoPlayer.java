@@ -37,7 +37,7 @@ import static android.content.ContentValues.TAG;
 
     MediaStore.Video video;
     String url;
-    public MediaPlayer mp;
+    public static MediaPlayer mp;
     Surface surface;
     SurfaceTexture s;
 
