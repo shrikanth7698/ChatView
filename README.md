@@ -12,18 +12,18 @@ This library is still in beta but will be improved over time.
 <table>
   <tr>
     <td>
-       <img src="https://drive.google.com/uc?id=1NDELjyr1T0Y-JMfFmEFpQvZfT6rRXIX-" width="400" >
+       <img src="https://drive.google.com/uc?id=1NDELjyr1T0Y-JMfFmEFpQvZfT6rRXIX-" width="300" >
     </td>
     <td>
-      <img src="https://drive.google.com/uc?id=1w1rgZd5oHaDX_FKRfvCb1ddS_LMzJuHK" width="400">
+      <img src="https://drive.google.com/uc?id=1w1rgZd5oHaDX_FKRfvCb1ddS_LMzJuHK" width="300">
     </td>    
   </tr>
   <tr>
     <td>
-      <img src="https://drive.google.com/uc?id=1XzzM3QJjz2IqZ5mrsLKB15q_lelnx9oW" width="400">
+      <img src="https://drive.google.com/uc?id=1XzzM3QJjz2IqZ5mrsLKB15q_lelnx9oW" width="300">
     </td>
     <td>
-      <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="400">
+      <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="300">
     </td>
 
   </tr>
@@ -281,7 +281,7 @@ In this sample I used an external library to pick images from gallery.
         });
 ```
 ### Customization
-![Library Explanation](https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png)
+<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="300">
 
 Note: You can customize the chatview in both xml and java way.
 ```
