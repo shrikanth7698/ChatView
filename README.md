@@ -1,21 +1,37 @@
 # ChatView for Android
 
 
-<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview_library_icon_1.png" width="100" >
+<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/chatview_library_icon_1.png" width="100" >
 <br/>
 This is an Android library which can be used to add chat functionality to your android application with just a few lines of code.
 <br/>
 This library is still in beta but will be improved over time.
 <br/>
 
-<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="350" >
+
+<table>
+  <tr>
+    <td>
+       <img src="https://drive.google.com/uc?id=1NDELjyr1T0Y-JMfFmEFpQvZfT6rRXIX-" width="400" >
+    </td>
+    <td>
+      <img src="https://drive.google.com/uc?id=1w1rgZd5oHaDX_FKRfvCb1ddS_LMzJuHK" width="400">
+    </td>    
+  </tr>
+  <tr>
+    <td>
+      <img src="https://drive.google.com/uc?id=1XzzM3QJjz2IqZ5mrsLKB15q_lelnx9oW" width="400">
+    </td>
+    <td>
+      <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="400">
+    </td>
+
+  </tr>
+</table>
 
 ### Version
-v0.1.0
-<br/>
-### Video Support
-<img src="https://github.com/shrikanth7698/ChatView/blob/master/chatview%20library%20video.gif" width="300" >
-<br/>
+v0.1.2
+
 
 ### Installation
 Add this to your root build.gradle at the end of repositories:
@@ -30,7 +46,7 @@ allprojects {
 Then add dependency
 ```
 dependencies {
-	compile 'com.github.shrikanth7698:ChatView:v0.1.0'
+	compile 'com.github.shrikanth7698:ChatView:v0.1.2'
 }
 ```
 ## Usage
@@ -92,40 +108,163 @@ chatview.remove(position) //or  chatview.remove(message)
 Message types
 ```
 //Message.LeftSimpleMessage
+	Message message = new Message();
 	message.setType(Message.LeftSimpleMessage);
 	message.setBody(body); //string
+	message.setTime(getTime());
+	chatView.addMessage(message);
 	
 //Message.RightSimpleMessage
+	Message message = new Message();
 	message.setType(Message.RightSimpleMessage);
 	message.setBody(body); //string
+	message.setTime(getTime());
+	chatView.addMessage(message);
 	
-//Message.LeftSingleImage
+//Message.LeftSingleImage  (when clicked it will go to fullscreen mode)
+	Message message = new Message();
 	List<Uri> mSelected  = new ArrayList<>();
 	mselected.add(Uri.parse("Your image"))
+	message.setTime(getTime());
 	message.setType(Message.LeftSingleImage);
 	message.setImageList(mSelected);
+	chatView.addMessage(message);	
 	
-//Message.RightSingleImage
+// Message.RightSingleImage (when clicked it will go to fullscreen mode)
+	Message message = new Message();
 	List<Uri> mSelected  = new ArrayList<>();
 	mselected.add(Uri.parse("Your image"));
+	message.setTime(getTime());
 	message.setType(Message.RightSingleImage);
 	message.setImageList(mSelected);	
+	chatView.addMessage(message);
 	
-//Message.LeftMultipleImages (can hold upto 10 images in a single row as a collage view)
+// Message.LeftMultipleImages (can hold upto 10 images in a single row as a collage view)
+	Message message = new Message();
 	List<Uri> mSelected  = new ArrayList<>();
 	mselected.add(Uri.parse("Your image"));
 	mselected.add(Uri.parse("Your image"));
 	mselected.add(Uri.parse("Your image"));	
+	message.setTime(getTime());
 	message.setType(Message.LeftMultipleImages);
-	message.setImageList(mSelected);	
+	message.setImageList(mSelected);
+	chatView.addMessage(message);
 	
-//Message.RightMultipleImages (can hold upto 10 images in a single row as a collage view)
+// Message.RightMultipleImages (can hold upto 10 images in a single row as a collage view)
+	Message message = new Message();
 	List<Uri> mSelected  = new ArrayList<>();
 	mselected.add(Uri.parse("Your image"));
 	mselected.add(Uri.parse("Your image"));
 	mselected.add(Uri.parse("Your image"));	
+	message.setTime(getTime());
 	message.setType(Message.RightMultipleImages);
-	message.setImageList(mSelected);		
+	message.setImageList(mSelected);
+	chatView.addMessage(message);
+	
+// Message.LeftVideo (when clicked it will go to fullscreen mode)	
+	Message message = new Message();
+	message.setType(Message.LeftVideo);
+        message.setTime(getTime());
+	message.setUserName("Hodor");
+	message.setVideoUri(Uri.parse(getPath(data.getData())));
+	message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+	hatView.addMessage(message);
+
+// Message.RightVideo (when clicked it will go to fullscreen mode)
+	Message message = new Message();
+	message.setType(Message.RightVideo);
+	message.setTime(getTime());
+	message.setUserName("Groot");
+	message.setVideoUri(Uri.parse(getPath(data.getData())));
+	message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+	chatView.addMessage(message);	
+```
+### Sender Layout
+<img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Sender_Layout.png" width="400" >
+You can hide or show sender layout
+```
+//to show or hide sender layout
+app:showSenderLayout="true or false"
+```
+This is still in beta
+Sender Layout has 4 buttons for now.
+* Send Button
+* Camera Button
+* Gallery Button
+* Video Button
+and a Text box
+
+Note: You should use your own logic of picking images,videos and capturing images.
+In this sample I used an external library to pick images from gallery.
+```
+	//Send button click listerer
+        chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
+            @Override
+            public void onSendButtonClick(String body) {
+                if(switchbool) {
+                    Message message = new Message();
+                    message.setBody(body);
+                    message.setType(Message.RightSimpleMessage);
+                    message.setTime(getTime());
+                    message.setUserName("Groot");
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                    chatView.addMessage(message);
+
+                    switchbool=false;
+                }
+                else{
+                    Message message1 = new Message();
+                    message1.setBody(body);
+                    message1.setType(Message.LeftSimpleMessage);
+                    message1.setTime(getTime());
+                    message1.setUserName("Hodor");
+                    message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                    chatView.addMessage(message1);
+
+                    switchbool=true;
+                }
+            }
+        });
+
+        //Gallery button click listener
+        chatView.setOnClickGalleryButtonListener(new ChatView.OnClickGalleryButtonListener() {
+            @Override
+            public void onGalleryButtonClick() {
+                Matisse.from(ChatViewTestActivity.this)
+                        .choose(MimeType.allOf())
+                        .countable(true)
+                        .maxSelectable(9)
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new PicassoEngine())
+                        .forResult(imagePickerRequestCode);
+            }
+        });
+
+        //Video button click listener
+        chatView.setOnClickVideoButtonListener(new ChatView.OnClickVideoButtonListener() {
+            @Override
+            public void onVideoButtonClick() {
+                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+                i.setType("video/*");
+                startActivityForResult(i, SELECT_VIDEO);
+            }
+        });
+
+        //Camera button click listener
+        chatView.setOnClickCameraButtonListener(new ChatView.OnClickCameraButtonListener() {
+            @Override
+            public void onCameraButtonClicked() {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                file.delete();
+                File file1 = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+
+                Uri uri = FileProvider.getUriForFile(ChatViewTestActivity.this, getApplicationContext().getPackageName() + ".provider", file1);
+                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
 ```
 ### Customization
 ![Library Explanation](https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png)
@@ -187,12 +326,13 @@ Note: You can customize the chatview in both xml and java way.
 ### Features
 *  Supports Group mode (Like whatsapp group).
 *  Supports multiple images in a single row.
+*  Video preview
 *  Easily customizable.
 
 Check the sample app https://github.com/shrikanth7698/ChatView/tree/master/app
 
 ## Upcoming features
-* Video Support
+* Video Support (Completed)
 * Location Support
 * Contact support
 ## Contributions are welcome
