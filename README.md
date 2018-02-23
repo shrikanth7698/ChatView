@@ -208,7 +208,7 @@ Sender Layout has 4 buttons for now.
 
 and a Text box
 
-You can change the color of buttons by changing the accent color your use in your app.
+You can change the color of buttons by changing the accent color you use in your app.
 
 Note: You should use your own logic of picking images,videos and capturing images.
 
@@ -283,6 +283,139 @@ In this sample I used an external library to pick images from gallery.
                 startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
+	
+	
+	@Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //Image Selection result
+        if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK) {
+            mSelected = Matisse.obtainResult(data);
+
+                if(switchbool) {
+                    if (mSelected.size() == 1) {
+                        Message message = new Message();
+                        message.setBody(messageET.getText().toString().trim());
+                        message.setType(Message.RightSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Groot");
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                        chatView.addMessage(message);
+                        switchbool=false;
+                    } else {
+
+                        Message message = new Message();
+                        message.setBody(messageET.getText().toString().trim());
+                        message.setType(Message.RightMultipleImages);
+                        message.setTime(getTime());
+                        message.setUserName("Groot");
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                        chatView.addMessage(message);
+                        switchbool=false;
+                    }
+                }
+                else{
+
+                    if (mSelected.size() == 1) {
+                        Message message = new Message();
+                        message.setBody(messageET.getText().toString().trim());
+                        message.setType(Message.LeftSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Hodor");
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        chatView.addMessage(message);
+                        switchbool=true;
+                    } else {
+
+                        Message message = new Message();
+                        message.setBody(messageET.getText().toString().trim());
+                        message.setType(Message.LeftMultipleImages);
+                        message.setTime(getTime());
+                        message.setUserName("Hodor");
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        chatView.addMessage(message);
+                        switchbool=true;
+                    }
+
+                }
+            }
+            else {
+
+            //Video Selection result
+            if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK) {
+
+
+                if (switchbool) {
+                    Message message = new Message();
+                    message.setType(Message.RightVideo);
+                    message.setTime(getTime());
+                    message.setUserName("Groot");
+                    message.setVideoUri(Uri.parse(getPath(data.getData())));
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                    chatView.addMessage(message);
+                    switchbool = false;
+                } else {
+                    Message message = new Message();
+
+                    message.setType(Message.LeftVideo);
+                    message.setTime(getTime());
+                    message.setUserName("Hodor");
+                    message.setVideoUri(Uri.parse(getPath(data.getData())));
+                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                    chatView.addMessage(message);
+                    switchbool = true;
+                }
+            }
+            else{
+
+                //Image Capture result
+                if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+
+
+                    if (switchbool) {
+                        Message message = new Message();
+                        message.setType(Message.RightSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Groot");
+                        mSelected.clear();
+                        File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                        //Uri of camera image
+                        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+                        mSelected.add(uri);
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                        chatView.addMessage(message);
+                        switchbool = false;
+                    } else {
+                        Message message = new Message();
+
+                        message.setType(Message.LeftSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Hodor");
+                        mSelected.clear();
+                        File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                        //Uri of camera image
+                        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+                        mSelected.add(uri);
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        chatView.addMessage(message);
+                        switchbool = true;
+                    }
+                }
+
+            }
+
+
+            }
+
+
+        }
 ```
 ### Customization
 <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="300">
