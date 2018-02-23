@@ -35,7 +35,7 @@ v0.1.2
 
 ### Installation
 Add this to your root build.gradle at the end of repositories:
-```
+```gradle
 allprojects {
 	repositories {
 		...
@@ -44,7 +44,7 @@ allprojects {
 }
 ```
 Then add dependency
-```
+```gradle
 dependencies {
 	compile 'com.github.shrikanth7698:ChatView:v0.1.2'
 }
@@ -52,7 +52,7 @@ dependencies {
 ## Usage
 
 Drop the ChatView in your XML layout as is shown below:
-```
+```xml
     <com.shrikanthravi.chatview.widget.ChatView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -69,15 +69,15 @@ Drop the ChatView in your XML layout as is shown below:
 
 ```
 don't forget to add this attribute to your root layout.
-```
+```xml
 xmlns:app="http://schemas.android.com/apk/res-auto"
 ```
 And then in your Activity or Fragment
-```
+```java
 ChatView chatView = (ChatView) findViewById(R.id.chatview);
 ```
 Sample code
-```
+```java
 //sample code to add message to right
 Message message = new Message();
                     message.setBody(messageET.getText().toString().trim()); //message body
@@ -106,7 +106,7 @@ chatview.remove(position) //or  chatview.remove(message)
 		    
 ```
 Message types
-```
+```java
 //Message.LeftSimpleMessage
 	Message message = new Message();
 	message.setType(Message.LeftSimpleMessage);
@@ -187,7 +187,7 @@ You should have a accent color in your colors.xml otherwise view will crash.
 
 You can hide or show sender layout
 
-```
+```xml
 
 app:showSenderLayout="true or false"
 
@@ -214,7 +214,7 @@ Note: You should use your own logic of picking images,videos and capturing image
 
 In this sample I used an external library to pick images from gallery.
 
-```
+```java
 	//Send button click listerer
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
             @Override
@@ -421,7 +421,7 @@ In this sample I used an external library to pick images from gallery.
 <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Explanation%20Screenshot%202.png" width="300">
 
 Note: You can customize the chatview in both xml and java way.
-```
+```xml
 //xml 
 
 <com.shrikanthravi.chatview.widget.ChatView
@@ -441,6 +441,9 @@ Note: You can customize the chatview in both xml and java way.
         app:showSenderName="true" //  (1)
         android:id="@+id/chatView">
 	
+```
+
+```java
 //java
 
 
