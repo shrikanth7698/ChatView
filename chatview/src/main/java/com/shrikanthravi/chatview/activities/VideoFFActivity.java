@@ -36,8 +36,12 @@ public class VideoFFActivity extends AppCompatActivity {
     boolean released=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        if(getSupportActionBar()!=null) {
+            getSupportActionBar().hide();
+        }
+
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_ff);
 
         textureView = findViewById(R.id.textureView);

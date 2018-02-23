@@ -162,21 +162,8 @@ public class ChatViewTestActivity extends AppCompatActivity {
         return randomStringBuilder.toString();
     }
 
-    /*
 
-    galleryMRL.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Matisse.from(ChatActivity.this)
-                    .choose(MimeType.allOf())
-                    .countable(true)
-                    .maxSelectable(9)
-                    .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                    .thumbnailScale(0.85f)
-                    .imageEngine(new PicassoEngine())
-                    .forResult(imagePickerRequestCode);
-        }
-    });*/
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
