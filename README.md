@@ -181,21 +181,35 @@ Message types
 ```
 ### Sender Layout
 <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Sender_Layout.png" width="400" >
+
+
 You can hide or show sender layout
+
 ```
-//to show or hide sender layout
+
 app:showSenderLayout="true or false"
+
 ```
+
+
 This is still in beta
+
 Sender Layout has 4 buttons for now.
+
 * Send Button
+
 * Camera Button
+
 * Gallery Button
+
 * Video Button
+
 and a Text box
 
 Note: You should use your own logic of picking images,videos and capturing images.
+
 In this sample I used an external library to pick images from gallery.
+
 ```
 	//Send button click listerer
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
