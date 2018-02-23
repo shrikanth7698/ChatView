@@ -3,9 +3,12 @@ package com.shrikanthravi.chatviewlibrary;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -22,6 +25,7 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
 import com.zhihu.matisse.filter.Filter;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,6 +40,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
     MaterialRippleLayout galleryMRL;
     int imagePickerRequestCode=10;
     int SELECT_VIDEO=11;
+    int CAMERA_REQUEST=12;
     ChatView chatView;
     ImageView sendIcon;
     EditText messageET;
@@ -61,72 +66,9 @@ public class ChatViewTestActivity extends AppCompatActivity {
         galleryMRL = findViewById(R.id.galleryMRL1);
         mSelected  = new ArrayList<>();
 
-        /*System.out.println("send clicked");
-
-        sendIcon  = findViewById(R.id.sendIcon);
-
-        sendIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(switchbool) {
-                    Message message = new Message();
-                    message.setBody(messageET.getText().toString().trim());
-                    message.setType(Message.RightSimpleMessage);
-                    message.setTime(getTime());
-                    message.setUserName("Groot");
-                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
-                    chatView.addMessage(message);
-                    messageET.setText("");
-                    switchbool=false;
-                }
-                else{
-                    Message message1 = new Message();
-                    message1.setBody(messageET.getText().toString().trim());
-                    message1.setType(Message.LeftSimpleMessage);
-                    message1.setTime(getTime());
-                    message1.setUserName("Hodor");
-                    message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
-                    chatView.addMessage(message1);
-                    messageET.setText("");
-                    switchbool=true;
-                }
 
 
-
-
-            }
-        });
-
-        expandIconView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(more){
-                    expandIconView.setState(1,true);
-                    moreHSV.setVisibility(View.GONE);
-                    more=false;
-                }
-                else{
-                    expandIconView.setState(0,true);
-                    moreHSV.setVisibility(View.VISIBLE);
-                    more=true;
-                }
-            }
-        });*/
-
-        /*galleryMRL.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Matisse.from(ChatViewTestActivity.this)
-                        .choose(MimeType.allOf())
-                        .countable(true)
-                        .maxSelectable(9)
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new PicassoEngine())
-                        .forResult(imagePickerRequestCode);
-            }
-        });*/
-
+        //Send button click listerer
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
             @Override
             public void onSendButtonClick(String body) {
@@ -155,6 +97,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
             }
         });
 
+        //Gallery button click listener
         chatView.setOnClickGalleryButtonListener(new ChatView.OnClickGalleryButtonListener() {
             @Override
             public void onGalleryButtonClick() {
@@ -169,6 +112,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
             }
         });
 
+        //Video button click listener
         chatView.setOnClickVideoButtonListener(new ChatView.OnClickVideoButtonListener() {
             @Override
             public void onVideoButtonClick() {
@@ -178,8 +122,24 @@ public class ChatViewTestActivity extends AppCompatActivity {
             }
         });
 
+        //Camera button click listener
+        chatView.setOnClickCameraButtonListener(new ChatView.OnClickCameraButtonListener() {
+            @Override
+            public void onCameraButtonClicked() {
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                file.delete();
+                File file1 = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+
+                Uri uri = FileProvider.getUriForFile(ChatViewTestActivity.this, getApplicationContext().getPackageName() + ".provider", file1);
+                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+            }
+        });
+
 
     }
+
 
     public String getTime(){
         java.util.Calendar calendar = java.util.Calendar.getInstance();
@@ -220,6 +180,8 @@ public class ChatViewTestActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        //Image Selection result
         if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK) {
             mSelected = Matisse.obtainResult(data);
 
@@ -275,6 +237,8 @@ public class ChatViewTestActivity extends AppCompatActivity {
                 }
             }
             else {
+
+            //Video Selection result
             if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK) {
 
 
@@ -299,12 +263,52 @@ public class ChatViewTestActivity extends AppCompatActivity {
                     switchbool = true;
                 }
             }
+            else{
+
+                //Image Capture result
+                if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+
+
+                    if (switchbool) {
+                        Message message = new Message();
+                        message.setType(Message.RightSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Groot");
+                        mSelected.clear();
+                        File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                        //Uri of camera image
+                        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+                        mSelected.add(uri);
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                        chatView.addMessage(message);
+                        switchbool = false;
+                    } else {
+                        Message message = new Message();
+
+                        message.setType(Message.LeftSingleImage);
+                        message.setTime(getTime());
+                        message.setUserName("Hodor");
+                        mSelected.clear();
+                        File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+                        //Uri of camera image
+                        Uri uri = FileProvider.getUriForFile(this, getApplicationContext().getPackageName() + ".provider", file);
+                        mSelected.add(uri);
+                        message.setImageList(mSelected);
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        chatView.addMessage(message);
+                        switchbool = true;
+                    }
+                }
+
+            }
 
 
             }
 
 
         }
+
 
     public String getPath(Uri uri) {
         System.out.println("getpath "+uri.toString());

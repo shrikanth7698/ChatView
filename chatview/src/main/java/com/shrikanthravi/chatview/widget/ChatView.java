@@ -47,7 +47,7 @@ public class ChatView extends RelativeLayout {
     protected LinearLayout sendLL;
     protected MaterialRippleLayout sendMRL;
     protected HorizontalScrollView moreHSV;
-    protected MaterialRippleLayout galleryMRL,videoMRL;
+    protected MaterialRippleLayout galleryMRL,videoMRL,cameraMRL;
     protected ExpandIconView expandIconView;
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
@@ -69,6 +69,7 @@ public class ChatView extends RelativeLayout {
     private OnClickSendButtonListener onClickSendButtonListener;
     private OnClickGalleryButtonListener onClickGalleryButtonListener;
     private OnClickVideoButtonListener onClickVideoButtonListener;
+    private OnClickCameraButtonListener onClickCameraButtonListener;
 
 
     public ChatView(Context context, AttributeSet attrs) {
@@ -103,6 +104,7 @@ public class ChatView extends RelativeLayout {
         messageET = rootView.findViewById(R.id.messageET);
         galleryMRL = rootView.findViewById(R.id.galleryMRL);
         videoMRL = rootView.findViewById(R.id.videoMRL);
+        cameraMRL = rootView.findViewById(R.id.cameraMRL);
         expandIconView = rootView.findViewById(R.id.expandIconView);
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList,context,chatRV);
@@ -152,6 +154,13 @@ public class ChatView extends RelativeLayout {
             }
         });
 
+        cameraMRL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cameraButtonClicked();
+            }
+        });
+
 
 
 
@@ -187,6 +196,11 @@ public class ChatView extends RelativeLayout {
     public interface OnClickVideoButtonListener{
         public void onVideoButtonClick();
     }
+
+    public interface OnClickCameraButtonListener{
+        public void onCameraButtonClicked();
+    }
+
     public void setOnClickSendButtonListener(OnClickSendButtonListener onClickSendButtonListener){
         this.onClickSendButtonListener = onClickSendButtonListener;
     }
@@ -196,6 +210,10 @@ public class ChatView extends RelativeLayout {
     }
     public void setOnClickVideoButtonListener(OnClickVideoButtonListener onClickVideoButtonListener){
         this.onClickVideoButtonListener = onClickVideoButtonListener;
+    }
+
+    public void setOnClickCameraButtonListener(OnClickCameraButtonListener onClickCameraButtonListener){
+        this.onClickCameraButtonListener = onClickCameraButtonListener;
     }
 
     public void sendButtonClicked(){
@@ -216,6 +234,16 @@ public class ChatView extends RelativeLayout {
         if(onClickVideoButtonListener!=null){
             onClickVideoButtonListener.onVideoButtonClick();
         }
+    }
+
+    public void cameraButtonClicked(){
+        if(onClickCameraButtonListener!=null){
+            onClickCameraButtonListener.onCameraButtonClicked();
+        }
+    }
+
+    public List<Message> getMessageList(){
+        return this.messageList;
     }
 
     //Use this method to add a message to chatview

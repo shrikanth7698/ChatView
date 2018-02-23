@@ -52,10 +52,10 @@ public class VideoFFActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-
+                if(released) {
                     showSeekBarLL();
-
-
+                    released=false;
+                }
             }
         });
 
@@ -99,7 +99,6 @@ public class VideoFFActivity extends AppCompatActivity {
             public void invoke(int i) {
                 seekbarTracking=false;
                 showSeekbarLL=false;
-                released=true;
                 showSeekBarLL();
 
             }
@@ -121,11 +120,15 @@ public class VideoFFActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(playPauseView.isPlay()){
+                    showSeekbarLL=false;
+                    showSeekBarLL();
                     playPauseView.toggle(true);
                     mediaPlayer.start();
                 }
                 else{
                     playPauseView.toggle(true);
+                    showSeekbarLL=true;
+                    seekbarLL.setVisibility(View.VISIBLE);
                     mediaPlayer.pause();
                 }
             }
@@ -270,10 +273,10 @@ public class VideoFFActivity extends AppCompatActivity {
                 public void run() {
                     if (!showSeekbarLL) {
                         seekbarLL.setVisibility(View.GONE);
-
+                        released=true;
                     }
                 }
-            }, 4000);
+            }, 4500);
 
 
 

@@ -54,7 +54,9 @@
                             android:layout_height="wrap_content"
                             app:mrl_rippleRoundedCorners="30dp"
                             android:minHeight="40dp"
+                            android:visibility="visible"
                             android:minWidth="40dp"
+                            android:id="@+id/cameraMRL"
                             app:mrl_rippleOverlay="true"
                             android:layout_gravity="center">
                             <ImageView
@@ -71,6 +73,7 @@
                             app:mrl_rippleOverlay="true"
                             android:minHeight="40dp"
                             android:minWidth="40dp"
+                            android:visibility="gone"
                             android:layout_gravity="center">
                             <ImageView
                                 android:layout_width="wrap_content"
