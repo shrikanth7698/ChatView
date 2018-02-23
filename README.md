@@ -182,6 +182,8 @@ Message types
 ### Sender Layout
 <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/Sender_Layout.png" width="400" >
 
+You should have a accent color in your colors.xml otherwise view will crash.
+
 
 You can hide or show sender layout
 
@@ -205,6 +207,8 @@ Sender Layout has 4 buttons for now.
 * Video Button
 
 and a Text box
+
+You can change the color of buttons by changing the accent color your use in your app.
 
 Note: You should use your own logic of picking images,videos and capturing images.
 
