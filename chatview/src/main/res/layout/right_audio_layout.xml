@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.silencedut.expandablelayout.ExpandableLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/rightEL"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="100dp">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_gravity="right">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:ellipsize="end"
+                android:layout_margin="2dp"
+                android:layout_gravity="right"
+                android:id="@+id/senderNameTV"
+                android:textSize="12sp"
+                android:textColor="@android:color/tab_indicator_text"
+                android:text=""/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="right"
+                >
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center">
+
+                        <SeekBar
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@android:color/black"
+                            android:id="@+id/audioSeekbar"
+                            android:paddingLeft="15dp"
+                            android:paddingRight="15dp"
+                            android:layout_gravity="center"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:background="@drawable/right_tv_bg"/>
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <com.ohoussein.playpause.PlayPauseView
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="5dp"
+                    android:layout_gravity="center"
+                    app:fill_color="@android:color/white"
+                    app:pause_bg="@color/transparent_black_percent_50"
+                    app:play_bg="@color/transparent_black_percent_50"
+                    android:id="@+id/play_pause_view"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/profile_icon"/>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="12.5dp"
+                    android:layout_gravity="top|center"
+                    android:id="@+id/rightBubbleIconCV"
+                    android:layout_margin="5dp"
+                    app:cardBackgroundColor="@color/colorAccent2"
+                    app:cardElevation="2.5dp">
+                    <ImageView
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/rightBubbleIconIV"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/profile_icon"/>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text=""
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="2dp"
+            android:id="@+id/rightTimeTV"
+            android:layout_marginRight="4dp"
+            android:layout_marginBottom="2dp"
+            android:layout_gravity="left"
+            android:gravity="left|center"/>
+    </com.silencedut.expandablelayout.ExpandableLayout>
+
+</RelativeLayout>

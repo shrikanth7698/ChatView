@@ -38,9 +38,10 @@ public class ChatViewTestActivity extends AppCompatActivity {
     HorizontalScrollView moreHSV;
     ExpandIconView expandIconView;
     MaterialRippleLayout galleryMRL;
-    int imagePickerRequestCode=10;
-    int SELECT_VIDEO=11;
-    int CAMERA_REQUEST=12;
+    public static int imagePickerRequestCode=10;
+    public static int SELECT_VIDEO=11;
+    public static int CAMERA_REQUEST=12;
+    public static int SELECT_AUDIO=13;
     ChatView chatView;
     ImageView sendIcon;
     EditText messageET;
@@ -75,7 +76,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                 if(switchbool) {
                     Message message = new Message();
                     message.setBody(body);
-                    message.setType(Message.RightSimpleMessage);
+                    message.setMessageType(Message.MessageType.RightSimpleImage);
                     message.setTime(getTime());
                     message.setUserName("Groot");
                     message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
@@ -86,7 +87,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                 else{
                     Message message1 = new Message();
                     message1.setBody(body);
-                    message1.setType(Message.LeftSimpleMessage);
+                    message1.setMessageType(Message.MessageType.LeftSimpleMessage);
                     message1.setTime(getTime());
                     message1.setUserName("Hodor");
                     message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
@@ -138,6 +139,18 @@ public class ChatViewTestActivity extends AppCompatActivity {
         });
 
 
+        chatView.setOnClickAudioButtonListener(new ChatView.OnClickAudioButtonListener() {
+            @Override
+            public void onAudioButtonClicked() {
+                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+                i.setType("audio/*");
+                //String[] mimetypes = {"audio/3gp", "audio/AMR", "audio/mp3"};
+                //i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
+                startActivityForResult(i, SELECT_AUDIO);
+            }
+        });
+
+
     }
 
 
@@ -168,97 +181,105 @@ public class ChatViewTestActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //Image Selection result
-        if (requestCode == imagePickerRequestCode && resultCode == RESULT_OK) {
-            mSelected = Matisse.obtainResult(data);
 
-                if(switchbool) {
-                    if (mSelected.size() == 1) {
-                        Message message = new Message();
-                        message.setBody(messageET.getText().toString().trim());
-                        message.setType(Message.RightSingleImage);
-                        message.setTime(getTime());
-                        message.setUserName("Groot");
-                        message.setImageList(mSelected);
-                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
-                        chatView.addMessage(message);
-                        switchbool=false;
-                    } else {
 
-                        Message message = new Message();
-                        message.setBody(messageET.getText().toString().trim());
-                        message.setType(Message.RightMultipleImages);
-                        message.setTime(getTime());
-                        message.setUserName("Groot");
-                        message.setImageList(mSelected);
-                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
-                        chatView.addMessage(message);
-                        switchbool=false;
+        switch (requestCode){
+            case 10:{
+
+                //Image Selection result
+                if(resultCode==RESULT_OK){
+                    mSelected = Matisse.obtainResult(data);
+
+                    if(switchbool) {
+                        if (mSelected.size() == 1) {
+                            Message message = new Message();
+                            message.setBody(messageET.getText().toString().trim());
+                            message.setMessageType(Message.MessageType.RightSingleImage);
+                            message.setTime(getTime());
+                            message.setUserName("Groot");
+                            message.setImageList(mSelected);
+                            message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                            chatView.addMessage(message);
+                            switchbool=false;
+                        } else {
+
+                            Message message = new Message();
+                            message.setBody(messageET.getText().toString().trim());
+                            message.setMessageType(Message.MessageType.RightMultipleImages);
+                            message.setTime(getTime());
+                            message.setUserName("Groot");
+                            message.setImageList(mSelected);
+                            message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                            chatView.addMessage(message);
+                            switchbool=false;
+                        }
+                    }
+                    else{
+
+                        if (mSelected.size() == 1) {
+                            Message message = new Message();
+                            message.setBody(messageET.getText().toString().trim());
+                            message.setMessageType(Message.MessageType.LeftSingleImage);
+                            message.setTime(getTime());
+                            message.setUserName("Hodor");
+                            message.setImageList(mSelected);
+                            message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                            chatView.addMessage(message);
+                            switchbool=true;
+                        } else {
+
+                            Message message = new Message();
+                            message.setBody(messageET.getText().toString().trim());
+                            message.setMessageType(Message.MessageType.LeftMultipleImages);
+                            message.setTime(getTime());
+                            message.setUserName("Hodor");
+                            message.setImageList(mSelected);
+                            message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                            chatView.addMessage(message);
+                            switchbool=true;
+                        }
+
                     }
                 }
-                else{
+                break;
+            }
+            case 11:{
 
-                    if (mSelected.size() == 1) {
+                //Video Selection Result
+                if(resultCode == RESULT_OK) {
+                    if (switchbool) {
                         Message message = new Message();
-                        message.setBody(messageET.getText().toString().trim());
-                        message.setType(Message.LeftSingleImage);
+                        message.setMessageType(Message.MessageType.RightVideo);
                         message.setTime(getTime());
-                        message.setUserName("Hodor");
-                        message.setImageList(mSelected);
-                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        message.setUserName("Groot");
+                        message.setVideoUri(Uri.parse(getPathVideo(data.getData())));
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
                         chatView.addMessage(message);
-                        switchbool=true;
+                        switchbool = false;
                     } else {
-
                         Message message = new Message();
-                        message.setBody(messageET.getText().toString().trim());
-                        message.setType(Message.LeftMultipleImages);
+
+                        message.setMessageType(Message.MessageType.LeftVideo);
                         message.setTime(getTime());
                         message.setUserName("Hodor");
-                        message.setImageList(mSelected);
+                        message.setVideoUri(Uri.parse(getPathVideo(data.getData())));
                         message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
                         chatView.addMessage(message);
-                        switchbool=true;
+                        switchbool = true;
                     }
-
                 }
+                break;
             }
-            else {
-
-            //Video Selection result
-            if (requestCode == SELECT_VIDEO && resultCode == RESULT_OK) {
-
-
-                if (switchbool) {
-                    Message message = new Message();
-                    message.setType(Message.RightVideo);
-                    message.setTime(getTime());
-                    message.setUserName("Groot");
-                    message.setVideoUri(Uri.parse(getPath(data.getData())));
-                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
-                    chatView.addMessage(message);
-                    switchbool = false;
-                } else {
-                    Message message = new Message();
-
-                    message.setType(Message.LeftVideo);
-                    message.setTime(getTime());
-                    message.setUserName("Hodor");
-                    message.setVideoUri(Uri.parse(getPath(data.getData())));
-                    message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
-                    chatView.addMessage(message);
-                    switchbool = true;
-                }
-            }
-            else{
+            case 12:{
 
                 //Image Capture result
-                if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+
+                if (resultCode == RESULT_OK) {
 
 
                     if (switchbool) {
                         Message message = new Message();
-                        message.setType(Message.RightSingleImage);
+                        message.setMessageType(Message.MessageType.RightSingleImage);
                         message.setTime(getTime());
                         message.setUserName("Groot");
                         mSelected.clear();
@@ -273,7 +294,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                     } else {
                         Message message = new Message();
 
-                        message.setType(Message.LeftSingleImage);
+                        message.setMessageType(Message.MessageType.LeftSingleImage);
                         message.setTime(getTime());
                         message.setUserName("Hodor");
                         mSelected.clear();
@@ -287,24 +308,64 @@ public class ChatViewTestActivity extends AppCompatActivity {
                         switchbool = true;
                     }
                 }
-
+                break;
             }
+            case 13:{
+                if(resultCode == RESULT_OK){
+                    if (switchbool) {
+                        Message message = new Message();
+                        message.setMessageType(Message.MessageType.RightAudio);
+                        message.setTime(getTime());
+                        message.setUserName("Groot");
+                        message.setAudioUri(Uri.parse(getPathAudio(data.getData())));
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
+                        chatView.addMessage(message);
+                        switchbool = false;
+                    } else {
+                        Message message = new Message();
 
-
+                        message.setMessageType(Message.MessageType.LeftAudio);
+                        message.setTime(getTime());
+                        message.setUserName("Hodor");
+                        message.setAudioUri(Uri.parse(getPathAudio(data.getData())));
+                        message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
+                        chatView.addMessage(message);
+                        switchbool = true;
+                    }
+                }
+                break;
             }
-
-
         }
 
+    }
 
-    public String getPath(Uri uri) {
+
+
+
+
+
+
+    public String getPathVideo(Uri uri) {
         System.out.println("getpath "+uri.toString());
-        String[] projection = { MediaStore.Images.Media.DATA };
+        String[] projection = { MediaStore.Video.Media.DATA };
         Cursor cursor = managedQuery(uri, projection, null, null, null);
         if(cursor!=null) {
             int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
             cursor.moveToFirst();
             return cursor.getString(column_index);
+        }
+        else return null;
+    }
+
+    public String getPathAudio(Uri uri) {
+        System.out.println("getpath "+uri.toString());
+        String[] projection = { MediaStore.Audio.Media.DATA };
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+
+        int columnIndex = cursor.getColumnIndex(projection[0]);
+        cursor.moveToFirst();
+        if(cursor!=null) {
+            return cursor.getString(columnIndex);
         }
         else return null;
     }

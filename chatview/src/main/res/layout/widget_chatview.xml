@@ -120,6 +120,24 @@
                                 android:layout_marginTop="4dp"
                                 android:layout_marginBottom="4dp"/>
                         </com.balysv.materialripple.MaterialRippleLayout>
+                        <com.balysv.materialripple.MaterialRippleLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:mrl_rippleRoundedCorners="30dp"
+                            app:mrl_rippleOverlay="true"
+                            android:minHeight="40dp"
+                            android:id="@+id/audioMRL"
+                            android:minWidth="40dp"
+                            android:layout_gravity="center">
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:tint="@color/colorAccent"
+                                android:src="@drawable/audio_icon"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginTop="4dp"
+                                android:layout_marginBottom="4dp"/>
+                        </com.balysv.materialripple.MaterialRippleLayout>
 
 
                     </LinearLayout>
@@ -161,6 +179,22 @@
                         android:background="@drawable/et_bg"
                         android:hint="Say something..."
                         />
+                    <com.balysv.materialripple.MaterialRippleLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:mrl_rippleRoundedCorners="30dp"
+                        app:mrl_rippleOverlay="true"
+                        android:minHeight="40dp"
+                        android:id="@+id/micMRL"
+                        android:minWidth="40dp"
+                        android:layout_gravity="center">
+                        <ImageView
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:tint="@android:color/black"
+                            android:src="@drawable/mic_icon"/>
+                    </com.balysv.materialripple.MaterialRippleLayout>
+
                     <com.balysv.materialripple.MaterialRippleLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -13,20 +13,24 @@ import java.util.List;
 public class Message {
 
 
-    public static String LeftSimpleMessage = "LEFT";
-    public static String RightSimpleMessage = "RIGHT";
-    public static String LeftSingleImage = "LeftImage";
-    public static String RightSingleImage = "RightImage";
+    protected String LeftSimpleMessage = "LEFT";
+    protected String RightSimpleMessage = "RIGHT";
+    protected String LeftSingleImage = "LeftImage";
+    protected String RightSingleImage = "RightImage";
 
     //Can hold upto 11 images.
-    public static String LeftMultipleImages = "LeftImages";
-    public static String RightMultipleImages = "RightImages";
+    protected String LeftMultipleImages = "LeftImages";
+    protected String RightMultipleImages = "RightImages";
 
     //Single Video
-    public static String LeftVideo = "LeftVideo";
-    public static String RightVideo = "RightVideo";
+    protected String LeftVideo = "LeftVideo";
+    protected String RightVideo = "RightVideo";
+
+    protected String LeftAudio = "LeftAudio";
+    protected String RightAudio = "RightAudio";
 
     protected long id;
+    protected MessageType messageType;
     protected String type;
     protected String body;
     protected String time;
@@ -35,10 +39,40 @@ public class Message {
     protected String userName;
     protected Uri userIcon;
     protected Uri videoUri;
+    protected Uri audioUri;
     protected int indexPosition;
+
+    public enum MessageType{
+        LeftSimpleMessage,
+        RightSimpleImage,
+        LeftSingleImage,
+        RightSingleImage,
+        LeftMultipleImages,
+        RightMultipleImages,
+        LeftVideo,
+        RightVideo,
+        LeftAudio,
+        RightAudio
+    }
 
     public Message(){
 
+    }
+
+    public Uri getAudioUri() {
+        return audioUri;
+    }
+
+    public void setAudioUri(Uri audioUri) {
+        this.audioUri = audioUri;
+    }
+
+    public MessageType getMessageType() {
+        return messageType;
+    }
+
+    public void setMessageType(MessageType messageType) {
+        this.messageType = messageType;
     }
 
     public int getIndexPosition() {

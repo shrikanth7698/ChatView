@@ -10,6 +10,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.EditText;
@@ -47,7 +48,7 @@ public class ChatView extends RelativeLayout {
     protected LinearLayout sendLL;
     protected MaterialRippleLayout sendMRL;
     protected HorizontalScrollView moreHSV;
-    protected MaterialRippleLayout galleryMRL,videoMRL,cameraMRL;
+    protected MaterialRippleLayout galleryMRL,videoMRL,cameraMRL,audioMRL,micMRL;
     protected ExpandIconView expandIconView;
     protected List<Message> messageList;
     protected MessageAdapter messageAdapter;
@@ -70,6 +71,8 @@ public class ChatView extends RelativeLayout {
     private OnClickGalleryButtonListener onClickGalleryButtonListener;
     private OnClickVideoButtonListener onClickVideoButtonListener;
     private OnClickCameraButtonListener onClickCameraButtonListener;
+    private OnClickAudioButtonListener onClickAudioButtonListener;
+    private OnTouchMicButtonListener onTouchMicButtonListener;
 
 
     public ChatView(Context context, AttributeSet attrs) {
@@ -105,6 +108,8 @@ public class ChatView extends RelativeLayout {
         galleryMRL = rootView.findViewById(R.id.galleryMRL);
         videoMRL = rootView.findViewById(R.id.videoMRL);
         cameraMRL = rootView.findViewById(R.id.cameraMRL);
+        audioMRL = rootView.findViewById(R.id.audioMRL);
+        micMRL = rootView.findViewById(R.id.micMRL);
         expandIconView = rootView.findViewById(R.id.expandIconView);
         messageList = new ArrayList<>();
         messageAdapter = new MessageAdapter(messageList,context,chatRV);
@@ -161,6 +166,27 @@ public class ChatView extends RelativeLayout {
             }
         });
 
+        audioMRL.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                audioButtonClicked();
+            }
+        });
+
+        micMRL.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if(event.getAction() == MotionEvent.ACTION_DOWN) {
+                    micButtonTouched();
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    micButtonReleased();
+                }
+                return true;
+            }
+        });
+
+
+
 
 
 
@@ -201,6 +227,15 @@ public class ChatView extends RelativeLayout {
         public void onCameraButtonClicked();
     }
 
+    public interface OnClickAudioButtonListener{
+        public void onAudioButtonClicked();
+    }
+
+    public interface OnTouchMicButtonListener{
+        public void onMicButtonTouched();
+        public void onMicButtonReleased();
+    }
+
     public void setOnClickSendButtonListener(OnClickSendButtonListener onClickSendButtonListener){
         this.onClickSendButtonListener = onClickSendButtonListener;
     }
@@ -214,6 +249,14 @@ public class ChatView extends RelativeLayout {
 
     public void setOnClickCameraButtonListener(OnClickCameraButtonListener onClickCameraButtonListener){
         this.onClickCameraButtonListener = onClickCameraButtonListener;
+    }
+
+    public void setOnClickAudioButtonListener(OnClickAudioButtonListener onClickAudioButtonListener){
+        this.onClickAudioButtonListener = onClickAudioButtonListener;
+    }
+
+    public void setOnTouchMicButtonListener(OnTouchMicButtonListener onTouchMicButtonListener){
+        this.onTouchMicButtonListener = onTouchMicButtonListener;
     }
 
     public void sendButtonClicked(){
@@ -239,6 +282,24 @@ public class ChatView extends RelativeLayout {
     public void cameraButtonClicked(){
         if(onClickCameraButtonListener!=null){
             onClickCameraButtonListener.onCameraButtonClicked();
+        }
+    }
+
+    public void audioButtonClicked(){
+        if(onClickAudioButtonListener!=null){
+            onClickAudioButtonListener.onAudioButtonClicked();
+        }
+    }
+
+    public void micButtonTouched(){
+        if(onTouchMicButtonListener!=null){
+            onTouchMicButtonListener.onMicButtonTouched();
+        }
+    }
+
+    public void micButtonReleased(){
+        if(onTouchMicButtonListener!=null){
+            onTouchMicButtonListener.onMicButtonReleased();
         }
     }
 
