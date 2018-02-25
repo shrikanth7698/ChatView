@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+
         android:background="@drawable/video_controller_bg_gradient"
         android:id="@+id/seekbarLL"
         android:padding="5dp"
@@ -24,6 +25,7 @@
             android:id="@+id/seekArc"
             android:layout_width="match_parent"
             android:layout_height="80dp"
+            android:clickable="true"
             app:progressColor="@color/colorAccent1"
             app:progressBackgroundColor="@color/transparent_white_hex_1"
             app:progressBackgroundWidth="2.5dp"
@@ -38,7 +40,6 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="-50dp"
-
             android:clickable="true"
             android:foreground="?android:selectableItemBackground"
             app:fill_color="@color/colorAccent1"

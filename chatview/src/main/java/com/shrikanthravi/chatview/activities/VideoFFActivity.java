@@ -1,5 +1,7 @@
 package com.shrikanthravi.chatview.activities;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
@@ -34,6 +36,7 @@ public class VideoFFActivity extends AppCompatActivity {
     LinearLayout seekbarLL;
     boolean showSeekbarLL=false;
     boolean released=true;
+    public static Handler handler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if(getSupportActionBar()!=null) {
@@ -44,6 +47,7 @@ public class VideoFFActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_ff);
 
+        handler = new Handler();
         textureView = findViewById(R.id.textureView);
         mediaPlayer = new MediaPlayer();
         seekBar = findViewById(R.id.seekArc);
@@ -56,10 +60,10 @@ public class VideoFFActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(released) {
+
                     showSeekBarLL();
-                    released=false;
-                }
+
+
             }
         });
 
@@ -91,9 +95,10 @@ public class VideoFFActivity extends AppCompatActivity {
         seekBar.setOnStartTrackingTouch(new ProgressListener() {
             @Override
             public void invoke(int i) {
+                setProgressWithAnimation(i);
                 seekbarTracking=true;
                 showSeekbarLL=true;
-                released=false;
+
             }
         });
 
@@ -101,9 +106,10 @@ public class VideoFFActivity extends AppCompatActivity {
         seekBar.setOnStopTrackingTouch(new ProgressListener() {
             @Override
             public void invoke(int i) {
+                setProgressWithAnimation(i);
                 seekbarTracking=false;
                 showSeekbarLL=false;
-                showSeekBarLL();
+
 
             }
         });
@@ -143,7 +149,10 @@ public class VideoFFActivity extends AppCompatActivity {
             @Override
             public void run() {
                 if(mediaPlayer!=null) {
-                    seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                    //seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                    if(!seekbarTracking) {
+                        setProgressWithAnimation(mediaPlayer.getCurrentPosition());
+                    }
                 }
                 handler.postDelayed(this,1000);
             }
@@ -270,19 +279,28 @@ public class VideoFFActivity extends AppCompatActivity {
 
     public void showSeekBarLL(){
 
-        seekbarLL.setVisibility(View.VISIBLE);
-            final Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (!showSeekbarLL) {
-                        seekbarLL.setVisibility(View.GONE);
-                        released=true;
-                    }
-                }
-            }, 4500);
+        if(showSeekbarLL) {
+            seekbarLL.setVisibility(View.VISIBLE);
+            showSeekbarLL=false;
+        }
+        else {
+            seekbarLL.setVisibility(View.GONE);
+            showSeekbarLL=true;
+        }
 
 
+
+
+
+
+
+
+    }
+
+    public void setProgressWithAnimation(int progress){
+        ObjectAnimator objectAnimator = ObjectAnimator.ofInt(seekBar, "progress", progress);
+        objectAnimator.setDuration(500);
+        objectAnimator.start();
 
     }
 }

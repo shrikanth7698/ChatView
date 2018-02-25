@@ -1457,6 +1457,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                         videoPlayer.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View view) {
+                                                if(mediaPlayer!=null && mediaPlayer.isPlaying()){
+                                                    mediaPlayer.pause();
+                                                }
                                                 videoPlayer.setTransitionName("videoFF");
                                                 Intent intent = new Intent(context, VideoFFActivity.class);
                                                 intent.putExtra("videoURI", message.getVideoUri().toString());
@@ -1489,6 +1492,9 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                                             videoPlayer.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View view) {
+                                                    if(mediaPlayer!=null && mediaPlayer.isPlaying()){
+                                                        mediaPlayer.pause();
+                                                    }
                                                     videoPlayer.setTransitionName("videoFF");
                                                     Intent intent = new Intent(context, VideoFFActivity.class);
                                                     intent.putExtra("videoURI", message.getVideoUri().toString());
