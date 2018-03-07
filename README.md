@@ -30,7 +30,7 @@ This library is still in beta but will be improved over time.
 </table>
 
 ### Version
-v0.1.2
+[![](https://jitpack.io/v/shrikanth7698/ChatView.svg)](https://jitpack.io/#shrikanth7698/ChatView)
 
 
 ### Installation
@@ -49,7 +49,7 @@ dependencies {
 	compile 'com.github.shrikanth7698:ChatView:v0.1.2'
 }
 ```
-## Usage
+### Usage
 
 Drop the ChatView in your XML layout as is shown below:
 ```xml
