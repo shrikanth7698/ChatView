@@ -1,13 +1,12 @@
 package com.shrikanthravi.chatview.activities;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Surface;
