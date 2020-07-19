@@ -81,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int rightBubbleTextColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
     private int senderNameTextColor = android.R.color.tab_indicator_text;
-    private float textSize = 20;
+    private float textSize = 14;
 
     public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
 

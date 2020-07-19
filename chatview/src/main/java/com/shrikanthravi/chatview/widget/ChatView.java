@@ -204,7 +204,7 @@ public class ChatView extends RelativeLayout {
         setTimeTextColor(attrs.getColor(R.styleable.ChatView_timeTextColor,mContext.getResources().getColor(timeTextColor)));
         setSenderNameTextColor(attrs.getColor(R.styleable.ChatView_senderNameTextColor,getResources().getColor(senderNameTextColor)));
         showSenderName(attrs.getBoolean(R.styleable.ChatView_showSenderName,showSenderName));
-        setTextSize(attrs.getDimension(R.styleable.ChatView_textSize,20));
+        setTextSize(attrs.getDimension(R.styleable.ChatView_textSize,14));
         setChatViewBackgroundColor(attrs.getColor(R.styleable.ChatView_chatViewBackgroundColor,getResources().getColor(chatViewBackgroundColor)));
 
 
