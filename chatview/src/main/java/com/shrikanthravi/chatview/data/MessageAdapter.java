@@ -12,11 +12,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -30,6 +25,11 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lopei.collageview.CollageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
@@ -40,7 +40,6 @@ import com.shrikanthravi.chatview.R;
 import com.shrikanthravi.chatview.activities.ImageFFActivity;
 import com.shrikanthravi.chatview.activities.VideoFFActivity;
 import com.shrikanthravi.chatview.utils.FontChanger;
-
 import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
@@ -48,7 +47,6 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import static android.content.ContentValues.TAG;
 
