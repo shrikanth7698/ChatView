@@ -18,6 +18,7 @@
         <activity android:name=".ChatViewTestActivity"
             android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
+            android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
