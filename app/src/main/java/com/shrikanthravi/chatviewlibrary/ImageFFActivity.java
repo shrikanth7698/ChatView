@@ -1,16 +1,13 @@
 package com.shrikanthravi.chatviewlibrary;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.Explode;
 import android.transition.TransitionInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 
 import com.github.chrisbanes.photoview.PhotoView;
-import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 public class ImageFFActivity extends AppCompatActivity {

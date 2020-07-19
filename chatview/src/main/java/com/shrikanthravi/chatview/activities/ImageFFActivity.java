@@ -1,6 +1,6 @@
 package com.shrikanthravi.chatview.activities;
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.TransitionInflater;
 import android.view.View;

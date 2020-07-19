@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:orientation="horizontal">
-        <android.support.v7.widget.CardView
+        <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:cardCornerRadius="12.5dp"
@@ -24,7 +24,7 @@
                 android:id="@+id/leftBubbleIconIV"
                 android:scaleType="centerCrop"
                 android:src="@drawable/profile_icon"/>
-        </android.support.v7.widget.CardView>
+        </androidx.cardview.widget.CardView>
         <com.wang.avi.AVLoadingIndicatorView
             android:layout_width="30dp"
             android:layout_height="30dp"
