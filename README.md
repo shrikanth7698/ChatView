@@ -1,5 +1,7 @@
 # ChatView for Android
 
+### Repo no longer being maintained
+
 
 <img src="https://raw.githubusercontent.com/shrikanth7698/ChatView/master/chatview_library_icon_1.png" width="100" >
 <br/>
