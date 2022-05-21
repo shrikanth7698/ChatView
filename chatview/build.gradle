@@ -36,7 +36,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:27.0.2'
     compile 'com.github.zagum:Android-ExpandIcon:1.2.1'
     compile 'com.balysv:material-ripple:1.0.2'
-    compile 'com.github.SilenceDut:ExpandableLayout:1.2.0'
+    implementation 'com.github.SilenceDut:ExpandableLayout:1.1.0'
     compile 'jp.wasabeef:recyclerview-animators:2.3.0'
     compile 'com.zhihu.android:matisse:0.4.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
