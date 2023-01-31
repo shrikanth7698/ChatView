@@ -1,51 +1,58 @@
 package com.shrikanthravi.chatviewlibrary;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.ContentUris;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.widget.EditText;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
 import com.balysv.materialripple.MaterialRippleLayout;
 import com.github.zagum.expandicon.ExpandIconView;
-import com.shrikanthravi.chatview.widget.ChatView;
 import com.shrikanthravi.chatview.data.Message;
+import com.shrikanthravi.chatview.widget.ChatView;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.PicassoEngine;
-import com.zhihu.matisse.filter.Filter;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class ChatViewTestActivity extends AppCompatActivity {
 
 
     HorizontalScrollView moreHSV;
     ExpandIconView expandIconView;
     MaterialRippleLayout galleryMRL;
-    public static int imagePickerRequestCode=10;
-    public static int SELECT_VIDEO=11;
-    public static int CAMERA_REQUEST=12;
-    public static int SELECT_AUDIO=13;
+    public static int imagePickerRequestCode = 10;
+    public static int SELECT_VIDEO = 11;
+    public static int CAMERA_REQUEST = 12;
+    public static int SELECT_AUDIO = 13;
     ChatView chatView;
     ImageView sendIcon;
     EditText messageET;
-    boolean switchbool=true;
+    boolean switchbool = true;
     boolean more = false;
     List<Uri> mSelected;
 
@@ -63,17 +70,15 @@ public class ChatViewTestActivity extends AppCompatActivity {
         //Initialization start
         moreHSV = findViewById(R.id.moreLL1);
         expandIconView = findViewById(R.id.expandIconView1);
-        expandIconView.setState(1,false);
+        expandIconView.setState(1, false);
         galleryMRL = findViewById(R.id.galleryMRL1);
-        mSelected  = new ArrayList<>();
-
-
+        mSelected = new ArrayList<>();
 
         //Send button click listerer
         chatView.setOnClickSendButtonListener(new ChatView.OnClickSendButtonListener() {
             @Override
             public void onSendButtonClick(String body) {
-                if(switchbool) {
+                if (switchbool) {
                     Message message = new Message();
                     message.setBody(body);
                     message.setMessageType(Message.MessageType.RightSimpleImage);
@@ -82,9 +87,8 @@ public class ChatViewTestActivity extends AppCompatActivity {
                     message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
                     chatView.addMessage(message);
 
-                    switchbool=false;
-                }
-                else{
+                    switchbool = false;
+                } else {
                     Message message1 = new Message();
                     message1.setBody(body);
                     message1.setMessageType(Message.MessageType.LeftSimpleMessage);
@@ -93,7 +97,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                     message1.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
                     chatView.addMessage(message1);
 
-                    switchbool=true;
+                    switchbool = true;
                 }
             }
         });
@@ -102,14 +106,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
         chatView.setOnClickGalleryButtonListener(new ChatView.OnClickGalleryButtonListener() {
             @Override
             public void onGalleryButtonClick() {
-                Matisse.from(ChatViewTestActivity.this)
-                        .choose(MimeType.allOf())
-                        .countable(true)
-                        .maxSelectable(9)
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new PicassoEngine())
-                        .forResult(imagePickerRequestCode);
+                ChatViewTestActivityPermissionsDispatcher.pickImageFilesWithPermissionCheck(ChatViewTestActivity.this);
             }
         });
 
@@ -117,9 +114,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
         chatView.setOnClickVideoButtonListener(new ChatView.OnClickVideoButtonListener() {
             @Override
             public void onVideoButtonClick() {
-                Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
-                i.setType("video/*");
-                startActivityForResult(i, SELECT_VIDEO);
+                ChatViewTestActivityPermissionsDispatcher.pickVideoFileWithPermissionCheck(ChatViewTestActivity.this);
             }
         });
 
@@ -127,14 +122,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
         chatView.setOnClickCameraButtonListener(new ChatView.OnClickCameraButtonListener() {
             @Override
             public void onCameraButtonClicked() {
-                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-                file.delete();
-                File file1 = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
-
-                Uri uri = FileProvider.getUriForFile(ChatViewTestActivity.this, getApplicationContext().getPackageName() + ".provider", file1);
-                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                ChatViewTestActivityPermissionsDispatcher.captureImageWithPermissionCheck(ChatViewTestActivity.this);
             }
         });
 
@@ -142,19 +130,53 @@ public class ChatViewTestActivity extends AppCompatActivity {
         chatView.setOnClickAudioButtonListener(new ChatView.OnClickAudioButtonListener() {
             @Override
             public void onAudioButtonClicked() {
-                Intent i = new Intent(Intent.ACTION_GET_CONTENT);
-                i.setType("audio/*");
-                //String[] mimetypes = {"audio/3gp", "audio/AMR", "audio/mp3"};
-                //i.putExtra(Intent.EXTRA_MIME_TYPES, mimetypes);
-                startActivityForResult(i, SELECT_AUDIO);
+                ChatViewTestActivityPermissionsDispatcher.pickAudioFileWithPermissionCheck(ChatViewTestActivity.this);
             }
         });
 
 
     }
 
+    @NeedsPermission({Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA})
+    void captureImage() {
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        File file = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
+        file.delete();
+        File file1 = new File(Environment.getExternalStorageDirectory(), "MyPhoto.jpg");
 
-    public String getTime(){
+        Uri uri = FileProvider.getUriForFile(ChatViewTestActivity.this, getApplicationContext().getPackageName() + ".provider", file1);
+        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void pickVideoFile() {
+        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Video.Media.EXTERNAL_CONTENT_URI);
+        i.setType("video/*");
+        startActivityForResult(i, SELECT_VIDEO);
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void pickImageFiles() {
+        Matisse.from(ChatViewTestActivity.this)
+                .choose(MimeType.allOf())
+                .countable(true)
+                .maxSelectable(9)
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new PicassoEngine())
+                .forResult(imagePickerRequestCode);
+    }
+
+    @NeedsPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+    void pickAudioFile() {
+        Intent i = new Intent(Intent.ACTION_GET_CONTENT);
+        i.setType("audio/*");
+        startActivityForResult(i, SELECT_AUDIO);
+    }
+
+
+    public String getTime() {
         java.util.Calendar calendar = java.util.Calendar.getInstance();
         SimpleDateFormat mdformat = new SimpleDateFormat("dd MMM yyyy HH:mm");
         String time = mdformat.format(calendar.getTime());
@@ -162,35 +184,38 @@ public class ChatViewTestActivity extends AppCompatActivity {
     }
 
 
-
     public static String getRandomText() {
         Random generator = new Random();
         StringBuilder randomStringBuilder = new StringBuilder();
         int randomLength = generator.nextInt(30);
         char tempChar;
-        for (int i = 0; i < randomLength; i++){
+        for (int i = 0; i < randomLength; i++) {
             tempChar = (char) (generator.nextInt(96) + 32);
             randomStringBuilder.append(tempChar);
         }
         return randomStringBuilder.toString();
     }
 
-
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        ChatViewTestActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
 
-
-        switch (requestCode){
-            case 10:{
+        switch (requestCode) {
+            case 10: {
 
                 //Image Selection result
-                if(resultCode==RESULT_OK){
+                if (resultCode == RESULT_OK) {
                     mSelected = Matisse.obtainResult(data);
 
-                    if(switchbool) {
+                    if (switchbool) {
                         if (mSelected.size() == 1) {
                             Message message = new Message();
                             message.setBody(messageET.getText().toString().trim());
@@ -200,7 +225,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                             message.setImageList(mSelected);
                             message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
                             chatView.addMessage(message);
-                            switchbool=false;
+                            switchbool = false;
                         } else {
 
                             Message message = new Message();
@@ -211,10 +236,9 @@ public class ChatViewTestActivity extends AppCompatActivity {
                             message.setImageList(mSelected);
                             message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
                             chatView.addMessage(message);
-                            switchbool=false;
+                            switchbool = false;
                         }
-                    }
-                    else{
+                    } else {
 
                         if (mSelected.size() == 1) {
                             Message message = new Message();
@@ -225,7 +249,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                             message.setImageList(mSelected);
                             message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
                             chatView.addMessage(message);
-                            switchbool=true;
+                            switchbool = true;
                         } else {
 
                             Message message = new Message();
@@ -236,23 +260,23 @@ public class ChatViewTestActivity extends AppCompatActivity {
                             message.setImageList(mSelected);
                             message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
                             chatView.addMessage(message);
-                            switchbool=true;
+                            switchbool = true;
                         }
 
                     }
                 }
                 break;
             }
-            case 11:{
+            case 11: {
 
                 //Video Selection Result
-                if(resultCode == RESULT_OK) {
+                if (resultCode == RESULT_OK) {
                     if (switchbool) {
                         Message message = new Message();
                         message.setMessageType(Message.MessageType.RightVideo);
                         message.setTime(getTime());
                         message.setUserName("Groot");
-                        message.setVideoUri(Uri.parse(getPathVideo(data.getData())));
+                        message.setVideoUri(Uri.parse(getVideoPath(ChatViewTestActivity.this, data.getData())));
                         message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/groot"));
                         chatView.addMessage(message);
                         switchbool = false;
@@ -262,7 +286,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                         message.setMessageType(Message.MessageType.LeftVideo);
                         message.setTime(getTime());
                         message.setUserName("Hodor");
-                        message.setVideoUri(Uri.parse(getPathVideo(data.getData())));
+                        message.setVideoUri(Uri.parse(getVideoPath(ChatViewTestActivity.this, data.getData())));
                         message.setUserIcon(Uri.parse("android.resource://com.shrikanthravi.chatviewlibrary/drawable/hodor"));
                         chatView.addMessage(message);
                         switchbool = true;
@@ -270,7 +294,7 @@ public class ChatViewTestActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case 12:{
+            case 12: {
 
                 //Image Capture result
 
@@ -310,8 +334,8 @@ public class ChatViewTestActivity extends AppCompatActivity {
                 }
                 break;
             }
-            case 13:{
-                if(resultCode == RESULT_OK){
+            case 13: {
+                if (resultCode == RESULT_OK) {
                     if (switchbool) {
                         Message message = new Message();
                         message.setMessageType(Message.MessageType.RightAudio);
@@ -340,36 +364,102 @@ public class ChatViewTestActivity extends AppCompatActivity {
     }
 
 
+    //region get media path
 
-
-
-
-
-    public String getPathVideo(Uri uri) {
-        System.out.println("getpath "+uri.toString());
-        String[] projection = { MediaStore.Video.Media.DATA };
-        Cursor cursor = managedQuery(uri, projection, null, null, null);
-        if(cursor!=null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
+    @SuppressLint("NewApi")
+    public static String getVideoPath(Context context, Uri uri){
+        String selection = null;
+        String[] selectionArgs = null;
+        // Uri is different in versions after KITKAT (Android 4.4), we need to
+        if (Build.VERSION.SDK_INT >= 19 && DocumentsContract.isDocumentUri(context.getApplicationContext(), uri)) {
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                return Environment.getExternalStorageDirectory() + "/" + split[1];
+            } else if (isDownloadsDocument(uri)) {
+                final String id = DocumentsContract.getDocumentId(uri);
+                uri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+            } else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+                if ("image".equals(type)) {
+                    uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+                selection = "_id=?";
+                selectionArgs = new String[]{
+                        split[1]
+                };
+            }
         }
-        else return null;
+        if ("content".equalsIgnoreCase(uri.getScheme())) {
+
+
+            if (isGooglePhotosUri(uri)) {
+                return uri.getLastPathSegment();
+            }
+
+            String[] projection = {
+                    MediaStore.Images.Media.DATA
+            };
+            Cursor cursor = null;
+            try {
+                cursor = context.getContentResolver()
+                        .query(uri, projection, selection, selectionArgs, null);
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                if (cursor.moveToFirst()) {
+                    return cursor.getString(column_index);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+        return null;
     }
+
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    public static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
+
+    //endregion
 
     public String getPathAudio(Uri uri) {
-        System.out.println("getpath "+uri.toString());
-        String[] projection = { MediaStore.Audio.Media.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-
-        int columnIndex = cursor.getColumnIndex(projection[0]);
-        cursor.moveToFirst();
-        if(cursor!=null) {
-            return cursor.getString(columnIndex);
+        System.out.println("getpath " + uri.toString());
+        String filePath = "";
+        String fileId = DocumentsContract.getDocumentId(uri);
+        // Split at colon, use second item in the array
+        String id = fileId.split(":")[1];
+        String[] column = {MediaStore.Audio.Media.DATA};
+        String selector = MediaStore.Audio.Media._ID + "=?";
+        Cursor cursor = getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                column, selector, new String[]{id}, null);
+        int columnIndex = cursor.getColumnIndex(column[0]);
+        if (cursor.moveToFirst()) {
+            filePath = cursor.getString(columnIndex);
         }
-        else return null;
-    }
+        cursor.close();
+        return filePath;
 
+    }
 
 
 }

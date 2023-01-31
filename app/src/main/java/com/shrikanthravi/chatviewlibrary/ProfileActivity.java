@@ -2,9 +2,8 @@ package com.shrikanthravi.chatviewlibrary;
 
 
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.transition.TransitionInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 

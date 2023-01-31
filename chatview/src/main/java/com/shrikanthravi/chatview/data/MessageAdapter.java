@@ -4,64 +4,49 @@ package com.shrikanthravi.chatview.data;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.PorterDuff;
-import android.graphics.SurfaceTexture;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.provider.MediaStore;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.VideoView;
 
-import com.balysv.materialripple.MaterialRippleLayout;
+import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.lopei.collageview.CollageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
 import com.nostra13.universalimageloader.utils.DiskCacheUtils;
-import com.nostra13.universalimageloader.utils.L;
 import com.ohoussein.playpause.PlayPauseView;
 import com.shrikanthravi.chatview.R;
 import com.shrikanthravi.chatview.activities.ImageFFActivity;
 import com.shrikanthravi.chatview.activities.VideoFFActivity;
 import com.shrikanthravi.chatview.utils.FontChanger;
-
 import com.silencedut.expandablelayout.ExpandableLayout;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Handler;
-
 
 import static android.content.ContentValues.TAG;
 
@@ -94,7 +79,7 @@ public class MessageAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private int rightBubbleTextColor = android.R.color.white;
     private int timeTextColor = android.R.color.tab_indicator_text;
     private int senderNameTextColor = android.R.color.tab_indicator_text;
-    private float textSize = 20;
+    private float textSize = 14;
 
     public MessageAdapter(List<Message> verticalList, Context context,RecyclerView recyclerView) {
 
