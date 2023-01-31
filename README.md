@@ -48,7 +48,7 @@ allprojects {
 Then add dependency
 ```gradle
 dependencies {
-	compile 'com.github.shrikanth7698:ChatView:v0.1.2'
+	implementation 'com.github.shrikanth7698:ChatView:0.1.2'
 }
 ```
 ### Usage
